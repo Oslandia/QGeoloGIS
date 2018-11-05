@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   height="53.9776"
+   width="53.9776"
+   id="svg48"
+   version="1.1"><defs
+   id="defs52" />
+<metadata
+   id="metadata2">citation: U.S. Geological Survey, 2006, FGDC Digital Cartographic Standard for Geologic Map Symbolization (PostScript Implementation): U.S. Geological Survey Techniques and Methods 11-A2 [pubs.usgs.gov/tm/2006/11A02/]. converted by CEC Geology LLC 2018 from the USGS lithologic patterns converted to inkscape by the University of Otago.<rdf:RDF>
+  <cc:Work
+     rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type
+       rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+    <dc:title></dc:title>
+  </cc:Work>
+</rdf:RDF>
+</metadata>
+<g
+id="sed663"
+height="53.9775"
+width="53.9776"
+     stroke-width=".3"
+     stroke="#231f20"
+     fill="none"
+   transform="matrix(1,0,0,-1,0,53.9775)"
+   id="g46">
+  <path
+     id="path4"
+     transform="translate(0,48.0625)"
+     d="M 0,0 H 53.978" />
+  <path
+     id="path6"
+     transform="translate(0,52.3125)"
+     d="M 0,0 H 53.978" />
+  <path
+     id="path8"
+     transform="translate(13.4366,41.2915)"
+     d="M 0,0 C 0.5,0.063 1.375,0.375 1.813,1.188 3.25,0.5 5.188,-0.625 7.875,0.375" />
+  <path
+     id="path10"
+     transform="translate(4.1866,35.7085)"
+     d="M 0,0 C -1.663,-0.619 -3.039,-0.424 -4.187,-0.022" />
+  <path
+     id="path12"
+     transform="translate(22.6241,6.021)"
+     d="M 0,0 C -2.688,-1 -4.625,0.125 -6.063,0.813 -6.5,0 -7.375,-0.313 -7.875,-0.375" />
+  <path
+     id="path14"
+     transform="translate(42.8946,9.0625)"
+     d="M 0,0 C -2.688,-1 -4.625,0.125 -6.063,0.813 -6.5,0 -7.375,-0.313 -7.875,-0.375" />
+  <path
+     id="path16"
+     transform="translate(0,2.4526)"
+     d="M 0,0 C 0.466,0.053 0.958,0.166 1.478,0.36" />
+  <path
+     id="path18"
+     transform="translate(39.4776,42.375)"
+     d="M 0,0 C 0.5,0.063 1.375,0.375 1.813,1.188 3.25,0.5 5.188,-0.625 7.875,0.375" />
+  <path
+     id="path20"
+     transform="translate(28.0196,32.604)"
+     d="M 0,0 C 0.5,0.063 1.375,0.375 1.813,1.188 3.25,0.5 5.188,-0.625 7.875,0.375" />
+  <path
+     id="path22"
+     transform="translate(51.0401,24.458)"
+     d="M 0,0 C -2.688,-1 -4.625,0.125 -6.063,0.813 -6.5,0 -7.375,-0.313 -7.875,-0.375" />
+  <path
+     id="path24"
+     transform="translate(33.2696,19.021)"
+     d="M 0,0 C -2.688,-1 -4.625,0.125 -6.063,0.813 -6.5,0 -7.375,-0.313 -7.875,-0.375" />
+  <path
+     id="path26"
+     transform="translate(18.2071,26.2915)"
+     d="M 0,0 C -2.687,-1 -4.625,0.125 -6.062,0.813 -6.5,0 -7.375,-0.313 -7.875,-0.375" />
+  <path
+     id="path28"
+     transform="translate(8.1651,14.854)"
+     d="M 0,0 C -2.688,-1 -4.625,0.125 -6.063,0.813 -6.5,0 -7.375,-0.313 -7.875,-0.375" />
+  <path
+     id="path30"
+     transform="translate(46.6055,49.8062)"
+     d="M 0,0 C 0.439,0.051 1.205,0.304 1.589,0.962 2.849,0.405 4.547,-0.506 6.903,0.304" />
+  <path
+     id="path32"
+     transform="translate(44.5352,50.1099)"
+     d="M 0,0 C -2.355,-0.81 -4.054,0.101 -5.314,0.658 -5.697,0 -6.464,-0.253 -6.902,-0.304" />
+  <path
+     id="path34"
+     transform="translate(35.5625,50.1099)"
+     d="M 0,0 C -2.355,-0.81 -4.054,0.101 -5.313,0.658 -5.697,0 -6.464,-0.253 -6.902,-0.304" />
+  <path
+     id="path36"
+     transform="translate(26.5908,50.1099)"
+     d="M 0,0 C -2.355,-0.81 -4.054,0.101 -5.314,0.658 -5.697,0 -6.465,-0.253 -6.902,-0.304" />
+  <path
+     id="path38"
+     transform="translate(17.6182,50.1099)"
+     d="M 0,0 C -2.356,-0.81 -4.055,0.101 -5.314,0.658 -5.697,0 -6.465,-0.253 -6.903,-0.304" />
+  <path
+     id="path40"
+     transform="translate(8.6455,50.1099)"
+     d="M 0,0 C -2.355,-0.81 -4.054,0.101 -5.313,0.658 -5.697,0 -6.464,-0.253 -6.902,-0.304" />
+  <path
+     id="path42"
+     transform="translate(50.2891,35.3335)"
+     d="M 0,0 C 0.5,0.063 1.375,0.375 1.813,1.188 2.36,0.925 2.981,0.6 3.689,0.353" />
+  <path
+     id="path44"
+     transform="translate(47.5801,2.4375)"
+     d="M 0,0 C 0.5,0.063 1.375,0.375 1.813,1.188 2.972,0.633 4.456,-0.206 6.398,0.015" />
+</g>
+</svg>

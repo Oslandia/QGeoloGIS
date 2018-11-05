@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   height="54.125"
+   width="54.125"
+   id="svg74"
+   version="1.1">
+  <defs
+     id="defs78" />
+  <metadata
+     id="metadata2">citation: U.S. Geological Survey, 2006, FGDC Digital Cartographic Standard for Geologic Map Symbolization (PostScript Implementation): U.S. Geological Survey Techniques and Methods 11-A2 [pubs.usgs.gov/tm/2006/11A02/]. converted by CEC Geology LLC 2018 from the USGS lithologic gs converted to inkscape by the University of Otago.<rdf:RDF>
+  <cc:Work
+     rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type
+       rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+    <dc:title></dc:title>
+  </cc:Work>
+</rdf:RDF>
+</metadata>
+  <g
+     stroke-width=".3"
+     stroke="#231f20"
+     fill="none"
+
+     id="g72"
+     width="54.125"
+     height="54.125">
+    <path
+       id="path4"
+       transform="translate(54.125,43.7363)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path6"
+       transform="translate(54.125,42.1465)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path8"
+       transform="translate(54.125,40.5557)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path10"
+       transform="translate(54.125,38.9648)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path12"
+       transform="translate(54.125,37.375)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path14"
+       transform="translate(54.125,35.7842)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path16"
+       transform="translate(54.125,34.1943)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path18"
+       transform="translate(54.125,32.6035)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path20"
+       transform="translate(54.125,31.0127)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path22"
+       transform="translate(54.125,29.4229)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path24"
+       transform="translate(54.125,27.8311)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path26"
+       transform="translate(0,53.2803)"
+       d="M 0,0 H 54.125" />
+    <path
+       id="path28"
+       transform="translate(54.125,51.6895)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path30"
+       transform="translate(54.125,50.0996)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path32"
+       transform="translate(54.125,48.5088)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path34"
+       transform="translate(54.125,46.918)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path36"
+       transform="translate(54.125,45.3281)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path38"
+       transform="translate(54.125,26.2412)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path40"
+       transform="translate(54.125,24.6504)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path42"
+       transform="translate(54.125,23.0605)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path44"
+       transform="translate(54.125,21.4697)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path46"
+       transform="translate(54.125,19.8789)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path48"
+       transform="translate(54.125,18.2891)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path50"
+       transform="translate(54.125,16.6982)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path52"
+       transform="translate(54.125,15.1074)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path54"
+       transform="translate(54.125,13.5176)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path56"
+       transform="translate(54.125,11.9268)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path58"
+       transform="translate(54.125,10.3359)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path60"
+       transform="translate(54.125,8.7451)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path62"
+       transform="translate(54.125,7.1553)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path64"
+       transform="translate(54.125,5.5645)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path66"
+       transform="translate(54.125,3.9736)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path68"
+       transform="translate(54.125,2.3838)"
+       d="M 0,0 H -54.125" />
+    <path
+       id="path70"
+       transform="translate(54.125,0.793)"
+       d="M 0,0 H -54.125" />
+  </g>
+</svg>

@@ -1,0 +1,4134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg1988"
+   version="1.1"
+   width="85.0393"
+   height="85.0394">
+  <defs
+     id="defs1992" />
+  <metadata
+     id="metadata2">citation: U.S. Geological Survey, 2006, FGDC Digital Cartographic Standard for Geologic Map Symbolization (PostScript Implementation): U.S. Geological Survey Techniques and Methods 11-A2 [pubs.usgs.gov/tm/2006/11A02/]. converted by CEC Geology LLC 2018 from the USGS lithologic gs converted to inkscape by the University of Otago.<rdf:RDF>
+  <cc:Work
+     rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type
+       rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+    <dc:title></dc:title>
+  </cc:Work>
+</rdf:RDF>
+</metadata>
+  <g
+     id="g1986"
+     width="85.0393"
+     transform="matrix(1 0 0 -1 0 85.0393)"
+     stroke-linecap="round"
+     stroke="#231f20"
+     height="85.0394"
+     fill="none">
+    <path
+       id="path4"
+       transform="translate(8.2893 73.1644)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path6"
+       transform="translate(8.2893 52.0394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path8"
+       transform="translate(82.5601 57.0603)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.285-1.25 1z" />
+    <path
+       id="path10"
+       transform="translate(3.206 57.0394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path12"
+       transform="translate(9.206 56.7061)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path14"
+       transform="translate(15.0393 57.0394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path16"
+       transform="translate(21.076 57.3607)"
+       stroke-width=".3"
+       d="m0 0c.199 1.011 2.108.344 1.582-.246-.718-.805-1.764-.682-1.582.246z" />
+    <path
+       id="path18"
+       transform="translate(26.7328 58.7369)"
+       stroke-width=".3"
+       d="m0 0c-.018 1.031 1.989.78 1.598.092-.533-.938-1.581-1.038-1.598-.092z" />
+    <path
+       id="path20"
+       transform="translate(27.3126 53.105)"
+       stroke-width=".3"
+       d="m0 0c.652.799 2.022-.69 1.279-.962-1.012-.372-1.877.229-1.279.962z" />
+    <path
+       id="path22"
+       transform="translate(34.3751 52.105)"
+       stroke-width=".3"
+       d="m0 0c.652.799 2.022-.69 1.279-.962-1.012-.372-1.877.229-1.279.962z" />
+    <path
+       id="path24"
+       transform="translate(40.779 51.5506)"
+       stroke-width=".3"
+       d="m0 0c.14 1.021 2.085.466 1.593-.154-.67-.845-1.721-.783-1.593.154z" />
+    <path
+       id="path26"
+       transform="translate(47.7452 52.121)"
+       stroke-width=".3"
+       d="m0 0c-.065 1.029 1.952.868 1.592.164-.49-.961-1.533-1.108-1.592-.164z" />
+    <path
+       id="path28"
+       transform="translate(54.178 53.2279)"
+       stroke-width=".3"
+       d="m0 0c-.007 1.031 1.997.758 1.599.075-.543-.932-1.592-1.021-1.599-.075z" />
+    <path
+       id="path30"
+       transform="translate(31.9104 61.054)"
+       stroke-width=".3"
+       d="m0 0c-.196 1.012 1.824 1.111 1.558.367-.363-1.016-1.378-1.295-1.558-.367z" />
+    <path
+       id="path32"
+       transform="translate(76.706 57.9561)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.024-.341-1.87.286-1.25 1z" />
+    <path
+       id="path34"
+       transform="translate(79.706 66.3311)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.024-.341-1.87.285-1.25 1z" />
+    <path
+       id="path36"
+       transform="translate(.4768 65.7894)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.024-.341-1.87.286-1.25 1z" />
+    <path
+       id="path38"
+       transform="translate(7.6074 66.2065)"
+       stroke-width=".3"
+       d="m0 0c.329.977 2.135.066 1.536-.45-.817-.704-1.838-.446-1.536.45z" />
+    <path
+       id="path40"
+       transform="translate(73.6018 67.6019)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.024-.341-1.87.286-1.25 1z" />
+    <path
+       id="path42"
+       transform="translate(70.7476 59.0186)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path44"
+       transform="translate(64.7893 60.0394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path46"
+       transform="translate(58.8934 61.2269)"
+       stroke-width=".3"
+       d="m0 0c.676.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path48"
+       transform="translate(53.2684 62.8519)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path50"
+       transform="translate(8.7893 31.2894)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path52"
+       transform="translate(3.7893 36.5394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path54"
+       transform="translate(9.7893 36.7269)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path56"
+       transform="translate(15.7893 36.9769)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path58"
+       transform="translate(21.5393 37.5394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path60"
+       transform="translate(27.5393 38.2269)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path62"
+       transform="translate(33.5393 39.2269)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path64"
+       transform="translate(39.1643 40.4144)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path66"
+       transform="translate(83.4143 36.6019)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path68"
+       transform="translate(82.4143 44.2269)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path70"
+       transform="translate(3.4143 43.7894)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.024-.341-1.87.286-1.25 1z" />
+    <path
+       id="path72"
+       transform="translate(9.4143 43.4144)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path74"
+       transform="translate(15.4143 43.1644)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path76"
+       transform="translate(21.4143 43.0394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path78"
+       transform="translate(76.2893 45.4144)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path80"
+       transform="translate(77.2893 36.9769)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path82"
+       transform="translate(71.4143 37.7269)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path84"
+       transform="translate(65.4143 38.7894)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path86"
+       transform="translate(59.6018 40.4144)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path88"
+       transform="translate(45.4143 41.7894)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path90"
+       transform="translate(14.7893 28.8519)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path92"
+       transform="translate(23.2893 26.5394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path94"
+       transform="translate(31.2893 25.4144)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path96"
+       transform="translate(28.6226 33.206)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path98"
+       transform="translate(34.5393 31.8727)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path100"
+       transform="translate(29.5393 12.5394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path102"
+       transform="translate(35.8726 10.8727)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path104"
+       transform="translate(41.8726 10.0394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path106"
+       transform="translate(47.2059 9.8727)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path108"
+       transform="translate(52.2059 10.3727)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path110"
+       transform="translate(40.4559 31.1227)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path112"
+       transform="translate(46.3726 30.8727)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path114"
+       transform="translate(52.2893 30.956)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path116"
+       transform="translate(58.2893 31.5394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path118"
+       transform="translate(62.9559 32.7894)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path120"
+       transform="translate(37.1643 24.9144)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path122"
+       transform="translate(30.9617 19.9753)"
+       stroke-width=".3"
+       d="m0 0c.752.705 1.912-.953 1.14-1.124-1.053-.233-1.83.478-1.14 1.124z" />
+    <path
+       id="path124"
+       transform="translate(24.9976 18.8936)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path126"
+       transform="translate(18.706 17.7061)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path128"
+       transform="translate(12.8726 16.5394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path130"
+       transform="translate(6.8726 15.7061)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path132"
+       transform="translate(11.3726 9.0394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path134"
+       transform="translate(16.8726 7.0394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path136"
+       transform="translate(22.5393 5.5394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path138"
+       transform="translate(28.5393 4.2061)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path140"
+       transform="translate(34.5393 3.5394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path142"
+       transform="translate(40.3726 3.3727)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path144"
+       transform="translate(46.5393 3.3727)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path146"
+       transform="translate(52.5393 3.8727)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path148"
+       transform="translate(58.206 5.0394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.024-.341-1.87.286-1.25 1z" />
+    <path
+       id="path150"
+       transform="translate(64.0393 6.3727)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path152"
+       transform="translate(65.2893 1.3102)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path154"
+       transform="translate(69.706 8.0394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path156"
+       transform="translate(75.3726 10.0394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path158"
+       transform="translate(.8726 14.8727)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path160"
+       transform="translate(80.0185 14.4352)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.024-.341-1.87.286-1.25 1z" />
+    <path
+       id="path162"
+       transform="translate(74.2268 14.5186)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.024-.341-1.87.286-1.25 1z" />
+    <path
+       id="path164"
+       transform="translate(68.0393 14.7061)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path166"
+       transform="translate(62.206 15.5394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path168"
+       transform="translate(83.0393 22.206)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path170"
+       transform="translate(77.2059 22.0394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path172"
+       transform="translate(71.2059 22.5394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path174"
+       transform="translate(4.2179 22.4179)"
+       stroke-width=".3"
+       d="m0 0c.243 1.002 2.121.251 1.569-.315-.753-.773-1.792-.604-1.569.315z" />
+    <path
+       id="path176"
+       transform="translate(9.92 23.5303)"
+       stroke-width=".3"
+       d="m0 0c.221 1.007 2.115.296 1.576-.282-.736-.788-1.779-.642-1.576.282z" />
+    <path
+       id="path178"
+       transform="translate(56.5393 16.5394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path180"
+       transform="translate(42.5393 24.6644)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path182"
+       transform="translate(48.5393 25.0394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path184"
+       transform="translate(54.6643 25.6644)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path186"
+       transform="translate(60.2893 26.7269)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path188"
+       transform="translate(66.0393 28.0394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path190"
+       transform="translate(71.9868 29.235)"
+       stroke-width=".3"
+       d="m0 0c.277.993 2.128.179 1.558-.368-.779-.747-1.812-.543-1.558.368z" />
+    <path
+       id="path192"
+       transform="translate(14.2893 50.4144)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path194"
+       transform="translate(20.1643 48.4144)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path196"
+       transform="translate(26.1643 47.0394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path198"
+       transform="translate(32.1643 46.1644)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path200"
+       transform="translate(37.9143 45.7894)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path202"
+       transform="translate(44.0393 45.6644)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path204"
+       transform="translate(50.0393 46.0394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path206"
+       transform="translate(55.8518 46.8519)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path208"
+       transform="translate(61.6643 48.1644)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path210"
+       transform="translate(67.1643 50.1644)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path212"
+       transform="translate(73.2893 52.2894)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path214"
+       transform="translate(13.706 70.7894)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path216"
+       transform="translate(19.2893 69.2061)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.285-1.25 1z" />
+    <path
+       id="path218"
+       transform="translate(25.206 68.0394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path220"
+       transform="translate(25.0393 76.706)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path222"
+       transform="translate(33.0393 75.456)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path224"
+       transform="translate(40.4559 75.706)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path226"
+       transform="translate(31.206 67.3727)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path228"
+       transform="translate(37.2893 66.9561)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.285-1.25 1z" />
+    <path
+       id="path230"
+       transform="translate(43.0393 67.0394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path232"
+       transform="translate(49.1226 67.4977)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path234"
+       transform="translate(55.0393 68.2061)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.285-1.25 1z" />
+    <path
+       id="path236"
+       transform="translate(60.8101 69.2894)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path238"
+       transform="translate(66.6643 70.6644)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path240"
+       transform="translate(72.2684 72.8728)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.285-1.25 1z" />
+    <path
+       id="path242"
+       transform="translate(75.7893 76.7894)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path244"
+       transform="translate(82.9143 77.1644)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path246"
+       transform="translate(71.8726 84.3727)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path248"
+       transform="translate(77.8726 83.5394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path250"
+       transform="translate(83.2059 83.3727)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path252"
+       transform="translate(4.1353 83.1844)"
+       stroke-width=".3"
+       d="m0 0c.251 1 2.123.234 1.567-.328-.759-.766-1.797-.589-1.567.328z" />
+    <path
+       id="path254"
+       transform="translate(10.6394 84.0843)"
+       stroke-width=".3"
+       d="m0 0c.03 1.03 2.023.686 1.601.018-.576-.913-1.628-.963-1.601-.018z" />
+    <path
+       id="path256"
+       transform="translate(3.6643 77.7894)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.024-.341-1.87.286-1.25 1z" />
+    <path
+       id="path258"
+       transform="translate(9.4143 79.2894)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path260"
+       transform="translate(14.7893 81.0394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path262"
+       transform="translate(20.7893 83.0394)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path264"
+       transform="translate(68.7893 76.9144)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path266"
+       transform="translate(61.6643 77.7894)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path268"
+       transform="translate(55.9143 79.2894)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path270"
+       transform="translate(50.5393 81.6644)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path272"
+       transform="translate(45.9768 84.1644)"
+       stroke-width=".3"
+       d="m0 0c.675.779 2-.75 1.25-1-1.023-.341-1.87.286-1.25 1z" />
+    <path
+       id="path274"
+       transform="translate(16.8269 1.7926)"
+       stroke-width=".3"
+       d="m0 0c.03 1.03 2.023.686 1.601.018-.576-.913-1.628-.963-1.601-.018z" />
+    <g
+       id="g1984"
+       stroke-width=".7">
+      <path
+         id="path276"
+         transform="translate(1.7893 82.7061)"
+         d="m0 0 .01.01" />
+      <path
+         id="path278"
+         transform="translate(8.3518 83.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path280"
+         transform="translate(2.1643 80.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path282"
+         transform="translate(5.0393 80.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path284"
+         transform="translate(8.0393 80.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path286"
+         transform="translate(10.7893 81.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path288"
+         transform="translate(12.9143 82.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path290"
+         transform="translate(15.3518 83.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path292"
+         transform="translate(17.4143 84.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path294"
+         transform="translate(1.6643 76.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path296"
+         transform="translate(7.0393 77.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path298"
+         transform="translate(12.8518 79.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path300"
+         transform="translate(18.5393 81.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path302"
+         transform="translate(24.1018 83.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path304"
+         transform="translate(28.6018 84.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path306"
+         transform="translate(26.9143 83.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path308"
+         transform="translate(25.2268 81.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path310"
+         transform="translate(23.4768 81.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path312"
+         transform="translate(21.7268 80.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path314"
+         transform="translate(19.9143 79.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path316"
+         transform="translate(18.0393 78.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path318"
+         transform="translate(16.1643 77.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path320"
+         transform="translate(14.2893 77.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path322"
+         transform="translate(12.4143 76.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path324"
+         transform="translate(10.6018 75.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path326"
+         transform="translate(8.6018 75.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path328"
+         transform="translate(6.6643 75.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path330"
+         transform="translate(4.6643 74.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path332"
+         transform="translate(2.6643 74.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path334"
+         transform="translate(.7268 74.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path336"
+         transform="translate(1.9768 73.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path338"
+         transform="translate(1.2268 70.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path340"
+         transform="translate(3.9143 70.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path342"
+         transform="translate(8.1018 68.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path344"
+         transform="translate(5.8518 68.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path346"
+         transform="translate(3.5393 68.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path348"
+         transform="translate(1.2893 68.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path350"
+         transform="translate(4.9768 65.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path352"
+         transform="translate(11.2268 66.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path354"
+         transform="translate(13.6643 66.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path356"
+         transform="translate(19.8518 64.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path358"
+         transform="translate(21.9143 64.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path360"
+         transform="translate(17.7893 63.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path362"
+         transform="translate(15.5393 63.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path364"
+         transform="translate(12.8518 62.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path366"
+         transform="translate(9.9768 62.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path368"
+         transform="translate(3.8518 61.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path370"
+         transform="translate(6.9768 62.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path372"
+         transform="translate(1.2893 61.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path374"
+         transform="translate(1.2268 58.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path376"
+         transform="translate(.7268 56.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path378"
+         transform="translate(6.7893 56.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path380"
+         transform="translate(9.3518 53.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path382"
+         transform="translate(7.1605 53.3727)"
+         d="m0 0 .01.01" />
+      <path
+         id="path384"
+         transform="translate(4.456 53.456)"
+         d="m0 0 .01.01" />
+      <path
+         id="path386"
+         transform="translate(11.3518 53.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path388"
+         transform="translate(13.2893 53.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path390"
+         transform="translate(15.2268 53.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path392"
+         transform="translate(17.2893 53.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path394"
+         transform="translate(19.2893 53.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path396"
+         transform="translate(21.1643 54.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path398"
+         transform="translate(23.0393 54.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path400"
+         transform="translate(25.0393 55.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path402"
+         transform="translate(26.9143 56.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path404"
+         transform="translate(28.6643 56.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path406"
+         transform="translate(30.5393 57.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path408"
+         transform="translate(32.2893 58.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path410"
+         transform="translate(34.1018 57.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path412"
+         transform="translate(37.4768 56.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path414"
+         transform="translate(40.4768 56.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path416"
+         transform="translate(43.1643 56.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path418"
+         transform="translate(37.1643 53.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path420"
+         transform="translate(33.4768 54.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path422"
+         transform="translate(29.6018 54.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path424"
+         transform="translate(40.4143 53.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path426"
+         transform="translate(43.7893 54.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path428"
+         transform="translate(46.2268 54.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path430"
+         transform="translate(48.7268 54.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path432"
+         transform="translate(51.1018 55.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path434"
+         transform="translate(12.7893 56.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path436"
+         transform="translate(18.6643 56.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path438"
+         transform="translate(24.6018 57.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path440"
+         transform="translate(30.1643 59.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path442"
+         transform="translate(4.2893 58.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path444"
+         transform="translate(7.6643 58.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path446"
+         transform="translate(10.9143 58.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path448"
+         transform="translate(14.7893 59.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path450"
+         transform="translate(18.4143 59.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path452"
+         transform="translate(21.2893 60.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path454"
+         transform="translate(24.0393 60.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path456"
+         transform="translate(26.6018 61.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path458"
+         transform="translate(28.8518 62.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path460"
+         transform="translate(30.8518 63.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path462"
+         transform="translate(34.0393 59.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path464"
+         transform="translate(35.5393 61.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path466"
+         transform="translate(37.2268 60.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path468"
+         transform="translate(40.8518 61.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path470"
+         transform="translate(38.9768 60.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path472"
+         transform="translate(40.8518 59.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path474"
+         transform="translate(42.7268 58.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path476"
+         transform="translate(44.6643 57.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path478"
+         transform="translate(46.6018 57.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path480"
+         transform="translate(48.6018 56.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path482"
+         transform="translate(43.4143 59.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path484"
+         transform="translate(38.4143 62.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path486"
+         transform="translate(3.6643 72.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path488"
+         transform="translate(5.4143 71.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path490"
+         transform="translate(7.2268 70.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path492"
+         transform="translate(9.1018 70.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path494"
+         transform="translate(10.9768 69.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path496"
+         transform="translate(12.9768 68.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path498"
+         transform="translate(14.9143 68.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path500"
+         transform="translate(16.8518 67.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path502"
+         transform="translate(18.7893 67.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path504"
+         transform="translate(20.6643 66.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path506"
+         transform="translate(22.6018 66.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path508"
+         transform="translate(24.4768 66.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path510"
+         transform="translate(26.4768 65.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path512"
+         transform="translate(30.5393 64.8727)"
+         d="m0 0 .01.01" />
+      <path
+         id="path514"
+         transform="translate(32.706 64.6227)"
+         d="m0 0 .01.01" />
+      <path
+         id="path516"
+         transform="translate(34.8727 64.456)"
+         d="m0 0 .01.01" />
+      <path
+         id="path518"
+         transform="translate(37.1227 64.456)"
+         d="m0 0 .01.01" />
+      <path
+         id="path520"
+         transform="translate(39.7893 64.3727)"
+         d="m0 0 .01.01" />
+      <path
+         id="path522"
+         transform="translate(28.5393 65.206)"
+         d="m0 0 .01.01" />
+      <path
+         id="path524"
+         transform="translate(22.9143 67.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path526"
+         transform="translate(28.8518 67.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path528"
+         transform="translate(34.7893 66.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path530"
+         transform="translate(40.7268 66.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path532"
+         transform="translate(42.189 64.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path534"
+         transform="translate(44.4768 64.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path536"
+         transform="translate(46.3518 64.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path538"
+         transform="translate(46.6018 61.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path540"
+         transform="translate(49.4768 60.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path542"
+         transform="translate(52.3518 59.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path544"
+         transform="translate(56.6643 61.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path546"
+         transform="translate(59.7893 63.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path548"
+         transform="translate(62.6643 62.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path550"
+         transform="translate(65.4143 61.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path552"
+         transform="translate(68.3518 61.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path554"
+         transform="translate(71.4768 60.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path556"
+         transform="translate(74.6018 60.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path558"
+         transform="translate(77.4768 59.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path560"
+         transform="translate(80.1643 59.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path562"
+         transform="translate(83.1643 59.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path564"
+         transform="translate(80.2268 57.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path566"
+         transform="translate(74.2893 57.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path568"
+         transform="translate(68.3518 59.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path570"
+         transform="translate(62.6018 60.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path572"
+         transform="translate(55.1018 58.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path574"
+         transform="translate(57.9143 57.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path576"
+         transform="translate(60.8518 57.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path578"
+         transform="translate(63.6643 56.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path580"
+         transform="translate(66.7268 55.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path582"
+         transform="translate(69.6018 55.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path584"
+         transform="translate(84.1643 53.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path586"
+         transform="translate(83.1018 52.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path588"
+         transform="translate(83.4143 50.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path590"
+         transform="translate(83.3518 47.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path592"
+         transform="translate(83.8518 40.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path594"
+         transform="translate(80.8518 40.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path596"
+         transform="translate(77.9143 40.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path598"
+         transform="translate(74.9143 40.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path600"
+         transform="translate(71.7893 41.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path602"
+         transform="translate(68.9768 41.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path604"
+         transform="translate(66.0393 42.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path606"
+         transform="translate(63.0393 43.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path608"
+         transform="translate(80.8518 36.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path610"
+         transform="translate(83.9143 32.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path612"
+         transform="translate(81.9143 32.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path614"
+         transform="translate(79.9143 32.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path616"
+         transform="translate(77.7893 32.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path618"
+         transform="translate(75.6643 32.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path620"
+         transform="translate(73.6643 33.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path622"
+         transform="translate(71.6643 33.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path624"
+         transform="translate(69.456 33.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path626"
+         transform="translate(60.5393 36.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path628"
+         transform="translate(62.6227 35.3727)"
+         d="m0 0 .01.01" />
+      <path
+         id="path630"
+         transform="translate(64.706 34.706)"
+         d="m0 0 .01.01" />
+      <path
+         id="path632"
+         transform="translate(67.2893 34.206)"
+         d="m0 0 .01.01" />
+      <path
+         id="path634"
+         transform="translate(58.4768 36.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path636"
+         transform="translate(56.6643 37.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path638"
+         transform="translate(54.9143 38.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path640"
+         transform="translate(53.1643 39.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path642"
+         transform="translate(56.3518 42.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path644"
+         transform="translate(54.4768 41.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path646"
+         transform="translate(52.4768 41.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path648"
+         transform="translate(50.6018 40.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path650"
+         transform="translate(48.6018 40.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path652"
+         transform="translate(46.7268 39.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path654"
+         transform="translate(44.7893 39.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path656"
+         transform="translate(42.8518 38.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path658"
+         transform="translate(40.9768 38.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path660"
+         transform="translate(39.0393 37.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path662"
+         transform="translate(37.0393 37.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path664"
+         transform="translate(35.1018 36.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path666"
+         transform="translate(33.2893 36.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path668"
+         transform="translate(31.2268 36.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path670"
+         transform="translate(29.2893 35.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path672"
+         transform="translate(27.3518 35.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path674"
+         transform="translate(25.4143 35.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path676"
+         transform="translate(23.4143 34.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path678"
+         transform="translate(21.4143 34.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path680"
+         transform="translate(19.4768 34.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path682"
+         transform="translate(17.5393 34.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path684"
+         transform="translate(15.6018 33.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path686"
+         transform="translate(13.6018 33.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path688"
+         transform="translate(11.7268 33.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path690"
+         transform="translate(9.6018 32.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path692"
+         transform="translate(7.6643 32.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path694"
+         transform="translate(5.7268 32.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path696"
+         transform="translate(3.6643 32.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path698"
+         transform="translate(1.9768 32.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path700"
+         transform="translate(3.6018 30.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path702"
+         transform="translate(1.9768 31.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path704"
+         transform="translate(4.1643 27.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path706"
+         transform="translate(1.3518 27.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path708"
+         transform="translate(1.9143 25.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path710"
+         transform="translate(1.9768 21.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path712"
+         transform="translate(7.9143 22.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path714"
+         transform="translate(13.6643 24.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path716"
+         transform="translate(19.7268 22.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path718"
+         transform="translate(16.7268 22.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path720"
+         transform="translate(13.8518 21.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path722"
+         transform="translate(10.8518 20.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path724"
+         transform="translate(7.9143 20.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path726"
+         transform="translate(4.9768 20.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path728"
+         transform="translate(1.9768 19.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path730"
+         transform="translate(1.4143 16.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path732"
+         transform="translate(4.5393 14.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path734"
+         transform="translate(6.6643 11.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path736"
+         transform="translate(4.6643 11.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path738"
+         transform="translate(2.8272 11.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path740"
+         transform="translate(.7893 11.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path742"
+         transform="translate(2.9143 9.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path744"
+         transform="translate(1.9768 6.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path746"
+         transform="translate(1.2893 .7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path748"
+         transform="translate(4.2893 1.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path750"
+         transform="translate(7.2893 1.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path752"
+         transform="translate(10.1643 1.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path754"
+         transform="translate(13.1018 2.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path756"
+         transform="translate(14.3518 .4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path758"
+         transform="translate(15.7268 3.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path760"
+         transform="translate(19.5393 .4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path762"
+         transform="translate(21.8518 1.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path764"
+         transform="translate(26.7268 .6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path766"
+         transform="translate(4.2268 3.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path768"
+         transform="translate(.9768 3.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path770"
+         transform="translate(10.1018 4.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path772"
+         transform="translate(7.2893 4.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path774"
+         transform="translate(4.7893 8.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path776"
+         transform="translate(6.6018 7.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path778"
+         transform="translate(8.5393 6.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path780"
+         transform="translate(10.4143 6.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path782"
+         transform="translate(12.2893 5.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path784"
+         transform="translate(14.1643 5.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path786"
+         transform="translate(16.1018 4.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path788"
+         transform="translate(18.0393 4.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path790"
+         transform="translate(20.1018 3.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path792"
+         transform="translate(21.8518 3.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path794"
+         transform="translate(23.7893 2.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path796"
+         transform="translate(25.9143 2.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path798"
+         transform="translate(27.8518 2.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path800"
+         transform="translate(29.7893 1.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path802"
+         transform="translate(31.7893 1.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path804"
+         transform="translate(33.7893 1.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path806"
+         transform="translate(35.7893 .9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path808"
+         transform="translate(37.7268 .8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path810"
+         transform="translate(39.7268 .7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path812"
+         transform="translate(41.6018 .6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path814"
+         transform="translate(43.8518 .6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path816"
+         transform="translate(45.7893 .6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path818"
+         transform="translate(47.8518 .7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path820"
+         transform="translate(49.7893 1.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path822"
+         transform="translate(51.7893 1.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path824"
+         transform="translate(53.7893 1.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path826"
+         transform="translate(55.7893 1.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path828"
+         transform="translate(57.6018 2.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path830"
+         transform="translate(59.4768 2.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path832"
+         transform="translate(61.5393 3.1227)"
+         d="m0 0 .01.01" />
+      <path
+         id="path834"
+         transform="translate(63.706 3.706)"
+         d="m0 0 .01.01" />
+      <path
+         id="path836"
+         transform="translate(66.1227 4.1682)"
+         d="m0 0 .01.01" />
+      <path
+         id="path838"
+         transform="translate(68.6227 4.8727)"
+         d="m0 0 .01.01" />
+      <path
+         id="path840"
+         transform="translate(71.0393 5.6227)"
+         d="m0 0 .01.01" />
+      <path
+         id="path842"
+         transform="translate(73.1227 6.1227)"
+         d="m0 0 .01.01" />
+      <path
+         id="path844"
+         transform="translate(63.7268 1.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path846"
+         transform="translate(44.1018 2.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path848"
+         transform="translate(50.1018 3.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path850"
+         transform="translate(55.9768 3.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path852"
+         transform="translate(61.8518 5.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path854"
+         transform="translate(38.1643 2.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path856"
+         transform="translate(39.5393 4.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path858"
+         transform="translate(42.4143 4.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path860"
+         transform="translate(45.4143 4.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path862"
+         transform="translate(48.4768 4.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path864"
+         transform="translate(51.3518 4.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path866"
+         transform="translate(54.4143 5.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path868"
+         transform="translate(57.3518 5.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path870"
+         transform="translate(60.2893 6.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path872"
+         transform="translate(63.0393 7.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path874"
+         transform="translate(66.0393 8.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path876"
+         transform="translate(67.6018 6.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path878"
+         transform="translate(73.2893 8.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path880"
+         transform="translate(75.1018 6.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path882"
+         transform="translate(76.9143 7.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path884"
+         transform="translate(78.7893 7.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path886"
+         transform="translate(80.6018 8.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path888"
+         transform="translate(82.4143 9.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path890"
+         transform="translate(83.6018 7.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path892"
+         transform="translate(78.1018 5.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path894"
+         transform="translate(80.9768 4.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path896"
+         transform="translate(84.0393 3.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path898"
+         transform="translate(83.7893 .7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path900"
+         transform="translate(81.2893 .8727)"
+         d="m0 0 .01.01" />
+      <path
+         id="path902"
+         transform="translate(78.8726 1.1227)"
+         d="m0 0 .01.01" />
+      <path
+         id="path904"
+         transform="translate(76.0728 1.7061)"
+         d="m0 0 .01.01" />
+      <path
+         id="path906"
+         transform="translate(73.206 2.4561)"
+         d="m0 0 .01.01" />
+      <path
+         id="path908"
+         transform="translate(70.6226 3.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path910"
+         transform="translate(68.7268 9.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path912"
+         transform="translate(41.2893 6.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path914"
+         transform="translate(44.2893 6.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path916"
+         transform="translate(47.2893 6.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path918"
+         transform="translate(50.2268 6.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path920"
+         transform="translate(53.2893 7.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path922"
+         transform="translate(56.0393 7.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path924"
+         transform="translate(58.4768 8.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path926"
+         transform="translate(60.7268 9.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path928"
+         transform="translate(62.7268 9.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path930"
+         transform="translate(38.2893 7.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path932"
+         transform="translate(39.5393 9.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path934"
+         transform="translate(45.2893 9.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path936"
+         transform="translate(50.4768 9.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path938"
+         transform="translate(54.6643 10.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path940"
+         transform="translate(56.5393 10.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path942"
+         transform="translate(49.3518 12.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path944"
+         transform="translate(46.7893 12.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path946"
+         transform="translate(43.9768 12.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path948"
+         transform="translate(40.9768 12.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path950"
+         transform="translate(37.7893 12.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path952"
+         transform="translate(46.4768 15.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path954"
+         transform="translate(48.2893 14.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path956"
+         transform="translate(50.1643 13.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path958"
+         transform="translate(52.1018 13.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path960"
+         transform="translate(53.9768 12.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path962"
+         transform="translate(55.9143 12.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path964"
+         transform="translate(57.8518 11.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path966"
+         transform="translate(59.8518 11.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path968"
+         transform="translate(61.8518 11.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path970"
+         transform="translate(63.8518 11.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path972"
+         transform="translate(65.7893 11.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path974"
+         transform="translate(67.8518 11.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path976"
+         transform="translate(69.7893 11.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path978"
+         transform="translate(71.7893 11.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path980"
+         transform="translate(73.9143 11.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path982"
+         transform="translate(75.9143 11.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path984"
+         transform="translate(77.8518 11.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path986"
+         transform="translate(79.9143 11.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path988"
+         transform="translate(82.0393 11.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path990"
+         transform="translate(83.7893 11.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path992"
+         transform="translate(53.9768 17.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path994"
+         transform="translate(59.9428 15.3906)"
+         d="m0 0 .01.01" />
+      <path
+         id="path996"
+         transform="translate(65.8327 14.4873)"
+         d="m0 0 .01.01" />
+      <path
+         id="path998"
+         transform="translate(71.7893 14.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1000"
+         transform="translate(77.7268 13.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1002"
+         transform="translate(83.6643 14.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1004"
+         transform="translate(60.4143 19.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1006"
+         transform="translate(63.4143 18.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1008"
+         transform="translate(66.2893 17.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1010"
+         transform="translate(69.1643 17.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1012"
+         transform="translate(72.2893 16.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1014"
+         transform="translate(75.1643 16.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1016"
+         transform="translate(78.1643 16.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1018"
+         transform="translate(81.1643 17.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1020"
+         transform="translate(84.1643 17.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1022"
+         transform="translate(66.0393 20.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1024"
+         transform="translate(68.9143 19.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1026"
+         transform="translate(71.8518 19.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1028"
+         transform="translate(74.9143 19.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1030"
+         transform="translate(77.9143 19.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1032"
+         transform="translate(80.9143 19.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1034"
+         transform="translate(83.9768 19.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1036"
+         transform="translate(34.2268 13.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1038"
+         transform="translate(33.6643 11.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1040"
+         transform="translate(35.3518 7.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1042"
+         transform="translate(36.5393 4.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1044"
+         transform="translate(33.6018 5.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1046"
+         transform="translate(32.1018 3.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1048"
+         transform="translate(32.4768 8.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1050"
+         transform="translate(30.6018 5.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1052"
+         transform="translate(26.2268 4.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1054"
+         transform="translate(27.7268 6.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1056"
+         transform="translate(29.6018 8.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1058"
+         transform="translate(26.6643 9.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1060"
+         transform="translate(23.8518 10.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1062"
+         transform="translate(21.9768 8.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1064"
+         transform="translate(24.7893 7.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1066"
+         transform="translate(20.4768 5.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1068"
+         transform="translate(19.1018 9.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1070"
+         transform="translate(16.3518 10.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1072"
+         transform="translate(14.7268 7.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1074"
+         transform="translate(9.1643 9.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1076"
+         transform="translate(8.6643 11.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1078"
+         transform="translate(10.6643 11.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1080"
+         transform="translate(12.5393 11.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1082"
+         transform="translate(14.6018 12.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1084"
+         transform="translate(16.6018 12.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1086"
+         transform="translate(18.6018 12.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1088"
+         transform="translate(20.6018 12.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1090"
+         transform="translate(22.4768 13.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1092"
+         transform="translate(24.4143 13.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1094"
+         transform="translate(26.4143 13.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1096"
+         transform="translate(28.2893 13.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1098"
+         transform="translate(30.3518 14.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1100"
+         transform="translate(32.3518 14.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1102"
+         transform="translate(34.1643 14.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1104"
+         transform="translate(36.2268 15.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1106"
+         transform="translate(38.1643 15.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1108"
+         transform="translate(40.1643 16.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1110"
+         transform="translate(42.0393 16.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1112"
+         transform="translate(43.9768 16.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1114"
+         transform="translate(45.8518 17.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1116"
+         transform="translate(47.7893 17.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1118"
+         transform="translate(49.7893 18.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1120"
+         transform="translate(51.6643 18.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1122"
+         transform="translate(53.6018 19.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1124"
+         transform="translate(55.5393 19.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1126"
+         transform="translate(57.4143 20.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1128"
+         transform="translate(59.3518 21.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1130"
+         transform="translate(61.2268 21.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1132"
+         transform="translate(62.9768 22.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1134"
+         transform="translate(64.9143 23.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1136"
+         transform="translate(8.1643 13.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1138"
+         transform="translate(10.4768 15.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1140"
+         transform="translate(11.1643 13.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1142"
+         transform="translate(14.1643 13.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1144"
+         transform="translate(16.2893 16.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1146"
+         transform="translate(16.9768 14.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1148"
+         transform="translate(20.1018 14.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1150"
+         transform="translate(22.4768 17.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1152"
+         transform="translate(23.0393 15.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1154"
+         transform="translate(25.9143 15.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1156"
+         transform="translate(28.7081 18.8481)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1158"
+         transform="translate(28.8518 15.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1160"
+         transform="translate(31.7893 16.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1162"
+         transform="translate(34.6082 19.9943)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1164"
+         transform="translate(34.7268 17.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1166"
+         transform="translate(37.4768 18.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1168"
+         transform="translate(40.3518 18.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1170"
+         transform="translate(42.7893 19.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1172"
+         transform="translate(45.0393 20.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1174"
+         transform="translate(4.3518 17.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1176"
+         transform="translate(7.4143 17.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1178"
+         transform="translate(10.3518 18.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1180"
+         transform="translate(13.2268 18.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1182"
+         transform="translate(16.2268 19.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1184"
+         transform="translate(19.0393 20.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1186"
+         transform="translate(21.7893 20.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1188"
+         transform="translate(24.2893 21.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1190"
+         transform="translate(26.7268 21.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1192"
+         transform="translate(4.8518 25.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1194"
+         transform="translate(7.7268 25.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1196"
+         transform="translate(5.4143 29.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1198"
+         transform="translate(7.2268 28.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1200"
+         transform="translate(9.1643 27.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1202"
+         transform="translate(11.1643 27.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1204"
+         transform="translate(13.0393 26.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1206"
+         transform="translate(14.7893 26.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1208"
+         transform="translate(16.8518 25.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1210"
+         transform="translate(18.7268 25.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1212"
+         transform="translate(20.6643 24.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1214"
+         transform="translate(22.6018 24.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1216"
+         transform="translate(24.6018 23.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1218"
+         transform="translate(26.4768 23.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1220"
+         transform="translate(28.4143 23.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1222"
+         transform="translate(30.456 23.1227)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1224"
+         transform="translate(32.456 22.956)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1226"
+         transform="translate(34.706 22.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1228"
+         transform="translate(37.206 22.456)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1230"
+         transform="translate(39.5393 22.206)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1232"
+         transform="translate(42.0393 22.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1234"
+         transform="translate(11.7893 29.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1236"
+         transform="translate(17.6643 27.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1238"
+         transform="translate(16.956 31.8727)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1240"
+         transform="translate(20.5393 26.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1242"
+         transform="translate(26.7558 25.6979)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1244"
+         transform="translate(20.7893 30.8727)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1246"
+         transform="translate(26.4143 33.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1248"
+         transform="translate(32.2268 31.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1250"
+         transform="translate(38.1018 30.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1252"
+         transform="translate(43.9768 30.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1254"
+         transform="translate(49.9143 30.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1256"
+         transform="translate(55.9768 30.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1258"
+         transform="translate(61.2893 31.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1260"
+         transform="translate(65.5393 33.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1262"
+         transform="translate(34.1643 34.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1264"
+         transform="translate(37.2893 34.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1266"
+         transform="translate(40.1018 33.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1268"
+         transform="translate(43.0393 33.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1270"
+         transform="translate(45.9768 32.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1272"
+         transform="translate(48.8518 32.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1274"
+         transform="translate(51.6643 32.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1276"
+         transform="translate(54.1018 32.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1278"
+         transform="translate(56.1018 32.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1280"
+         transform="translate(57.9768 33.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1282"
+         transform="translate(59.9143 33.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1284"
+         transform="translate(61.7893 34.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1286"
+         transform="translate(57.6643 35.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1288"
+         transform="translate(55.6018 34.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1290"
+         transform="translate(52.4143 37.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1292"
+         transform="translate(54.6643 37.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1294"
+         transform="translate(50.9768 34.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1296"
+         transform="translate(53.4768 34.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1298"
+         transform="translate(49.6643 37.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1300"
+         transform="translate(47.7893 35.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1302"
+         transform="translate(47.0393 37.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1304"
+         transform="translate(44.4143 35.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1306"
+         transform="translate(41.3518 36.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1308"
+         transform="translate(23.7893 30.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1310"
+         transform="translate(27.2893 29.2061)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1312"
+         transform="translate(30.7893 28.7061)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1314"
+         transform="translate(34.6226 28.2061)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1316"
+         transform="translate(37.9143 28.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1318"
+         transform="translate(40.9143 27.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1320"
+         transform="translate(43.7893 27.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1322"
+         transform="translate(46.8518 27.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1324"
+         transform="translate(50.2268 28.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1326"
+         transform="translate(53.5393 28.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1328"
+         transform="translate(56.5393 28.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1330"
+         transform="translate(59.2893 29.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1332"
+         transform="translate(62.2893 29.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1334"
+         transform="translate(65.2268 30.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1336"
+         transform="translate(67.9768 30.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1338"
+         transform="translate(70.6018 31.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1340"
+         transform="translate(73.3518 31.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1342"
+         transform="translate(29.5393 25.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1344"
+         transform="translate(34.7893 24.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1346"
+         transform="translate(40.5393 24.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1348"
+         transform="translate(44.2893 21.956)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1350"
+         transform="translate(46.6643 22.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1352"
+         transform="translate(48.7268 22.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1354"
+         transform="translate(50.6643 22.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1356"
+         transform="translate(52.6018 22.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1358"
+         transform="translate(54.5393 22.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1360"
+         transform="translate(56.6018 23.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1362"
+         transform="translate(58.5393 23.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1364"
+         transform="translate(60.5393 23.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1366"
+         transform="translate(62.4768 24.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1368"
+         transform="translate(46.2268 24.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1370"
+         transform="translate(52.1643 24.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1372"
+         transform="translate(58.0393 25.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1374"
+         transform="translate(63.7893 26.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1376"
+         transform="translate(69.6643 28.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1378"
+         transform="translate(75.4143 29.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1380"
+         transform="translate(78.2268 31.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1382"
+         transform="translate(83.1643 31.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1384"
+         transform="translate(81.4143 29.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1386"
+         transform="translate(79.6018 29.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1388"
+         transform="translate(77.7893 28.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1390"
+         transform="translate(75.8518 27.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1392"
+         transform="translate(73.9768 27.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1394"
+         transform="translate(72.0393 26.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1396"
+         transform="translate(72.4143 24.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1398"
+         transform="translate(68.9768 22.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1400"
+         transform="translate(74.9143 21.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1402"
+         transform="translate(80.9143 21.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1404"
+         transform="translate(75.3518 24.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1406"
+         transform="translate(78.4143 23.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1408"
+         transform="translate(81.2893 24.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1410"
+         transform="translate(84.2268 24.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1412"
+         transform="translate(70.1643 26.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1414"
+         transform="translate(68.1643 25.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1416"
+         transform="translate(66.2893 25.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1418"
+         transform="translate(64.2268 24.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1420"
+         transform="translate(82.7268 27.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1422"
+         transform="translate(.3518 32.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1424"
+         transform="translate(42.7893 40.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1426"
+         transform="translate(36.9768 39.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1428"
+         transform="translate(31.1018 38.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1430"
+         transform="translate(25.1643 37.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1432"
+         transform="translate(19.2268 36.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1434"
+         transform="translate(13.3518 36.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1436"
+         transform="translate(7.2893 36.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1438"
+         transform="translate(1.2893 36.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1440"
+         transform="translate(37.1018 41.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1442"
+         transform="translate(34.1643 41.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1444"
+         transform="translate(22.2893 40.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1446"
+         transform="translate(24.7893 40.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1448"
+         transform="translate(27.2893 40.706)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1450"
+         transform="translate(29.5393 40.956)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1452"
+         transform="translate(32.1227 41.206)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1454"
+         transform="translate(19.2893 40.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1456"
+         transform="translate(16.3518 40.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1458"
+         transform="translate(13.3518 39.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1460"
+         transform="translate(10.2893 39.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1462"
+         transform="translate(7.3518 39.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1464"
+         transform="translate(4.4143 40.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1466"
+         transform="translate(1.3518 40.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1468"
+         transform="translate(19.1018 42.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1470"
+         transform="translate(13.0393 42.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1472"
+         transform="translate(7.1018 42.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1474"
+         transform="translate(1.2268 43.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1476"
+         transform="translate(24.9768 42.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1478"
+         transform="translate(74.9143 36.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1480"
+         transform="translate(69.0393 37.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1482"
+         transform="translate(63.2268 39.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1484"
+         transform="translate(57.1227 41.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1486"
+         transform="translate(79.8518 44.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1488"
+         transform="translate(73.9143 45.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1490"
+         transform="translate(80.5393 48.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1492"
+         transform="translate(81.4768 51.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1494"
+         transform="translate(79.6643 50.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1496"
+         transform="translate(77.7893 49.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1498"
+         transform="translate(75.9143 48.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1500"
+         transform="translate(74.0393 48.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1502"
+         transform="translate(70.7893 50.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1504"
+         transform="translate(72.1018 47.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1506"
+         transform="translate(70.1643 47.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1508"
+         transform="translate(68.1643 46.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1510"
+         transform="translate(66.2893 46.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1512"
+         transform="translate(64.4143 45.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1514"
+         transform="translate(62.4143 45.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1516"
+         transform="translate(60.4143 44.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1518"
+         transform="translate(58.5393 44.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1520"
+         transform="translate(56.5393 44.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1522"
+         transform="translate(54.6018 43.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1524"
+         transform="translate(52.5393 43.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1526"
+         transform="translate(50.6643 43.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1528"
+         transform="translate(48.7268 43.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1530"
+         transform="translate(46.6643 42.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1532"
+         transform="translate(44.4768 42.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1534"
+         transform="translate(41.7268 42.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1536"
+         transform="translate(39.6643 42.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1538"
+         transform="translate(37.6643 43.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1540"
+         transform="translate(35.7268 43.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1542"
+         transform="translate(33.7893 43.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1544"
+         transform="translate(31.7268 43.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1546"
+         transform="translate(29.7893 44.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1548"
+         transform="translate(27.8518 44.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1550"
+         transform="translate(25.8518 44.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1552"
+         transform="translate(23.9768 44.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1554"
+         transform="translate(22.1643 45.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1556"
+         transform="translate(20.1018 45.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1558"
+         transform="translate(18.0393 46.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1560"
+         transform="translate(18.8518 44.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1562"
+         transform="translate(15.8518 44.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1564"
+         transform="translate(12.9143 45.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1566"
+         transform="translate(9.9143 45.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1568"
+         transform="translate(6.9768 46.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1570"
+         transform="translate(4.0393 46.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1572"
+         transform="translate(1.1018 47.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1574"
+         transform="translate(12.7893 46.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1576"
+         transform="translate(9.7893 47.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1578"
+         transform="translate(6.9768 47.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1580"
+         transform="translate(4.0393 48.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1582"
+         transform="translate(1.1643 49.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1584"
+         transform="translate(16.1643 46.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1586"
+         transform="translate(14.2893 47.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1588"
+         transform="translate(12.4143 47.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1590"
+         transform="translate(10.4143 48.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1592"
+         transform="translate(8.4768 49.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1594"
+         transform="translate(6.7268 49.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1596"
+         transform="translate(4.9768 50.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1598"
+         transform="translate(3.1018 51.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1600"
+         transform="translate(1.4143 52.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1602"
+         transform="translate(65.1643 48.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1604"
+         transform="translate(59.3518 47.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1606"
+         transform="translate(53.5393 46.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1608"
+         transform="translate(47.4768 45.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1610"
+         transform="translate(41.5393 45.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1612"
+         transform="translate(35.6018 45.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1614"
+         transform="translate(29.7893 46.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1616"
+         transform="translate(28.5393 48.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1618"
+         transform="translate(25.1643 49.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1620"
+         transform="translate(23.7893 47.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1622"
+         transform="translate(17.9768 49.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1624"
+         transform="translate(11.6643 50.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1626"
+         transform="translate(21.8228 50.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1628"
+         transform="translate(18.4143 51.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1630"
+         transform="translate(35.2268 48.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1632"
+         transform="translate(38.4143 51.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1634"
+         transform="translate(31.2893 52.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1636"
+         transform="translate(25.4143 53.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1638"
+         transform="translate(32.0393 48.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1640"
+         transform="translate(38.1643 47.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1642"
+         transform="translate(44.1643 51.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1644"
+         transform="translate(46.4768 51.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1646"
+         transform="translate(40.9768 47.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1648"
+         transform="translate(55.1018 49.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1650"
+         transform="translate(57.7268 50.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1652"
+         transform="translate(60.1018 50.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1654"
+         transform="translate(62.4768 51.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1656"
+         transform="translate(64.9143 52.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1658"
+         transform="translate(52.2268 48.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1660"
+         transform="translate(57.2268 53.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1662"
+         transform="translate(52.9143 52.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1664"
+         transform="translate(50.7893 52.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1666"
+         transform="translate(49.3518 48.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1668"
+         transform="translate(46.7268 48.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1670"
+         transform="translate(43.9742 47.9657)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1672"
+         transform="translate(82.1643 53.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1674"
+         transform="translate(80.1643 53.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1676"
+         transform="translate(78.1643 53.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1678"
+         transform="translate(76.1643 53.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1680"
+         transform="translate(74.1018 53.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1682"
+         transform="translate(72.1018 53.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1684"
+         transform="translate(70.1018 53.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1686"
+         transform="translate(68.1643 54.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1688"
+         transform="translate(66.2268 54.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1690"
+         transform="translate(64.1018 54.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1692"
+         transform="translate(62.1643 54.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1694"
+         transform="translate(60.1643 54.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1696"
+         transform="translate(58.2893 55.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1698"
+         transform="translate(56.3518 55.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1700"
+         transform="translate(54.2893 55.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1702"
+         transform="translate(52.3518 56.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1704"
+         transform="translate(50.4768 56.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1706"
+         transform="translate(48.5393 64.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1708"
+         transform="translate(50.4143 64.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1710"
+         transform="translate(52.4143 64.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1712"
+         transform="translate(54.4143 65.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1714"
+         transform="translate(56.4143 65.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1716"
+         transform="translate(58.3518 65.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1718"
+         transform="translate(60.3518 66.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1720"
+         transform="translate(62.3518 66.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1722"
+         transform="translate(64.2893 66.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1724"
+         transform="translate(66.1643 67.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1726"
+         transform="translate(68.0393 67.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1728"
+         transform="translate(69.9768 68.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1730"
+         transform="translate(71.9143 68.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1732"
+         transform="translate(73.8518 69.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1734"
+         transform="translate(75.7268 69.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1736"
+         transform="translate(77.6643 70.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1738"
+         transform="translate(79.4768 71.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1740"
+         transform="translate(81.2893 72.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1742"
+         transform="translate(83.1643 73.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1744"
+         transform="translate(82.9143 70.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1746"
+         transform="translate(83.4143 68.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1748"
+         transform="translate(80.2893 68.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1750"
+         transform="translate(77.2268 66.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1752"
+         transform="translate(83.1643 65.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1754"
+         transform="translate(83.6018 61.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1756"
+         transform="translate(80.7268 62.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1758"
+         transform="translate(77.7268 62.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1760"
+         transform="translate(74.8518 63.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1762"
+         transform="translate(71.8518 64.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1764"
+         transform="translate(69.0393 65.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1766"
+         transform="translate(46.6643 66.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1768"
+         transform="translate(52.6018 67.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1770"
+         transform="translate(58.6018 68.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1772"
+         transform="translate(64.3518 69.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1774"
+         transform="translate(70.1018 71.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1776"
+         transform="translate(17.1018 69.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1778"
+         transform="translate(11.5393 71.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1780"
+         transform="translate(6.8518 73.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1782"
+         transform="translate(12.0393 74.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1784"
+         transform="translate(14.6018 72.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1786"
+         transform="translate(17.4143 71.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1788"
+         transform="translate(20.2268 70.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1790"
+         transform="translate(23.2268 70.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1792"
+         transform="translate(26.1018 69.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1794"
+         transform="translate(29.0393 69.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1796"
+         transform="translate(32.1018 68.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1798"
+         transform="translate(35.2893 68.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1800"
+         transform="translate(38.2893 68.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1802"
+         transform="translate(41.0393 68.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1804"
+         transform="translate(43.9143 68.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1806"
+         transform="translate(46.9143 69.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1808"
+         transform="translate(49.2268 69.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1810"
+         transform="translate(51.7268 70.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1812"
+         transform="translate(54.1643 70.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1814"
+         transform="translate(56.6643 71.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1816"
+         transform="translate(59.1018 72.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1818"
+         transform="translate(61.4768 72.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1820"
+         transform="translate(16.1018 75.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1822"
+         transform="translate(18.7893 74.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1824"
+         transform="translate(21.4768 73.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1826"
+         transform="translate(24.2893 72.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1828"
+         transform="translate(27.6643 72.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1830"
+         transform="translate(30.8518 72.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1832"
+         transform="translate(34.2893 71.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1834"
+         transform="translate(37.9143 72.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1836"
+         transform="translate(41.1643 72.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1838"
+         transform="translate(44.3518 72.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1840"
+         transform="translate(46.9768 73.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1842"
+         transform="translate(49.4143 73.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1844"
+         transform="translate(51.6643 74.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1846"
+         transform="translate(22.8518 76.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1848"
+         transform="translate(20.3518 77.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1850"
+         transform="translate(28.3518 75.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1852"
+         transform="translate(32.0393 78.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1854"
+         transform="translate(29.4143 78.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1856"
+         transform="translate(26.4143 79.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1858"
+         transform="translate(34.7268 77.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1860"
+         transform="translate(37.2893 77.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1862"
+         transform="translate(39.9143 77.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1864"
+         transform="translate(30.1643 82.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1866"
+         transform="translate(32.0393 81.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1868"
+         transform="translate(33.7268 80.9769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1870"
+         transform="translate(35.5393 80.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1872"
+         transform="translate(37.4768 79.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1874"
+         transform="translate(39.4143 78.7269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1876"
+         transform="translate(39.3518 80.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1878"
+         transform="translate(36.9768 82.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1880"
+         transform="translate(34.6643 84.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1882"
+         transform="translate(41.2893 78.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1884"
+         transform="translate(43.1643 77.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1886"
+         transform="translate(45.1643 77.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1888"
+         transform="translate(47.0393 76.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1890"
+         transform="translate(49.0393 76.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1892"
+         transform="translate(50.9143 75.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1894"
+         transform="translate(50.9143 77.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1896"
+         transform="translate(48.2893 78.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1898"
+         transform="translate(45.9768 80.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1900"
+         transform="translate(43.4768 82.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1902"
+         transform="translate(41.4143 84.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1904"
+         transform="translate(48.7893 82.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1906"
+         transform="translate(53.8518 79.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1908"
+         transform="translate(59.4768 77.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1910"
+         transform="translate(65.7893 76.6644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1912"
+         transform="translate(72.7893 76.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1914"
+         transform="translate(80.2893 76.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1916"
+         transform="translate(52.8518 75.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1918"
+         transform="translate(54.8518 75.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1920"
+         transform="translate(56.8518 75.0394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1922"
+         transform="translate(58.8518 74.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1924"
+         transform="translate(60.7893 74.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1926"
+         transform="translate(62.7268 74.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1928"
+         transform="translate(64.7268 74.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1930"
+         transform="translate(66.7893 74.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1932"
+         transform="translate(68.7893 74.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1934"
+         transform="translate(70.7268 74.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1936"
+         transform="translate(72.7268 74.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1938"
+         transform="translate(74.8518 74.1644)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1940"
+         transform="translate(77.0393 74.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1942"
+         transform="translate(79.1643 74.2894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1944"
+         transform="translate(81.4143 74.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1946"
+         transform="translate(83.6643 74.5394)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1948"
+         transform="translate(36.2268 75.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1950"
+         transform="translate(38.7268 75.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1952"
+         transform="translate(43.5393 75.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1954"
+         transform="translate(31.0393 75.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1956"
+         transform="translate(63.6018 81.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1958"
+         transform="translate(60.5393 82.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1960"
+         transform="translate(57.6643 83.1019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1962"
+         transform="translate(54.7268 84.3519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1964"
+         transform="translate(66.5393 80.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1966"
+         transform="translate(69.3518 80.4769)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1968"
+         transform="translate(72.2893 80.2269)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1970"
+         transform="translate(69.2893 84.6019)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1972"
+         transform="translate(75.6018 83.4144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1974"
+         transform="translate(81.3518 82.7894)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1976"
+         transform="translate(84.1226 79.8727)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1978"
+         transform="translate(81.2268 79.8519)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1980"
+         transform="translate(78.4768 79.9144)"
+         d="m0 0 .01.01" />
+      <path
+         id="path1982"
+         transform="translate(75.2268 80.0394)"
+         d="m0 0 .01.01" />
+    </g>
+  </g>
+</svg>

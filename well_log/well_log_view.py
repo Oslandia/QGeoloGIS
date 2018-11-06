@@ -1,85 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
 from well_log_common import *
 from well_log_plot import PlotItem
 from well_log_z_scale import ZScaleItem
 from well_log_stratigraphy import StratigraphyItem
+from legend_item import LegendItem
 
 import numpy as np
 
 import os
 
-class LegendItem(LogItem):
-    # margin all around the whole legend item
-    LEGEND_ITEM_MARGIN = 3
-    # margin between title and legend line
-    LEGEND_LINE_MARGIN = 4
-
-    def __init__(self, width, title, min_value=None, max_value=None, unit_of_measure=None, parent=None):
-        LogItem.__init__(self, parent)
-        self.__width = width
-        self.__title = title
-        self.__min_value = min_value
-        self.__max_value = max_value
-        self.__uom = unit_of_measure
-
-        self.__selected = False
-
-        # title font
-        self.__font1 = QFont()
-        self.__font1.setBold(True)
-        self.__font1.setPointSize(12)
-
-        # value font
-        self.__font2 = QFont()
-        self.__font2.setPointSize(9)
-
-        fm1 = QFontMetrics(self.__font1)
-        fm2 = QFontMetrics(self.__font2)
-        self.__height = self.LEGEND_LINE_MARGIN * 3 + fm1.height() + fm2.height() + 10 + self.LEGEND_ITEM_MARGIN
-
-    def set_scale(self, min_value, max_value):
-        self.__min_value = min_value
-        self.__max_value = max_value
-
-    def boundingRect(self):
-        return QRectF(0, 0, self.__width, self.__height)
-
-    def selected(self):
-        return __selected
-
-    def paint(self, painter, option, widget):
-        self.draw_background(painter, outline=False)
-
-        painter.setFont(self.__font1)
-        fm = painter.fontMetrics()
-        # add "..." if needed
-        title = fm.elidedText(self.__title, Qt.ElideRight, self.__width)
-        w1 = (self.__width - fm.width(title)) / 2
-        y = self.LEGEND_ITEM_MARGIN + fm.ascent()
-        painter.drawText(w1, y, title)
-        y += fm.descent() + self.LEGEND_LINE_MARGIN
-
-        # legend line
-        xmin = 0
-        xmax = self.__width - 1
-        painter.drawLine(xmin, y+5, xmax, y+5)
-        painter.drawLine(xmin, y, xmin, y+10)
-        painter.drawLine(xmax, y, xmax, y+10)
-        y+= 10 + self.LEGEND_LINE_MARGIN
-
-        painter.setFont(self.__font2)
-        fm = painter.fontMetrics()
-        y += fm.ascent()
-        if self.__min_value is not None:
-            painter.drawText(self.LEGEND_ITEM_MARGIN, y, str(self.__min_value))
-        if self.__max_value is not None:
-            t = str(self.__max_value)
-            painter.drawText(self.__width - self.LEGEND_ITEM_MARGIN - fm.width(t), y, t)
-        if self.__uom is not None:
-            t = str(self.__uom)
-            painter.drawText((self.__width - fm.width(t)) /2, y, t)
 
 class LogGraphicsView(QGraphicsView):
     def __init__(self, scene, parent=None):
@@ -139,11 +71,12 @@ class LogGraphicsView(QGraphicsView):
 
         return QGraphicsView.mouseReleaseEvent(self, event)
 
+
 class WellLogView(QWidget):
 
     DEFAULT_COLUMN_WIDTH = 150
 
-    def __init__(self, db_connection, style_dir=None, image_dir=None, parent=None):
+    def __init__(self, db_connection=None, style_dir=None, image_dir=None, parent=None):
         QWidget.__init__(self, parent)
 
         self.__toolbar = QToolBar()
@@ -189,6 +122,8 @@ class WellLogView(QWidget):
         self.__station_id = None
         # (log_item, legend_item) for each column
         self.__columns = []
+        # { layer : (log_item, legend_item) }
+        self.__data2logitems = {}
         self.__column_widths = []
 
         self._min_z = 0
@@ -198,7 +133,8 @@ class WellLogView(QWidget):
         self.__translation_orig = None
 
         if style_dir is None:
-            self.__style_dir = os.path.dirname(__file__)
+            self.__style_dir = os.path.join(os.path.dirname(__file__),
+                                            'styles')
         else:
             self.__style_dir = style_dir
 
@@ -214,6 +150,9 @@ class WellLogView(QWidget):
             item.set_height(rect.height())
 
     def set_station_id(self, station_id):
+
+        # TODO this method in too specific and should be removed
+        
         self.__station_id = station_id
 
         for item, legend in self.__columns:
@@ -228,6 +167,12 @@ class WellLogView(QWidget):
         self._update_column_depths()
 
     def set_station_name(self, site_name, station_name):
+
+        # TODO this method in too specific and should be removed
+
+        if not self.__db_connection:
+            return
+
         sql = ("select station.id from station.station join station.site on "
                "site.id = site.id where station.name='{}' and site.name='{}'").format(station_name, site_name)
         l = QgsVectorLayer('{} table="({})" key="id"'.format(self.__db_connection, sql), "layer", "postgres")
@@ -275,39 +220,39 @@ class WellLogView(QWidget):
         legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH / 2, "Prof.", unit_of_measure="m")
         self._add_column(scale_item, legend_item)
         
-    def _add_data_column(self, table_name, title, uom):
+    def add_data_column(self, data, title, uom):
         plot_item = PlotItem(size=QSizeF(self.DEFAULT_COLUMN_WIDTH, self.__log_scene.height()),
                              render_type = POLYGON_RENDERER,
                              x_orientation = ORIENTATION_DOWNWARD,
                              y_orientation = ORIENTATION_LEFT_TO_RIGHT)
-        l = QgsVectorLayer('{} key="station_id" table="qgis"."{}" (geom)'.format(self.__db_connection, table_name), "layer", "postgres")
-        plot_item.set_layer(l)
+
+        plot_item.set_layer(data.get_layer())
 
         legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH, title, uom)
+        data.data_modified.connect(lambda data=data : self._update_data_column(data))
 
-        self._update_data_column(plot_item, legend_item)
-        
+        self.__data2logitems[data] = (plot_item, legend_item)
         self._add_column(plot_item, legend_item)
+        self._update_data_column(data)
 
+    def _update_data_column(self, data):
 
-    def _update_data_column(self, plot_item, legend_item):
-        # data
-        req = QgsFeatureRequest()
-        req.setFilterExpression("station_id={}".format(self.__station_id))
-        data = None
-        for f in plot_item.layer().getFeatures(req):
-            data = [None if s == 'NULL' else float(s) for s in f["measures"][1:-1].split(",")]
-            min_x = f["begin_measure_altitude_m"]
-            delta = f["altitude_interval_m"]
-            break
-        if data is None:
+        plot_item, legend_item = self.__data2logitems[data]
+        
+        max_x = max(data.get_x_values())
+        min_x = min(data.get_x_values())
+
+        y_values = data.get_y_values()
+        if y_values is None:
             plot_item.set_data_window(None)
             return
-        max_x = min_x + delta*len(data)
-        dt = np.array(data, dtype='float64')
+
+        dt = np.array(data.get_y_values(), dtype='float64')
         min_y = min(dt)
         max_y = max(dt)
+        delta=(max_x-min_x)/len(data.get_y_values())
         plot_item.set_data(dt, min_x, max_x, delta)
+
         r = QRectF(0, min_y, (max_x-min_x)/delta, max_y)
         plot_item.set_data_window(r)
 
@@ -317,11 +262,16 @@ class WellLogView(QWidget):
         legend_item.set_scale(min_str, max_str)
 
     def _add_stratigraphy_column(self):
+
+        # TODO it should not have database connection in this class
+        if not self.__db_connection:
+            return
+
         l = QgsVectorLayer('{} key="station_id,depth_from,depth_to" table="qgis"."measure_stratigraphic_logvalue" (geom)'.format(self.__db_connection),
                            "layer", "postgres")
 
         item = StratigraphyItem(self.DEFAULT_COLUMN_WIDTH,
-                                self.__log_scene.height(),
+                                self._log_scene.height(),
                                 style_file=os.path.join(self.__style_dir, "stratigraphy_style.xml"))
         legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH, "Stratigraphie")
 
@@ -415,6 +365,11 @@ class WellLogView(QWidget):
         item.edit_style()
 
     def on_add_column(self):
+
+        # TODO it should not have database connection in this class
+        if not self.__db_connection:
+            return
+
         dlg = QDialog()
 
         vbox = QVBoxLayout()
@@ -452,7 +407,7 @@ class WellLogView(QWidget):
             item = lw.currentItem()
             if item is not None:
                 table, uom = item.data(Qt.UserRole)
-                self._add_data_column(table, item.text(), uom)
+                self.add_data_column(table, item.text(), uom)
 
 # QGIS_PREFIX_PATH=~/src/qgis_2_18/build/output PYTHONPATH=~/src/qgis_2_18/build/output/python/ python test_canvas.py
 if __name__=='__main__':
@@ -467,8 +422,8 @@ if __name__=='__main__':
 
     w = WellLogView("service=bdlhes", style_dir="./styles/")
     w.set_station_name('valduc', 'B6')
-    w._add_data_column("measure_tool_instant_speed", "Vitesse", "m/h")
-    w._add_data_column("measure_weight_on_tool", "Poids", "t")
+    w.add_data_column("measure_tool_instant_speed", "Vitesse", "m/h")
+    w.add_data_column("measure_weight_on_tool", "Poids", "t")
     w.show()
 
     app.exec_()

@@ -408,18 +408,19 @@ class WellLogView(QWidget):
 
 # QGIS_PREFIX_PATH=~/src/qgis_2_18/build/output PYTHONPATH=~/src/qgis_2_18/build/output/python/ python test_canvas.py
 if __name__=='__main__':
+
     import sys
     import random
 
     from qgis.core import QgsApplication
     from PyQt4.QtGui import QApplication
-    from data_interface import LayerData
+    from data_interface import LayerData, FeatureData
 
     app = QgsApplication(sys.argv, True)
-    # #app = QApplication(sys.argv)
     app.initQgis()
 
-    layer = QgsVectorLayer("None?field=x:double&field=y:double", "test",
+    # layer example
+    layer = QgsVectorLayer("None?field=x:double&field=y:double", "test_layer",
                            "memory")
     y_values = [random.uniform(1., 100.) for i in range(1000)]
     features = []
@@ -432,6 +433,18 @@ if __name__=='__main__':
 
     w = WellLogView()
     w.add_data_column(LayerData(layer, "x", "y"), "test title", "m")
+
+    # feature example
+    layer = QgsVectorLayer("None?field=y:double", "test_feature",
+                           "memory")
+    feature = QgsFeature()
+    y_values = ",".join([str(random.uniform(1., 100.)) for i in range(1000)])
+    feature.setAttributes([y_values])
+    feature.setFeatureId(1)
+    layer.dataProvider().addFeatures([feature])
+    x_values = [float(x) for x in range(1, 1001)]
+    w.add_data_column(FeatureData(layer, "y", x_values, 1), "test title", "m")
+
     w.show()
 
     app.exec_()

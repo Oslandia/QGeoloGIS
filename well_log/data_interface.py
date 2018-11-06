@@ -28,7 +28,7 @@ class DataInterface(QObject):
 
 class LayerData(DataInterface):
 
-    def __init__(self, layer, y_fieldname, x_fieldname):
+    def __init__(self, layer, x_fieldname, y_fieldname):
 
         DataInterface.__init__(self)
 

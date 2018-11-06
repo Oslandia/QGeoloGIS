@@ -76,7 +76,7 @@ class WellLogView(QWidget):
 
     DEFAULT_COLUMN_WIDTH = 150
 
-    def __init__(self, db_connection=None, style_dir=None, image_dir=None, parent=None):
+    def __init__(self, db_connection=None, image_dir=None, parent=None):
         QWidget.__init__(self, parent)
 
         self.__toolbar = QToolBar()
@@ -132,11 +132,8 @@ class WellLogView(QWidget):
         self.__allow_mouse_translation = True
         self.__translation_orig = None
 
-        if style_dir is None:
-            self.__style_dir = os.path.join(os.path.dirname(__file__),
-                                            'styles')
-        else:
-            self.__style_dir = style_dir
+        self.__style_dir = os.path.join(os.path.dirname(__file__),
+                                        'styles')
 
         self.select_column(-1)
 
@@ -271,7 +268,7 @@ class WellLogView(QWidget):
                            "layer", "postgres")
 
         item = StratigraphyItem(self.DEFAULT_COLUMN_WIDTH,
-                                self._log_scene.height(),
+                                self.__log_scene.height(),
                                 style_file=os.path.join(self.__style_dir, "stratigraphy_style.xml"))
         legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH, "Stratigraphie")
 
@@ -412,21 +409,31 @@ class WellLogView(QWidget):
 # QGIS_PREFIX_PATH=~/src/qgis_2_18/build/output PYTHONPATH=~/src/qgis_2_18/build/output/python/ python test_canvas.py
 if __name__=='__main__':
     import sys
+    import random
 
     from qgis.core import QgsApplication
     from PyQt4.QtGui import QApplication
+    from data_interface import LayerData
 
     app = QgsApplication(sys.argv, True)
-    #app = QApplication(sys.argv)
-    QgsApplication.initQgis()
+    # #app = QApplication(sys.argv)
+    app.initQgis()
 
-    w = WellLogView("service=bdlhes", style_dir="./styles/")
-    w.set_station_name('valduc', 'B6')
-    w.add_data_column("measure_tool_instant_speed", "Vitesse", "m/h")
-    w.add_data_column("measure_weight_on_tool", "Poids", "t")
+    layer = QgsVectorLayer("None?field=x:double&field=y:double", "test",
+                           "memory")
+    y_values = [random.uniform(1., 100.) for i in range(1000)]
+    features = []
+    for i, y in enumerate(y_values):
+        feature = QgsFeature()
+        feature.setAttributes([float(i), y])
+        features.append(feature)
+
+    layer.dataProvider().addFeatures(features)
+
+    w = WellLogView()
+    w.add_data_column(LayerData(layer, "x", "y"), "test title", "m")
     w.show()
 
     app.exec_()
 
-    QgsApplication.exitQgis()
-
+    app.exitQgis()

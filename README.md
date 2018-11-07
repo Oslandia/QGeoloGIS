@@ -1,8 +1,8 @@
-# Qgis Weel log
+# QGIS Well log
 
 This repository contains classes to provide well log widget inside QGis.
 
-# Howto use it
+# How to use it
 
 First you can add qgs_well_log as a depends of your project with a git submodule. Type this inside your main python module
 

@@ -235,19 +235,20 @@ class WellLogView(QWidget):
     def _update_data_column(self, data):
 
         plot_item, legend_item = self.__data2logitems[data]
-        
-        max_x = max(data.get_x_values())
-        min_x = min(data.get_x_values())
 
         y_values = data.get_y_values()
-        if y_values is None:
+        x_values = data.get_x_values()
+        if not y_values or not x_values:
             plot_item.set_data_window(None)
             return
+
+        max_x = max(x_values)
+        min_x = min(x_values)
 
         dt = np.array(data.get_y_values(), dtype='float64')
         min_y = min(dt)
         max_y = max(dt)
-        delta=(max_x-min_x)/len(data.get_y_values())
+        delta = max((max_x-min_x)/len(y_values), 1)
         plot_item.set_data(dt, min_x, max_x, delta)
 
         r = QRectF(0, min_y, (max_x-min_x)/delta, max_y)

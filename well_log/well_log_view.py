@@ -216,7 +216,31 @@ class WellLogView(QWidget):
         scale_item = ZScaleItem(self.DEFAULT_COLUMN_WIDTH / 2, self.__log_scene.height(), self._min_z, self._max_z)
         legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH / 2, "Prof.", unit_of_measure="m")
         self._add_column(scale_item, legend_item)
-        
+
+    def remove_data_column(self, data):
+        """Remove data column from widget
+
+        :param data: data to be removed
+        """
+
+        # Column doesn't exist
+        if data not in self.__data2logitems:
+            raise ValueError("Impossible to remove data column : given data"
+                             " object doesn't exist")
+
+        log_item, legend_item = self.__data2logitems[data]
+        for i, (pitem, litem) in enumerate(self.__columns):
+            if pitem == log_item and litem == legend_item:
+                self.__columns.pop(i)
+                self.__column_widths.pop(i)
+                del self.__data2logitems[data]
+                self.__log_scene.removeItem(log_item)
+                self.__log_scene.removeItem(legend_item)
+                return
+
+        # Columns not found
+        assert False
+
     def add_data_column(self, data, title, uom):
         plot_item = PlotItem(size=QSizeF(self.DEFAULT_COLUMN_WIDTH, self.__log_scene.height()),
                              render_type = POLYGON_RENDERER,

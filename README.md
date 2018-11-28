@@ -15,6 +15,8 @@ Currently three types of data are handled:
 
 ![Example in a QGIS application](qgis_well_log.png)
 
+See the [corresponding video](https://vimeo.com/303279452)
+
 # How to use it
 
 First you can add qgs_well_log as a dependency of your project with a git submodule. Type this inside your main python module

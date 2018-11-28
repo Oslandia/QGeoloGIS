@@ -20,7 +20,7 @@ Currently three types of data are handled:
 First you can add qgs_well_log as a dependency of your project with a git submodule. Type this inside your main python module
 
 ```shell
-git submodule add ssh://git@git.oslandia.net:10022/Oslandia-3d/qgis_well_log.git
+git submodule add https://github.com/Oslandia/qgis_well_log.git
 ```
 
 Then you have to add this module in Python path by editing your main *__init__.py* file

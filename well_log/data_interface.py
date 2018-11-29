@@ -71,10 +71,21 @@ class LayerData(DataInterface):
 
     def __build_data(self):
 
-        self.__y_values = [f[self.__y_fieldname]
-                           for f in self.__layer.getFeatures()]
-        self.__x_values = [f[self.__x_fieldname]
-                           for f in self.__layer.getFeatures()]
+        # TODO It should have been way more better to use addOrderBy on
+        # QgsFeatureRequest but it doesn't work well (with memory data for
+        # instance) in QGIS 2 To be changed in QGIS 3
+
+        # Sort data on x for correct display
+        xy_values = zip([f[self.__x_fieldname]
+                         for f in self.__layer.getFeatures()],
+                        [f[self.__y_fieldname]
+                         for f in self.__layer.getFeatures()])
+
+        # sort on x
+        xy_values.sort(key=lambda coord: coord[0])
+
+        self.__x_values = [coord[0] for coord in xy_values]
+        self.__y_values = [coord[1] for coord in xy_values]
 
         self.data_modified.emit()
 

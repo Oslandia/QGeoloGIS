@@ -281,22 +281,17 @@ class WellLogView(QWidget):
             plot_item.set_data_window(None)
             return
 
-        max_x = max(x_values)
-        min_x = min(x_values)
+        plot_item.set_data(data.get_x_values(), data.get_y_values())
 
-        dt = np.array(data.get_y_values(), dtype='float64')
-        min_y = min(dt)
-        max_y = max(dt)
-        delta = max((max_x-min_x)/len(y_values), 1)
-        plot_item.set_data(dt, min_x, max_x, delta)
-
-        r = QRectF(0, min_y, (max_x-min_x)/delta, max_y)
-        plot_item.set_data_window(r)
+#        r = QRectF(0, min_y, (max_x-min_x)/delta, max_y)
+#        plot_item.set_data_window(r)
 
         # legend
-        min_str = "{:.1f}".format(min_y)
-        max_str = "{:.1f}".format(max_y)
+        min_str = "{:.1f}".format(min(data.get_y_values()))
+        max_str = "{:.1f}".format(max(data.get_y_values()))
         legend_item.set_scale(min_str, max_str)
+
+        self.__log_scene.update()
 
     def _add_stratigraphy_column(self):
 

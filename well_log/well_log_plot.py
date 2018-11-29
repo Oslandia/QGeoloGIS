@@ -19,6 +19,8 @@
 from well_log_common import *
 
 import numpy as np
+import bisect
+import math
 
 class PlotItem(LogItem):
 
@@ -35,8 +37,6 @@ class PlotItem(LogItem):
         self.__item_size = size
         self.__data_rect = None
         self.__data = None
-        self.__min_x = None
-        self.__max_x = None
         self.__delta = None
         self.__x_orientation = x_orientation
         self.__y_orientation = y_orientation
@@ -90,10 +90,10 @@ class PlotItem(LogItem):
 
     def set_min_depth(self, min_depth):
         if self.__data_rect is not None:
-            self.__data_rect.setX(min_depth / self.__delta)
+            self.__data_rect.setX(min_depth)
     def set_max_depth(self, max_depth):
         if self.__data_rect is not None:
-            w = max_depth / self.__delta - self.__data_rect.x()
+            w = max_depth - self.__data_rect.x()
             self.__data_rect.setWidth(w)
 
     def layer(self):
@@ -104,16 +104,32 @@ class PlotItem(LogItem):
     def data_window(self):
         return self.__data_rect
 
-    def set_data(self, data, min_x, max_x, delta):
-        self.__data = data
-        self.__min_x = min_x
-        self.__max_x = max_x
-        self.__delta = delta
+    def set_data(self, x_values, y_values):
+        self.__x_values = x_values
+        self.__y_values = y_values
 
-        real_data = [x for x in self.__data if x is not None]
-        min_data = min(real_data)
-        max_data = max(real_data)
-        self.__data_rect = QRectF(0, min_data, len(self.__data), max_data-min_data)
+        if len(self.__x_values) != len(self.__y_values):
+            raise ValueError("X and Y array has different length : "
+                             "{} != {}".format(len(self.__x_values),
+                                               len(self.__y_values)))
+
+        # Remove None values
+        for i in reversed(range(len(self.__y_values))):
+            if (self.__y_values[i] is None
+                or self.__x_values[i] is None
+                or math.isnan(self.__y_values[i])
+                or math.isnan(self.__x_values[i])):
+                self.__y_values.pop(i)
+                self.__x_values.pop(i)
+
+        # Initialize data rect to display all data
+        min_x = min(self.__x_values)
+        max_x = max(self.__x_values)
+        min_y = min(self.__y_values)
+        max_y = max(self.__y_values)
+        self.__data_rect = QRectF(
+            min_x, min_y,
+            max_x-min_x, max_y-min_y)
 
     def renderer(self):
         return self.__renderer
@@ -123,7 +139,7 @@ class PlotItem(LogItem):
 
     def render_type(self):
         return self.__render_type
-        
+
     def set_render_type(self, type):
         self.__render_type = type
         self.__renderer = self.__renderers[self.__render_type]
@@ -132,29 +148,28 @@ class PlotItem(LogItem):
         self.draw_background(painter)
         if self.__data_rect is None:
             return
-        min_x = int(max([0, self.__data_rect.x()]))
-        max_x = int(max([0, self.__data_rect.width() + self.__data_rect.x()]))
-        data_slice = self.__data[min_x:max_x]
 
-        if len(data_slice) == 0:
+        imin_x = bisect.bisect_left(self.__x_values, self.__data_rect.x())
+        imax_x = bisect.bisect_right(self.__x_values, self.__data_rect.right())
+        x_values_slice = np.array(self.__x_values[imin_x:imax_x])
+        y_values_slice = np.array(self.__y_values[imin_x:imax_x])
+
+        if len(x_values_slice) == 0:
             return
+
         # filter points that are not None (nan in numpy arrays)
-        defined_mask = np.invert(np.isnan(data_slice))
-        defined_data = data_slice[defined_mask]
-        n_points = len(defined_data)
-        #print("# points rendered: {}".format(n_points))
+        n_points = len(x_values_slice)
 
         if self.__x_orientation == ORIENTATION_LEFT_TO_RIGHT and self.__y_orientation == ORIENTATION_UPWARD:
             rw = float(self.__item_size.width()) / self.__data_rect.width()
             rh = float(self.__item_size.height()) / self.__data_rect.height()
-            xx = (np.arange(len(data_slice), dtype='float64') + min_x - self.__data_rect.x()) * rw
-            yy = (data_slice - self.__data_rect.y()) * rh
+            xx = (x_values_slice - self.__data_rect.x()) * rw
+            yy = (y_values_slice - self.__data_rect.y()) * rh
         elif self.__x_orientation == ORIENTATION_DOWNWARD and self.__y_orientation == ORIENTATION_LEFT_TO_RIGHT:
             rw = float(self.__item_size.height()) / self.__data_rect.width()
             rh = float(self.__item_size.width()) / self.__data_rect.height()
-            xx = (data_slice - self.__data_rect.y()) * rh
-            yy = self.__item_size.height() - (np.arange(len(data_slice), dtype='float64') + min_x - self.__data_rect.x()) * rw
-
+            xx = (y_values_slice - self.__data_rect.y()) * rh
+            yy = self.__item_size.height() - (x_values_slice - self.__data_rect.x()) * rw
         if self.__render_type == LINE_RENDERER:
             # WKB structure of a linestring
             #
@@ -171,8 +186,8 @@ class PlotItem(LogItem):
             size_view = np.ndarray(buffer=wkb, dtype='int32', offset=5, shape=(1,))
             size_view[0] = n_points
             coords_view = np.ndarray(buffer=wkb, dtype='float64', offset=9, shape=(n_points,2))
-            coords_view[:,0] = xx[defined_mask]
-            coords_view[:,1] = yy[defined_mask]
+            coords_view[:,0] = xx[:]
+            coords_view[:,1] = yy[:]
         elif self.__render_type == POINT_RENDERER:
             # WKB structure of a multipoint
             # 
@@ -191,8 +206,8 @@ class PlotItem(LogItem):
             size_view = np.ndarray(buffer=wkb, dtype='int32', offset=5, shape=(1,))
             size_view[0] = n_points
             coords_view = np.ndarray(buffer=wkb, dtype='float64', offset=9+5, shape=(n_points,2), strides=(16+5,8))
-            coords_view[:,0] = xx[defined_mask]
-            coords_view[:,1] = yy[defined_mask]
+            coords_view[:,0] = xx[:]
+            coords_view[:,1] = yy[:]
             # header of each point
             h_view = np.ndarray(buffer=wkb, dtype='uint8', offset=9, shape=(n_points,2), strides=(16+5,1))
             h_view[:,0] = 1 # endianness
@@ -217,8 +232,8 @@ class PlotItem(LogItem):
             size_view = np.ndarray(buffer=wkb, dtype='int32', offset=9, shape=(1,))
             size_view[0] = n_points+2
             coords_view = np.ndarray(buffer=wkb, dtype='float64', offset=9+4, shape=(n_points,2))
-            coords_view[:,0] = xx[defined_mask]
-            coords_view[:,1] = yy[defined_mask]
+            coords_view[:,0] = xx[:]
+            coords_view[:,1] = yy[:]
             # two extra points
             extra_coords = np.ndarray(buffer=wkb, dtype='float64', offset=8*2*n_points+9+4, shape=(2,2))
             if self.__x_orientation == ORIENTATION_LEFT_TO_RIGHT and self.__y_orientation == ORIENTATION_UPWARD:
@@ -255,7 +270,6 @@ class PlotItem(LogItem):
         if not self.__allow_mouse_translation:
             return QGraphicsItem.mouseMoveEvent(self, event)
 
-        #print(event.pos(), event.lastPos())
         if self.__translation_orig is not None:
             delta = self.__translation_orig - event.pos()
             if self.__x_orientation == ORIENTATION_LEFT_TO_RIGHT and self.__y_orientation == ORIENTATION_UPWARD:
@@ -281,7 +295,6 @@ class PlotItem(LogItem):
     def wheelEvent(self, event):
         if not self.__allow_wheel_zoom:
             return QGraphicsItem.wheelEvent(self, event)
-        #print("wheel", event.delta(), event.orientation())
         delta = -event.delta() / 100.0
 
         w = self.__data_rect.width()

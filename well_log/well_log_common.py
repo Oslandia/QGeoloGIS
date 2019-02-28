@@ -75,13 +75,13 @@ class LogItem(QGraphicsItem):
             p.setWidth(2)
             b.setColor(QColor("#ffff66"))
             b.setStyle(Qt.SolidPattern)
-        if self.__selected or outline:
+        if self.__selected:
             painter.setBrush(b)
             painter.setPen(p)
-            painter.drawRect(0, 0, self.boundingRect().width()-1, self.boundingRect().height()-1)
-            if outline:
-                painter.setBrush(QBrush())
-                painter.setPen(QPen())
-                painter.drawRect(0, 0, self.boundingRect().width()-1, self.boundingRect().height()-1)
-            painter.setBrush(old_brush)
-            painter.setPen(old_pen)
+            painter.drawRect(1, 0, self.boundingRect().width()-1, self.boundingRect().height()-1)
+        if outline:
+            painter.setBrush(QBrush())
+            painter.setPen(QPen())
+            painter.drawRect(0, 0, self.boundingRect().width(), self.boundingRect().height()-1)
+        painter.setBrush(old_brush)
+        painter.setPen(old_pen)

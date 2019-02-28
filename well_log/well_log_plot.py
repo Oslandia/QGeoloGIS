@@ -264,7 +264,7 @@ class PlotItem(LogItem):
         feature.setGeometry(geom)
 
         context = qgis_render_context(painter, self.__item_size.width(), self.__item_size.height())
-        context.setExtent(QgsRectangle(0, 0, self.__item_size.width(), self.__item_size.height()))
+        context.setExtent(QgsRectangle(0, 1, self.__item_size.width(), self.__item_size.height()))
 
         self.__renderer.startRender(context, fields)
         self.__renderer.renderFeature(feature, context)

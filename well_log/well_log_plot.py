@@ -150,7 +150,11 @@ class PlotItem(LogItem):
             return
 
         imin_x = bisect.bisect_left(self.__x_values, self.__data_rect.x())
+        if imin_x > 0:
+            imin_x -= 1
         imax_x = bisect.bisect_right(self.__x_values, self.__data_rect.right())
+        if imax_x < len(self.__x_values) - 1:
+            imax_x += 1
         x_values_slice = np.array(self.__x_values[imin_x:imax_x])
         y_values_slice = np.array(self.__y_values[imin_x:imax_x])
 

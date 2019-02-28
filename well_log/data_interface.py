@@ -21,6 +21,7 @@ from qgis.core import QgsFeatureRequest
 
 
 class DataInterface(QObject):
+    """DataInterface is a class that abstracts how a bunch of (X,Y) data are represented"""
 
     data_modified = pyqtSignal()
 
@@ -42,7 +43,13 @@ class DataInterface(QObject):
               "must be defined")
 
 
+
 class LayerData(DataInterface):
+    """LayerData model data that are spanned on multiple features (resp. rows) on a layer (resp. table).
+
+    This means each feature (resp. row) of a layer (resp. table) has one (X,Y) pair.
+    They will be sorted on X before being displayed.
+    """
 
     def __init__(self, layer, x_fieldname, y_fieldname):
 
@@ -91,6 +98,12 @@ class LayerData(DataInterface):
 
 
 class FeatureData(DataInterface):
+    """FeatureData model data that are stored on one feature (resp. row) in a layer (resp. table).
+    
+    This usually means data are the result of a sampling with a regular sampling interval for X.
+    The feature has one array attribute that stores all values and the X values are given during
+    construction.
+    """
 
     def __init__(self, layer, y_fieldname, x_values, feature_id=0):
 

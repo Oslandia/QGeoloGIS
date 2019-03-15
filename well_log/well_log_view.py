@@ -91,7 +91,7 @@ class WellLogView(QWidget):
 
     DEFAULT_COLUMN_WIDTH = 150
 
-    def __init__(self, db_connection=None, image_dir=None, parent=None):
+    def __init__(self, image_dir=None, parent=None):
         QWidget.__init__(self, parent)
 
         self.__toolbar = QToolBar()
@@ -124,12 +124,10 @@ class WellLogView(QWidget):
         self.__toolbar.addAction(self.__action_add_column)
         self.__toolbar.addAction(self.__action_remove_column)
 
-        self.__db_connection = db_connection
-
-        self.__station_label = QLabel()
+        self.__title_label = QLabel()
 
         vbox = QVBoxLayout()
-        vbox.addWidget(self.__station_label)
+        vbox.addWidget(self.__title_label)
         vbox.addWidget(self.__toolbar)
         vbox.addWidget(self.__log_view)
         self.setLayout(vbox)
@@ -152,49 +150,15 @@ class WellLogView(QWidget):
 
         self.select_column(-1)
 
-        # by default we have two columns: Z scale and stratigraphy
-        self._add_z_scale()
-        self._add_stratigraphy_column()
-
+        # by default we have a Z scale
+        self.add_z_scale()
 
     def on_rect_changed(self, rect):
         for item, _ in self.__columns:
             item.set_height(rect.height())
 
-    def set_station_id(self, station_id):
-
-        # TODO this method in too specific and should be removed
-        
-        self.__station_id = station_id
-
-        for item, legend in self.__columns:
-            if isinstance(item, PlotItem):
-                self._update_data_column(item, legend)
-            elif isinstance(item, StratigraphyItem):
-                self._update_stratigraphy_column(item, legend)
-            item.update()
-            legend.update()
-
-        self._fit_to_max_depth()
-        self._update_column_depths()
-
-    def set_station_name(self, site_name, station_name):
-
-        # TODO this method in too specific and should be removed
-
-        if not self.__db_connection:
-            return
-
-        sql = ("select station.id from station.station join station.site on "
-               "site.id = site.id where station.name='{}' and site.name='{}'").format(station_name, site_name)
-        l = QgsVectorLayer('{} table="({})" key="id"'.format(self.__db_connection, sql), "layer", "postgres")
-        f = None
-        for f in l.getFeatures():
-            pass
-        if f is None:
-            return None
-        self.__station_label.setText("<b>Station:</b> {}".format(station_name))
-        self.set_station_id(f["id"])
+    def set_title(self, title):
+        self.__title_label.setText(title)
 
     def _place_items(self):
         x = 0
@@ -227,9 +191,9 @@ class WellLogView(QWidget):
             item.set_max_depth(self._max_z)
             item.update()
 
-    def _add_z_scale(self):
+    def add_z_scale(self, title="Depth"):
         scale_item = ZScaleItem(self.DEFAULT_COLUMN_WIDTH / 2, self.__log_scene.height(), self._min_z, self._max_z)
-        legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH / 2, "Prof.", unit_of_measure="m")
+        legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH / 2, title, unit_of_measure="m")
         self._add_column(scale_item, legend_item)
 
     def remove_data_column(self, data):
@@ -256,6 +220,21 @@ class WellLogView(QWidget):
         # Columns not found
         assert False
 
+    def clear_data_columns(self):
+        # remove item from scenes
+        for (item, legend) in self.__columns:
+            self.__log_scene.removeItem(legend)
+            self.__log_scene.removeItem(item)
+
+        # remove from internal lists
+        self.__columns = []
+        self.__column_widths = []
+        self.__data2logitems = {}
+        
+        self.__selected_column = -1
+        self._place_items()
+        self._update_button_visibility()
+
     def add_data_column(self, data, title, uom):
         plot_item = PlotItem(size=QSizeF(self.DEFAULT_COLUMN_WIDTH, self.__log_scene.height()),
                              render_type = POLYGON_RENDERER,
@@ -277,7 +256,7 @@ class WellLogView(QWidget):
 
         y_values = data.get_y_values()
         x_values = data.get_x_values()
-        if not y_values or not x_values:
+        if y_values is None or x_values is None:
             plot_item.set_data_window(None)
             return
 
@@ -293,32 +272,17 @@ class WellLogView(QWidget):
 
         self.__log_scene.update()
 
-    def _add_stratigraphy_column(self):
-
-        # TODO it should not have database connection in this class
-        if not self.__db_connection:
-            return
-
-        l = QgsVectorLayer('{} key="station_id,depth_from,depth_to" table="qgis"."measure_stratigraphic_logvalue" (geom)'.format(self.__db_connection),
-                           "layer", "postgres")
-
+    def add_stratigraphy(self, layer, column_mapping, title):
         item = StratigraphyItem(self.DEFAULT_COLUMN_WIDTH,
                                 self.__log_scene.height(),
                                 style_file=os.path.join(self.__style_dir, "stratigraphy_style.xml"))
-        legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH, "Stratigraphie")
+        legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH, title)
 
-        item.set_layer(l)
+        item.set_layer(layer)
 
-        self._update_stratigraphy_column(item, legend_item)
+        item.set_data([[f[c] for c in column_mapping] for f in layer.getFeatures()])
         
-        self._add_column(item, legend_item)
-
-    def _update_stratigraphy_column(self, item, legend):
-        req = QgsFeatureRequest()
-        req.setFilterExpression("station_id={}".format(self.__station_id))
-        data = [(f["depth_from"], f["depth_to"], f["formation_code"], f["rock_code"]) for f in item.layer().getFeatures(req)]
-
-        item.set_data(data)
+        self._add_column(item, legend_item)        
 
     def select_column_at(self, pos):
         x = pos.x()
@@ -397,49 +361,8 @@ class WellLogView(QWidget):
         item.edit_style()
 
     def on_add_column(self):
-
-        # TODO it should not have database connection in this class
-        if not self.__db_connection:
-            return
-
-        dlg = QDialog()
-
-        vbox = QVBoxLayout()
-
-        btn = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
-        btn.accepted.connect(dlg.accept)
-        btn.rejected.connect(dlg.reject)
-
-        lw = QListWidget()
-
-        vbox.addWidget(lw)
-        vbox.addWidget(btn)
-
-        l = QgsVectorLayer('{} table="qgis"."measure_metadata" key="measure_table"'.format(self.__db_connection), "md_layer", "postgres")
-        for f in l.getFeatures():
-            if f["x_axis_type"] != "DepthAxis":
-                continue
-
-            # check number of features for this station
-            data_l = QgsVectorLayer('{} key="station_id" table="qgis"."{}" (geom)'.format(self.__db_connection, f["measure_table"]), "data_layer", "postgres")
-            req = QgsFeatureRequest()
-            req.setFilterExpression("station_id={}".format(self.__station_id))
-            if len(list(data_l.getFeatures(req))) == 0:
-                continue
-
-            item = QListWidgetItem(f["name"])
-            item.setData(Qt.UserRole, (f["measure_table"], f["unit_of_measure"]))
-            lw.addItem(item)
-
-        dlg.setLayout(vbox)
-        dlg.setWindowTitle("Choose the data to add")
-        dlg.resize(400,200)
-        r = dlg.exec_()
-        if r == QDialog.Accepted:
-            item = lw.currentItem()
-            if item is not None:
-                table, uom = item.data(Qt.UserRole)
-                self.add_data_column(table, item.text(), uom)
+        # to be overridden by subclasses
+        pass
 
 # QGIS_PREFIX_PATH=~/src/qgis_2_18/build/output PYTHONPATH=~/src/qgis_2_18/build/output/python/ python test_canvas.py
 if __name__=='__main__':

@@ -19,6 +19,7 @@
 from PyQt4.QtCore import pyqtSignal, QObject
 from qgis.core import QgsFeatureRequest
 
+import numpy as np
 
 class DataInterface(QObject):
     """DataInterface is a class that abstracts how a bunch of (X,Y) data are represented"""
@@ -105,13 +106,29 @@ class FeatureData(DataInterface):
     construction.
     """
 
-    def __init__(self, layer, y_fieldname, x_values, feature_id=0):
+    def __init__(self, layer, y_fieldname, x_values=None, feature_id=0, x_start=None, x_delta=None):
+        """
+        layer: input QgsVectorLayer
+        y_fieldname: name of the field in the input layer that carries data
+        x_values: sequence of X values, that should be of the same length as data values.
+                  If None, X values are built based on x_start and x_delta
+        x_start: starting X value. Should be used with x_delta
+        x_delta: interval between two X values.
+        """
+
+        if x_values is None:
+            if x_start is None and x_delta is None:
+                raise ValueError("Define either x_values or x_start / x_delta")
+            if (x_start is None and x_delta is not None) or (x_start is not None and x_delta is None):
+                raise ValueError("Both x_start and x_delta must be defined")
 
         DataInterface.__init__(self)
 
         self.__y_fieldname = y_fieldname
         self.__layer = layer
         self.__x_values = x_values
+        self.__x_start = x_start
+        self.__x_delta = x_delta
         self.__feature_id = feature_id
 
         # TODO connect on feature modification
@@ -136,7 +153,9 @@ class FeatureData(DataInterface):
         if not f:
             return
 
-        self.__y_values = [float(value)
-                           for value in f[self.__y_fieldname].split(",")]
+        self.__y_values = [None if value == 'NULL' else float(value)
+                           for value in f[self.__y_fieldname][1:-1].split(",")]
+        if self.__x_values is None:
+            self.__x_values = np.linspace(self.__x_start, self.__x_delta * len(self.__y_values), len(self.__y_values))
 
         self.data_modified.emit()

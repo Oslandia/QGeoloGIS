@@ -18,6 +18,8 @@
 
 from well_log_common import *
 
+import os
+
 class StratigraphyItem(LogItem):
     def __init__(self, width, height, style_file=None, parent=None):
         LogItem.__init__(self, parent)
@@ -29,6 +31,9 @@ class StratigraphyItem(LogItem):
 
         self.__data = None
         self.__layer = None
+
+        # change current directory, so that relative paths to SVG get correctly resolved
+        os.chdir(os.path.dirname(__file__))
 
         if style_file:
             doc = QDomDocument()

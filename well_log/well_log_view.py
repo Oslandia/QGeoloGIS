@@ -306,6 +306,9 @@ class WellLogView(QWidget):
 
         self._update_button_visibility()
 
+    def selected_column(self):
+        return self.__selected_column
+
     def _update_button_visibility(self):
         idx = self.__selected_column
         self.__action_move_column_left.setEnabled(idx != -1 and idx > 0)

@@ -74,6 +74,10 @@ class PlotItem(LogItem):
         return self.__item_size.height()
     def set_height(self, height):
         self.__item_size.setHeight(height)
+    def width(self):
+        return self.__item_size.width()
+    def set_width(self, width):
+        self.__item_size.setWidth(width)
 
     def set_data_window(self, window):
         """window: QRectF"""

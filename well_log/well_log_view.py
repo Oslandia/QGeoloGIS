@@ -17,16 +17,17 @@
 #
 
 
-from well_log_common import *
+from qgis.PyQt.QtCore import Qt, QRectF, QSizeF
+from qgis.PyQt.QtGui import QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QIcon, QLabel, QVBoxLayout
+
+from well_log_common import POLYGON_RENDERER, ORIENTATION_DOWNWARD, ORIENTATION_LEFT_TO_RIGHT
+
 from well_log_plot import PlotItem
 from well_log_z_scale import ZScaleItem
 from well_log_stratigraphy import StratigraphyItem
 from legend_item import LegendItem
 
-import numpy as np
-
 import os
-
 
 class LogGraphicsView(QGraphicsView):
     def __init__(self, scene, parent=None):
@@ -91,7 +92,7 @@ class WellLogView(QWidget):
 
     DEFAULT_COLUMN_WIDTH = 150
 
-    def __init__(self, image_dir=None, parent=None):
+    def __init__(self, title=None,image_dir=None, parent=None):
         QWidget.__init__(self, parent)
 
         self.__toolbar = QToolBar()
@@ -125,6 +126,8 @@ class WellLogView(QWidget):
         self.__toolbar.addAction(self.__action_remove_column)
 
         self.__title_label = QLabel()
+        if title is not None:
+            self.set_title(title)
 
         vbox = QVBoxLayout()
         vbox.addWidget(self.__title_label)
@@ -243,12 +246,13 @@ class WellLogView(QWidget):
 
         plot_item.set_layer(data.get_layer())
 
-        legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH, title, uom)
+        legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH, title, unit_of_measure=uom)
         data.data_modified.connect(lambda data=data : self._update_data_column(data))
 
         self.__data2logitems[data] = (plot_item, legend_item)
         self._add_column(plot_item, legend_item)
         self._update_data_column(data)
+        self._update_column_depths()
 
     def _update_data_column(self, data):
 
@@ -373,8 +377,7 @@ if __name__=='__main__':
     import sys
     import random
 
-    from qgis.core import QgsApplication
-    from PyQt4.QtGui import QApplication
+    from qgis.core import QgsApplication, QgsVectorLayer, QgsFeature
     from data_interface import LayerData, FeatureData
 
     app = QgsApplication(sys.argv, True)
@@ -392,7 +395,7 @@ if __name__=='__main__':
 
     layer.dataProvider().addFeatures(features)
 
-    w = WellLogView()
+    w = WellLogView("Sample")
     w.add_data_column(LayerData(layer, "x", "y"), "test title", "m")
 
     # feature example

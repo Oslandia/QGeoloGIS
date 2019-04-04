@@ -26,13 +26,14 @@ class LegendItem(LogItem):
     LEGEND_LINE_MARGIN = 4
 
     def __init__(self, width, title, min_value=None, max_value=None,
-                 unit_of_measure=None, parent=None):
+                 unit_of_measure=None, is_vertical=False, parent=None):
         LogItem.__init__(self, parent)
         self.__width = width
         self.__title = title
         self.__min_value = min_value
         self.__max_value = max_value
         self.__uom = unit_of_measure
+        self.__is_vertical = is_vertical
 
         self.__selected = False
 
@@ -54,13 +55,22 @@ class LegendItem(LogItem):
         self.__max_value = max_value
 
     def boundingRect(self):
-        return QRectF(0, 0, self.__width, self.__height)
+        if self.__is_vertical:
+            return QRectF(0, 0, self.__height, self.__width)
+        else:
+            return QRectF(0, 0, self.__width, self.__height)
 
     def selected(self):
         return __selected
 
     def paint(self, painter, option, widget):
         self.draw_background(painter, outline=False)
+
+        painter.save()
+        if self.__is_vertical:
+            painter.translate(self.__height/2, self.__width/2)
+            painter.rotate(-90.0)
+            painter.translate(-self.__width/2, -self.__height/2)
 
         painter.setFont(self.__font1)
         fm = painter.fontMetrics()
@@ -90,3 +100,5 @@ class LegendItem(LogItem):
         if self.__uom is not None:
             t = str(self.__uom)
             painter.drawText((self.__width - fm.width(t)) /2, y, t)
+        painter.restore()
+

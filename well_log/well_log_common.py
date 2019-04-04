@@ -16,17 +16,11 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from qgis.core import QgsVectorLayer, QgsFeatureRequest, QgsExpression, QgsMapLayerRegistry, QgsFeatureRendererV2, QgsMapToPixel
-from qgis.core import QgsPoint, QgsGeometry, QgsRenderContext, QgsField, QgsFields, QgsFeature, QgsWKBTypes, QgsRectangle
-from qgis.core import QgsCoordinateTransform, QgsCoordinateReferenceSystem
-from qgis.gui import QgsMapCanvas, QgsMapCanvasLayer
+from qgis.PyQt.QtCore import Qt
+from qgis.PyQt.QtGui import QColor, QPen, QBrush
+from qgis.PyQt.QtWidgets import QGraphicsItem
 
-from PyQt4.QtGui import QGraphicsScene, QImage, QPixmap, QMainWindow, QBrush, QColor, QWheelEvent, QPen, QIcon
-from PyQt4.QtGui import QGraphicsView, QColor, QGraphicsItem, QGraphicsLineItem, QRegion, QPushButton, QVBoxLayout, QHBoxLayout
-from PyQt4.QtGui import QWidget, QDialog, QDialogButtonBox, QToolBar, QToolButton, QAction, QActionGroup, QStatusBar, QSizePolicy
-from PyQt4.QtGui import QStackedWidget, QComboBox, QListWidget, QListWidgetItem, QFont, QFontMetrics, QPolygonF, QLabel, QFileDialog
-from PyQt4.QtCore import Qt, QObject, QRectF, QSizeF, QVariant
-from PyQt4.QtXml import QDomDocument
+from qgis.core import QgsMapToPixel, QgsRenderContext
 
 POINT_RENDERER = 0
 LINE_RENDERER = 1

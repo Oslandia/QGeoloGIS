@@ -18,7 +18,8 @@
 
 
 from qgis.PyQt.QtCore import Qt, QRectF, QSizeF
-from qgis.PyQt.QtGui import QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QIcon, QLabel, QVBoxLayout
+from qgis.PyQt.QtGui import QIcon
+from qgis.PyQt.QtWidgets import QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel, QVBoxLayout
 
 from well_log_common import POLYGON_RENDERER, ORIENTATION_DOWNWARD, ORIENTATION_LEFT_TO_RIGHT
 

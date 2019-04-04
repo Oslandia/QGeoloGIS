@@ -16,7 +16,7 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from PyQt4.QtCore import pyqtSignal, QObject
+from qgis.PyQt.QtCore import pyqtSignal, QObject
 from qgis.core import QgsFeatureRequest
 
 import numpy as np

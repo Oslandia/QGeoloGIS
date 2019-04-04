@@ -16,7 +16,10 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from well_log_common import *
+from qgis.PyQt.QtCore import Qt, QRectF
+from qgis.PyQt.QtGui import QFont, QFontMetrics
+
+from well_log_common import LogItem
 
 
 class LegendItem(LogItem):
@@ -61,7 +64,7 @@ class LegendItem(LogItem):
             return QRectF(0, 0, self.__width, self.__height)
 
     def selected(self):
-        return __selected
+        return self.__selected
 
     def paint(self, painter, option, widget):
         self.draw_background(painter, outline=False)

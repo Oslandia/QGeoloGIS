@@ -16,7 +16,16 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from well_log_common import *
+from qgis.PyQt.QtCore import QRectF, QVariant
+from qgis.PyQt.QtGui import QPen, QBrush, QPolygonF
+from qgis.PyQt.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QComboBox
+from qgis.PyQt.QtWidgets import QPushButton, QStackedWidget, QDialogButtonBox, QFileDialog
+from qgis.PyQt.QtXml import QDomDocument
+
+from qgis.core import QgsFeatureRendererV2, QgsRectangle, QgsField, QgsFields, QgsGeometry
+from qgis.core import QgsFeature
+
+from well_log_common import LogItem, POLYGON_RENDERER, qgis_render_context
 
 import os
 
@@ -129,8 +138,6 @@ class StratigraphyStyleDialog(QDialog):
         from qgis.core import QgsSingleSymbolRendererV2, QgsRuleBasedRendererV2, QgsCategorizedSymbolRendererV2, QgsGraduatedSymbolRendererV2
         from qgis.core import QgsStyleV2
 
-        style = QgsStyleV2()
-        
         vbox = QVBoxLayout()
         hbox = QHBoxLayout()
 
@@ -189,7 +196,6 @@ class StratigraphyStyleDialog(QDialog):
             fo.close()
 
     def on_load_style(self):
-        from qgis.core import QgsStyleV2
         fn = QFileDialog.getOpenFileName(self, "Fichier style à charger", filter = "*.xml")
         if fn:
             doc = QDomDocument()

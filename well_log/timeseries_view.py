@@ -17,7 +17,8 @@
 #
 
 from qgis.PyQt.QtCore import Qt, QRectF, QSizeF
-from qgis.PyQt.QtGui import QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QIcon, QLabel, QVBoxLayout
+from qgis.PyQt.QtGui import QIcon
+from qgis.PyQt.QtWidgets import QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel, QVBoxLayout
 
 from well_log_common import POLYGON_RENDERER, ORIENTATION_UPWARD, ORIENTATION_LEFT_TO_RIGHT
 from well_log_plot import PlotItem
@@ -336,7 +337,7 @@ if __name__=='__main__':
     import sys
     import random
 
-    from qgis.core import QgsApplication, QgsVectorLayer, QgsFeature
+    from qt_qgis_compat import QgsApplication, QgsVectorLayer, QgsFeature
     from data_interface import FeatureData
 
     app = QgsApplication(sys.argv, True)

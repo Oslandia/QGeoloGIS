@@ -84,10 +84,10 @@ class LayerData(DataInterface):
         # instance) in QGIS 2 To be changed in QGIS 3
 
         # Sort data on x for correct display
-        xy_values = zip([f[self.__x_fieldname]
-                         for f in self.__layer.getFeatures()],
-                        [f[self.__y_fieldname]
-                         for f in self.__layer.getFeatures()])
+        xy_values = list(zip([f[self.__x_fieldname]
+                              for f in self.__layer.getFeatures()],
+                             [f[self.__y_fieldname]
+                              for f in self.__layer.getFeatures()]))
 
         # sort on x
         xy_values.sort(key=lambda coord: coord[0])

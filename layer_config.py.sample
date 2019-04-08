@@ -1,0 +1,59 @@
+# encoding: utf-8
+
+layer_config = {
+    # connection parameters for the base layer
+    ("""service='my_service' sslmode=disable key='id' srid=4326 type=Point table="station"."station" (point) sql=""", "postgres") :
+    {
+        "name_column": "name",
+        # configuration for the stratigraphy table
+        "stratigraphy_config" :
+        {
+            "source": ("""service='my_service' sslmode=disable key='station_id,depth_to,depth_from' table="qgis"."measure_stratigraphic_logvalue" sql=""", "postgres"),
+            "feature_ref_column" : "station_id",
+            "depth_from_column" : "depth_from",
+            "depth_to_column" : "depth_to",
+            "formation_code_column" : "formation_code",
+            "rock_code_column" : "rock_code"
+        },
+        # measure tables for well logs
+        "log_measures" : [
+            {
+                "source": ("""service='my_service' sslmode=disable key='id' table="measure"."{}" sql=""".format(table), "postgres"),
+                "name": name,
+                "uom": uom,
+                "feature_ref_column" : "station_id",
+                # type: continuous | instantaneous
+                "type": "continuous",
+                # settings for the continuous type
+                "start_measure_column" : "start_measure_altitude",
+                "interval_column": "altitude_interval",
+                "values_column" : "measures"
+            } for table, name, uom in [("weight_on_tool", "Weight on tool", "kg"),
+                                       ("tool_instant_speed", "Tool instant speed", "m/s"),
+                                       ("tool_injection_pressure", "Tool injection pressure", "Pa"),
+                                       ("tool_rotation_couple", "Tool rotation couple", "N.m")]
+        ],
+        # timeseries tables
+        "timeseries" : [
+            {
+                "source": ("""service='my_service' sslmode=disable key='id' table="qgis"."measure_{}" sql=""".format(table), "postgres"),
+                "name": name,
+                "uom": uom,
+                "feature_ref_column" : "station_id",
+                # type: continuous | instantaneous
+                "type": "continuous",
+                # settings for the continuous type
+                "start_measure_column" : "start_epoch",
+                "interval_column": "interval_s",
+                "values_column" : "measures"
+            } for table, name, uom in [("ground_water_level", "Ground water level", "m"),
+                                       ("water_level", "Water level", "m"),
+                                       ("water_discharge", "Water discharge", "L/s"),
+                                       ("water_temperature", "Water temperature", u"°C"),
+                                       ("water_conductivity", "Water conductivity", "S/m"),
+                                       ("water_precipitation", "Water precipitation", "m"),
+                                       ("potential_evaporation", "Potential evaporation", "m"),
+                                       ("water_ph", "pH", "")]
+        ]
+    }
+}

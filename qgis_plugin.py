@@ -73,7 +73,7 @@ class FeatureSelectionTool(QgsMapTool):
     def isEditTool(self):
         return True
 
-def select_data_to_add(viewer, feature_id, config_list, base_uri):
+def select_data_to_add(viewer, feature_id, config_list):
     dlg = QDialog()
 
     vbox = QVBoxLayout()
@@ -88,10 +88,9 @@ def select_data_to_add(viewer, feature_id, config_list, base_uri):
     vbox.addWidget(btn)
 
     for cfg in config_list:
-        uri = QgsDataSourceURI(base_uri)
-        uri.setDataSource(cfg["schema"], cfg["table"], None, "", cfg["key"])
+        uri, provider = cfg["source"]
         # check number of features for this station
-        data_l = QgsVectorLayer(uri.uri(), "data_layer", "postgres")
+        data_l = QgsVectorLayer(uri, "data_layer", provider)
         req = QgsFeatureRequest()
         req.setFilterExpression("{}={}".format(cfg["feature_ref_column"], feature_id))
         if len(list(data_l.getFeatures(req))) == 0:
@@ -114,9 +113,8 @@ def select_data_to_add(viewer, feature_id, config_list, base_uri):
 
     # now add the selected configuration
     cfg = item.data(Qt.UserRole)
-    uri = QgsDataSourceURI(base_uri)
-    uri.setDataSource(cfg["schema"], cfg["table"], None, "", cfg["key"])
-    data_l = QgsVectorLayer(uri.uri(), "data_layer", "postgres")
+    uri, provider = cfg["source"]
+    data_l = QgsVectorLayer(uri, "data_layer", provider)
     req = QgsFeatureRequest()
     req.setFilterExpression("{}={}".format(cfg["feature_ref_column"], feature_id))
     f = None
@@ -125,7 +123,7 @@ def select_data_to_add(viewer, feature_id, config_list, base_uri):
     if f is None:
         return
     if cfg["type"] == "continuous":
-        fd = FeatureData(data_l, cfg["values_column"], feature_id=f[cfg["key"]], x_start=f[cfg["start_measure_column"]], x_delta=f[cfg["interval_column"]])
+        fd = FeatureData(data_l, cfg["values_column"], feature_id=f.id(), x_start=f[cfg["start_measure_column"]], x_delta=f[cfg["interval_column"]])
         if hasattr(viewer, "add_data_column"):
             viewer.add_data_column(fd, cfg["name"], cfg["uom"])
         if hasattr(viewer, "add_data_row"):
@@ -136,32 +134,29 @@ def select_data_to_add(viewer, feature_id, config_list, base_uri):
     
 
 class WellLogViewWrapper(WellLogView):
-    def __init__(self, config, base_uri, feature):
+    def __init__(self, config, feature):
         WellLogView.__init__(self, feature[config["name_column"]])
         self.__config = config
-        self.__base_uri = base_uri
         self.__feature = feature
 
         cfg = config["stratigraphy_config"]
-        uri = QgsDataSourceURI(base_uri)
-        uri.setDataSource(cfg["schema"], cfg["table"], None, "", cfg["key"])
-        l = QgsVectorLayer(uri.uri(), "layer", "postgres")
+        uri, provider = cfg["source"]
+        l = QgsVectorLayer(uri, "layer", provider)
         f = "{}={}".format(cfg["feature_ref_column"], feature.id())
         l.setSubsetString(f)
         self.add_stratigraphy(l, (cfg["depth_from_column"], cfg["depth_to_column"], cfg["formation_code_column"], cfg["rock_code_column"]), "Stratigraphie")
 
     def on_add_column(self):
-        select_data_to_add(self, self.__feature.id(), self.__config["log_measures"], self.__base_uri)
+        select_data_to_add(self, self.__feature.id(), self.__config["log_measures"])
 
 class TimeSeriesWrapper(TimeSeriesView):
-    def __init__(self, config, base_uri, feature):
+    def __init__(self, config, feature):
         TimeSeriesView.__init__(self, feature[config["name_column"]])
         self.__config = config
-        self.__base_uri = base_uri
         self.__feature = feature
 
     def on_add_row(self):
-        select_data_to_add(self, self.__feature.id(), self.__config["timeseries"], self.__base_uri)
+        select_data_to_add(self, self.__feature.id(), self.__config["timeseries"])
 
 class WellLogPlugin:
     def __init__(self, iface):
@@ -198,22 +193,18 @@ class WellLogPlugin:
         if self.iface.activeLayer() is None:
             self.iface.messageBar().pushMessage(u"Please select an active layer", QgsMessageBar.CRITICAL)
             return
-        source = self.iface.activeLayer().source()
-        if source not in layer_config:
+        uri, provider = self.iface.activeLayer().source(), self.iface.activeLayer().dataProvider().name()
+        if (uri, provider) not in layer_config:
             self.iface.messageBar().pushMessage(u"Unconfigured layer", QgsMessageBar.CRITICAL)
             return
 
-        config = layer_config[source]
+        config = layer_config[(uri, provider)]
         self.iface.messageBar().pushMessage(u"Please select a feature on the active layer")
         self.__tool = FeatureSelectionTool(self.iface.mapCanvas(), self.iface.activeLayer())
         self.iface.mapCanvas().setMapTool(self.__tool)
 
-        base_uri = QgsDataSourceURI(source)
-        base_uri.setWkbType(QgsWKBTypes.Unknown)
-        base_uri.setSrid("")
-        
         def on_feature_selected(features):
-            w = graph_class(config, base_uri, features[0])
+            w = graph_class(config, features[0])
             w.show()
             self.__windows.append(w)
         self.__tool.featureSelected.connect(on_feature_selected)

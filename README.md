@@ -17,7 +17,16 @@ Currently three types of data are handled:
 
 See the [corresponding video](https://vimeo.com/303279452)
 
-# How to use it
+# How to use it as a standalone plugin
+
+Install the plugin in the QGIS plugin directory and enable it.
+
+It requires a configuration that describes what is the base layer that displays measure points and how to access the different measure layers.
+
+You can find an [example configuration file](layer_config.py.sample) that you should copy to `layer_config.py` and edit to adapt to your environment.
+Once configured, copy it where the QGIS plugin is installed.
+
+# How to use it in your own plugin
 
 First you can add qgs_well_log as a dependency of your project with a git submodule. Type this inside your main python module
 

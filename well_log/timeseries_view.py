@@ -20,7 +20,7 @@ from qgis.PyQt.QtCore import Qt, QRectF, QSizeF
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel, QVBoxLayout
 
-from well_log_common import POLYGON_RENDERER, ORIENTATION_UPWARD, ORIENTATION_LEFT_TO_RIGHT
+from well_log_common import LINE_RENDERER, ORIENTATION_UPWARD, ORIENTATION_LEFT_TO_RIGHT
 from well_log_plot import PlotItem
 from legend_item import LegendItem
 
@@ -118,7 +118,7 @@ class TimeSeriesView(QWidget):
         self.__toolbar.addAction(self.__action_move_row_up)
         self.__toolbar.addAction(self.__action_move_row_down)
         self.__toolbar.addAction(self.__action_edit_style)
-        #self.__toolbar.addAction(self.__action_add_row)
+        self.__toolbar.addAction(self.__action_add_row)
         self.__toolbar.addAction(self.__action_remove_row)
 
         self.__title_label = QLabel()
@@ -138,8 +138,8 @@ class TimeSeriesView(QWidget):
         self.__data2logitems = {}
         self.__row_heights = []
 
-        self._min_x = 0
-        self._max_x = 40
+        self._min_x = None
+        self._max_x = None
 
         self.__allow_mouse_translation = True
         self.__translation_orig = None
@@ -215,7 +215,7 @@ class TimeSeriesView(QWidget):
 
     def add_data_row(self, data, title, uom):
         plot_item = PlotItem(size=QSizeF(self.__scene.width(), self.DEFAULT_ROW_HEIGHT),
-                             render_type = POLYGON_RENDERER,
+                             render_type = LINE_RENDERER,
                              x_orientation = ORIENTATION_LEFT_TO_RIGHT,
                              y_orientation = ORIENTATION_UPWARD)
 
@@ -223,6 +223,9 @@ class TimeSeriesView(QWidget):
 
         legend_item = LegendItem(self.DEFAULT_ROW_HEIGHT, title, unit_of_measure=uom, is_vertical=True)
         data.data_modified.connect(lambda data=data : self._update_data_row(data))
+
+        if self._min_x is None:
+            self._min_x, self._max_x = data.get_x_min(), data.get_x_max()
 
         self.__data2logitems[data] = (plot_item, legend_item)
         self._add_row(plot_item, legend_item)
@@ -235,7 +238,7 @@ class TimeSeriesView(QWidget):
 
         y_values = data.get_y_values()
         x_values = data.get_x_values()
-        if not y_values or not x_values:
+        if y_values is None or x_values is None:
             plot_item.set_data_window(None)
             return
 
@@ -245,8 +248,8 @@ class TimeSeriesView(QWidget):
         #plot_item.set_data_window(r)
 
         # legend
-        min_str = "{:.1f}".format(min(data.get_y_values()))
-        max_str = "{:.1f}".format(max(data.get_y_values()))
+        min_str = "{:.1f}".format(data.get_y_min())
+        max_str = "{:.1f}".format(data.get_y_max())
         legend_item.set_scale(min_str, max_str)
 
         self.__scene.update()
@@ -362,7 +365,7 @@ if __name__=='__main__':
     layer2.dataProvider().addFeatures([feature])
 
     w = TimeSeriesView("Sample")
-    w.add_data_row(FeatureData(layer, "y", x_values, 1), "test title", "m")
+    w.add_data_row(FeatureData(layer, "y", feature_id=1, x_start=1.0, x_delta=1.0), "test title", "m")
     w.add_data_row(FeatureData(layer2, "y", x_values, 1), "test title2", "m")
 
     w.show()

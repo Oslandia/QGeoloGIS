@@ -57,6 +57,8 @@ if sys.version_info.major == 3:
         return old_from_wkb(self, data)
     QgsGeometry.fromWkb = new_from_wkb
 
+    QgsDataSourceURI = QgsDataSourceUri
+
     # ===========================
     #
     #           Qt

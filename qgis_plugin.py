@@ -19,45 +19,12 @@ from well_log.qt_qgis_compat import QgsMapTool, QgsPoint, QgsCoordinateTransform
 from well_log.qt_qgis_compat import QgsMessageBar, QgsFeatureRequest, QgsDataSourceURI, QgsVectorLayer, QgsWKBTypes
 
 from well_log.well_log_view import WellLogView
+from well_log.timeseries_view import TimeSeriesView
 from well_log.data_interface import FeatureData
 
 from qgis.PyQt.QtCore import Qt, pyqtSignal
 from qgis.PyQt.QtWidgets import QAction, QDialog, QVBoxLayout, QDialogButtonBox
 from qgis.PyQt.QtWidgets import QListWidget, QListWidgetItem
-
-layer_config = { """service='bdlhes' sslmode=disable key='id' srid=4326 type=Point table="station"."station" (point) sql=""" :
-                 {
-                     "name_column": "name",
-                     "stratigraphy_config" :
-                     {
-                         "feature_ref_column" : "station_id",
-                         "key" : "station_id,depth_from,depth_to",
-                         "schema" : "qgis",
-                         "table" : "measure_stratigraphic_logvalue",
-                         "depth_from_column" : "depth_from",
-                         "depth_to_column" : "depth_to",
-                         "formation_code_column" : "formation_code",
-                         "rock_code_column" : "rock_code"
-                     },
-                     "log_measures" : [
-                         {
-                             "schema": "measure",
-                             "table": table,
-                             "name": name,
-                             "uom": uom,
-                             "key": "id",
-                             "feature_ref_column" : "station_id",
-                             "type": "continuous",
-                             "begin_altitude_column" : "begin_measure_altitude",
-                             "interval_column": "altitude_interval",
-                             "values_column" : "measures"
-                             } for table, name, uom in [("weight_on_tool", "Weight on tool", "kg"),
-                                                   ("tool_instant_speed", "Tool instant speed", "m/s"),
-                                                   ("tool_injection_pressure", "Tool injection pressure", "Pa"),
-                                                   ("tool_rotation_couple", "Tool rotation couple", "N.m")]
-                     ]
-                 }
-}
 
 class FeatureSelectionTool(QgsMapTool):   
     pointClicked = pyqtSignal(QgsPoint)
@@ -106,6 +73,68 @@ class FeatureSelectionTool(QgsMapTool):
     def isEditTool(self):
         return True
 
+def select_data_to_add(viewer, feature_id, config_list, base_uri):
+    dlg = QDialog()
+
+    vbox = QVBoxLayout()
+
+    btn = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+    btn.accepted.connect(dlg.accept)
+    btn.rejected.connect(dlg.reject)
+
+    lw = QListWidget()
+
+    vbox.addWidget(lw)
+    vbox.addWidget(btn)
+
+    for cfg in config_list:
+        uri = QgsDataSourceURI(base_uri)
+        uri.setDataSource(cfg["schema"], cfg["table"], None, "", cfg["key"])
+        # check number of features for this station
+        data_l = QgsVectorLayer(uri.uri(), "data_layer", "postgres")
+        req = QgsFeatureRequest()
+        req.setFilterExpression("{}={}".format(cfg["feature_ref_column"], feature_id))
+        if len(list(data_l.getFeatures(req))) == 0:
+            continue
+
+        item = QListWidgetItem(cfg["name"])
+        item.setData(Qt.UserRole, cfg)
+        lw.addItem(item)
+
+    dlg.setLayout(vbox)
+    dlg.setWindowTitle("Choose the data to add")
+    dlg.resize(400,200)
+    r = dlg.exec_()
+    if r != QDialog.Accepted:
+        return
+    
+    item = lw.currentItem()
+    if item is None:
+        return
+
+    # now add the selected configuration
+    cfg = item.data(Qt.UserRole)
+    uri = QgsDataSourceURI(base_uri)
+    uri.setDataSource(cfg["schema"], cfg["table"], None, "", cfg["key"])
+    data_l = QgsVectorLayer(uri.uri(), "data_layer", "postgres")
+    req = QgsFeatureRequest()
+    req.setFilterExpression("{}={}".format(cfg["feature_ref_column"], feature_id))
+    f = None
+    for f in data_l.getFeatures(req):
+        pass
+    if f is None:
+        return
+    if cfg["type"] == "continuous":
+        fd = FeatureData(data_l, cfg["values_column"], feature_id=f[cfg["key"]], x_start=f[cfg["start_measure_column"]], x_delta=f[cfg["interval_column"]])
+        if hasattr(viewer, "add_data_column"):
+            viewer.add_data_column(fd, cfg["name"], cfg["uom"])
+        if hasattr(viewer, "add_data_row"):
+            viewer.add_data_row(fd, cfg["name"], cfg["uom"])            
+    else:
+        # TODO
+        pass
+    
+
 class WellLogViewWrapper(WellLogView):
     def __init__(self, config, base_uri, feature):
         WellLogView.__init__(self, feature[config["name_column"]])
@@ -121,65 +150,30 @@ class WellLogViewWrapper(WellLogView):
         l.setSubsetString(f)
         self.add_stratigraphy(l, (cfg["depth_from_column"], cfg["depth_to_column"], cfg["formation_code_column"], cfg["rock_code_column"]), "Stratigraphie")
 
-    def _add_data(self, idx):
-        cfg = self.__config["log_measures"][idx]
-        uri = QgsDataSourceURI(self.__base_uri)
-        uri.setDataSource(cfg["schema"], cfg["table"], None, "", cfg["key"])
-        data_l = QgsVectorLayer(uri.uri(), "data_layer", "postgres")
-        req = QgsFeatureRequest()
-        req.setFilterExpression("{}={}".format(cfg["feature_ref_column"], self.__feature.id()))
-        f = None
-        for f in data_l.getFeatures(req):
-            pass
-        if f is None:
-            return
-        if cfg["type"] == "continuous":
-            fd = FeatureData(data_l, cfg["values_column"], feature_id=f[cfg["key"]], x_start=f[cfg["begin_altitude_column"]], x_delta=f[cfg["interval_column"]])
-            self.add_data_column(fd, cfg["name"], cfg["uom"])
-        else:
-            # TODO
-            pass
-
     def on_add_column(self):
-        dlg = QDialog()
+        select_data_to_add(self, self.__feature.id(), self.__config["log_measures"], self.__base_uri)
 
-        vbox = QVBoxLayout()
+class TimeSeriesWrapper(TimeSeriesView):
+    def __init__(self, config, base_uri, feature):
+        TimeSeriesView.__init__(self, feature[config["name_column"]])
+        self.__config = config
+        self.__base_uri = base_uri
+        self.__feature = feature
 
-        btn = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
-        btn.accepted.connect(dlg.accept)
-        btn.rejected.connect(dlg.reject)
-
-        lw = QListWidget()
-
-        vbox.addWidget(lw)
-        vbox.addWidget(btn)
-
-        for idx, cfg in enumerate(self.__config["log_measures"]):
-            uri = QgsDataSourceURI(self.__base_uri)
-            uri.setDataSource(cfg["schema"], cfg["table"], None, "", cfg["key"])
-            # check number of features for this station
-            data_l = QgsVectorLayer(uri.uri(), "data_layer", "postgres")
-            req = QgsFeatureRequest()
-            req.setFilterExpression("{}={}".format(cfg["feature_ref_column"], self.__feature.id()))
-            if len(list(data_l.getFeatures(req))) == 0:
-                continue
-
-            item = QListWidgetItem(cfg["name"])
-            item.setData(Qt.UserRole, idx)
-            lw.addItem(item)
-
-        dlg.setLayout(vbox)
-        dlg.setWindowTitle("Choose the data to add")
-        dlg.resize(400,200)
-        r = dlg.exec_()
-        if r == QDialog.Accepted:
-            item = lw.currentItem()
-            if item is not None:
-                self._add_data(item.data(Qt.UserRole))
+    def on_add_row(self):
+        select_data_to_add(self, self.__feature.id(), self.__config["timeseries"], self.__base_uri)
 
 class WellLogPlugin:
     def __init__(self, iface):
         self.iface = iface
+
+        # look for the layer_config
+        try:
+            from layer_config import layer_config
+        except ImportError:
+            self.iface.messageBar().pushMessage(u"Cannot find the layer config !", QgsMessageBar.CRITICAL)
+            return
+            
 
         # current map tool
         self.__tool = None
@@ -188,8 +182,8 @@ class WellLogPlugin:
     def initGui(self):
         self.view_log_action = QAction(u'View well log', self.iface.mainWindow())
         self.view_timeseries_action = QAction(u'View timeseries', self.iface.mainWindow())
-        self.view_log_action.triggered.connect(self.on_view_log)
-        self.view_timeseries_action.triggered.connect(self.on_view_timeseries)
+        self.view_log_action.triggered.connect(lambda : self.on_view_graph(WellLogViewWrapper))
+        self.view_timeseries_action.triggered.connect(lambda: self.on_view_graph(TimeSeriesWrapper))
         self.iface.addToolBarIcon(self.view_log_action)
         self.iface.addToolBarIcon(self.view_timeseries_action)
 
@@ -199,7 +193,8 @@ class WellLogPlugin:
         self.view_log_action.setParent(None)
         self.view_timeseries_action.setParent(None)
 
-    def on_view_log(self):
+    def on_view_graph(self, graph_class):
+        from layer_config import layer_config
         if self.iface.activeLayer() is None:
             self.iface.messageBar().pushMessage(u"Please select an active layer", QgsMessageBar.CRITICAL)
             return
@@ -217,11 +212,8 @@ class WellLogPlugin:
         base_uri.setWkbType(QgsWKBTypes.Unknown)
         base_uri.setSrid("")
         
-        def on_log_selected(features):
-            w = WellLogViewWrapper(config, base_uri, features[0])
+        def on_feature_selected(features):
+            w = graph_class(config, base_uri, features[0])
             w.show()
             self.__windows.append(w)
-        self.__tool.featureSelected.connect(on_log_selected)
-
-    def on_view_timeseries(self):
-        self.iface.messageBar().pushMessage(u"Please ok")
+        self.__tool.featureSelected.connect(on_feature_selected)

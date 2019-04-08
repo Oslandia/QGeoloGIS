@@ -37,8 +37,26 @@ class DataInterface(QObject):
         raise("DataInterface is an abstract class, get_y_values() "
               "must be defined")
 
+    def get_x_min(self):
+        raise("DataInterface is an abstract class, get_x_min() "
+              "must be defined")
+
+    def get_x_max(self):
+        raise("DataInterface is an abstract class, get_x_min() "
+              "must be defined")
+
+    def get_y_min(self):
+        raise("DataInterface is an abstract class, get_y_min() "
+              "must be defined")
+
+    def get_y_max(self):
+        raise("DataInterface is an abstract class, get_y_max() "
+              "must be defined")
+
     # keep here just for compatibility but it should'nt exist
     # plot_item doesn't need layer object
+    # FIXME a layer seems to be needed for symbology.
+    # TODO: try to make it internal to plotter UI
     def get_layer(self):
         raise("DataInterface is an abstract class, get_layer() "
               "must be defined")
@@ -61,6 +79,10 @@ class LayerData(DataInterface):
         self.__layer = layer
         self.__y_values = None
         self.__x_values = None
+        self.__x_min = None
+        self.__x_max = None
+        self.__y_min = None
+        self.__y_max = None
 
         layer.attributeValueChanged.connect(self.__build_data)
         layer.featureAdded.connect(self.__build_data)
@@ -76,6 +98,18 @@ class LayerData(DataInterface):
 
     def get_x_values(self):
         return self.__x_values
+
+    def get_x_min(self):
+        return self.__x_min
+
+    def get_x_max(self):
+        return self.__x_max
+
+    def get_y_min(self):
+        return self.__y_min
+
+    def get_y_max(self):
+        return self.__y_max
 
     def __build_data(self):
 
@@ -94,6 +128,9 @@ class LayerData(DataInterface):
 
         self.__x_values = [coord[0] for coord in xy_values]
         self.__y_values = [coord[1] for coord in xy_values]
+
+        self.__x_min, self.__x_max = (min(self.__x_values), max(self.__x_values))
+        self.__y_min, self.__y_max = (min(self.__y_values), max(self.__y_values))
 
         self.data_modified.emit()
 
@@ -144,6 +181,18 @@ class FeatureData(DataInterface):
     def get_x_values(self):
         return self.__x_values
 
+    def get_x_min(self):
+        return self.__x_min
+
+    def get_x_max(self):
+        return self.__x_max
+
+    def get_y_min(self):
+        return self.__y_min
+
+    def get_y_max(self):
+        return self.__y_max
+
     def __build_data(self):
 
         req = QgsFeatureRequest()
@@ -159,5 +208,8 @@ class FeatureData(DataInterface):
                            for value in f[self.__y_fieldname][1:-1].split(",")]
         if self.__x_values is None:
             self.__x_values = np.linspace(self.__x_start, self.__x_delta * len(self.__y_values), len(self.__y_values))
+
+        self.__x_min, self.__x_max = (min(self.__x_values), max(self.__x_values))
+        self.__y_min, self.__y_max = (min(self.__y_values), max(self.__y_values))
 
         self.data_modified.emit()

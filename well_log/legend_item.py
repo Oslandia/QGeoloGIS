@@ -101,7 +101,7 @@ class LegendItem(LogItem):
             t = str(self.__max_value)
             painter.drawText(self.__width - self.LEGEND_ITEM_MARGIN - fm.width(t), y, t)
         if self.__uom is not None:
-            t = str(self.__uom)
+            t = self.__uom
             painter.drawText((self.__width - fm.width(t)) /2, y, t)
         painter.restore()
 

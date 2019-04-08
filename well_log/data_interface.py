@@ -148,7 +148,9 @@ class FeatureData(DataInterface):
 
         req = QgsFeatureRequest()
         req.setFilterExpression("$id={}".format(self.__feature_id))
-        f = next(self.__layer.getFeatures(req))
+        f = None
+        for f in self.__layer.getFeatures(req):
+            pass
 
         if not f:
             return

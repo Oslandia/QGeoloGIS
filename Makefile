@@ -10,6 +10,7 @@ SOURCES=__init__.py \
 	well_log/qt_qgis_compat.py \
 	well_log/timeseries_view.py \
 	well_log/well_log_common.py \
+	well_log/well_log_time_scale.py \
 	well_log/well_log_plot.py \
 	well_log/well_log_view.py \
 	well_log/well_log_z_scale.py \

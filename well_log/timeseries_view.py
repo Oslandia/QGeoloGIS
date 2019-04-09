@@ -22,6 +22,7 @@ from qgis.PyQt.QtWidgets import QGraphicsView, QGraphicsScene, QWidget, QToolBar
 
 from well_log_common import LINE_RENDERER, ORIENTATION_UPWARD, ORIENTATION_LEFT_TO_RIGHT
 from well_log_plot import PlotItem
+from well_log_time_scale import TimeScaleItem
 from legend_item import LegendItem
 
 import os
@@ -226,11 +227,17 @@ class TimeSeriesView(QWidget):
 
         if self._min_x is None:
             self._min_x, self._max_x = data.get_x_min(), data.get_x_max()
+            self.add_time_scale()
 
         self.__data2logitems[data] = (plot_item, legend_item)
         self._add_row(plot_item, legend_item)
         self._update_data_row(data)
         self._update_row_depths()
+
+    def add_time_scale(self, title="Time"):
+        scale_item = TimeScaleItem(self.__scene.width(), self.DEFAULT_ROW_HEIGHT * 2 / 3, self._min_x, self._max_x)
+        legend_item = LegendItem(self.DEFAULT_ROW_HEIGHT * 2 / 3, title, is_vertical = True)
+        self._add_row(scale_item, legend_item)
 
     def _update_data_row(self, data):
 

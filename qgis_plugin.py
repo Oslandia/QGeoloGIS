@@ -16,14 +16,14 @@
 #
 
 from well_log.qt_qgis_compat import QgsMapTool, QgsPoint, QgsCoordinateTransform, QgsRectangle, QgsGeometry
-from well_log.qt_qgis_compat import QgsMessageBar, QgsFeatureRequest, QgsDataSourceURI, QgsVectorLayer, QgsWKBTypes
+from well_log.qt_qgis_compat import QgsMessageBar, QgsFeatureRequest, QgsVectorLayer
 
 from well_log.well_log_view import WellLogView
 from well_log.timeseries_view import TimeSeriesView
 from well_log.data_interface import FeatureData
 
 from qgis.PyQt.QtCore import Qt, pyqtSignal
-from qgis.PyQt.QtWidgets import QAction, QDialog, QVBoxLayout, QDialogButtonBox
+from qgis.PyQt.QtWidgets import QAction, QDialog, QVBoxLayout, QDialogButtonBox, QAbstractItemView
 from qgis.PyQt.QtWidgets import QListWidget, QListWidgetItem
 
 class FeatureSelectionTool(QgsMapTool):   
@@ -31,7 +31,7 @@ class FeatureSelectionTool(QgsMapTool):
     rightClicked = pyqtSignal(QgsPoint)
     featureSelected = pyqtSignal(list)
 
-    def __init__(self, canvas, layer, tolerance_px = 2):
+    def __init__(self, canvas, layer, tolerance_px = 5):
         super(FeatureSelectionTool, self).__init__(canvas)
         self.setCursor(Qt.CrossCursor)
         self.__layer = layer
@@ -83,6 +83,7 @@ def select_data_to_add(viewer, feature_id, config_list):
     btn.rejected.connect(dlg.reject)
 
     lw = QListWidget()
+    lw.setSelectionMode(QAbstractItemView.ExtendedSelection)
 
     vbox.addWidget(lw)
     vbox.addWidget(btn)
@@ -106,31 +107,28 @@ def select_data_to_add(viewer, feature_id, config_list):
     r = dlg.exec_()
     if r != QDialog.Accepted:
         return
-    
-    item = lw.currentItem()
-    if item is None:
-        return
 
-    # now add the selected configuration
-    cfg = item.data(Qt.UserRole)
-    uri, provider = cfg["source"]
-    data_l = QgsVectorLayer(uri, "data_layer", provider)
-    req = QgsFeatureRequest()
-    req.setFilterExpression("{}={}".format(cfg["feature_ref_column"], feature_id))
-    f = None
-    for f in data_l.getFeatures(req):
-        pass
-    if f is None:
-        return
-    if cfg["type"] == "continuous":
-        fd = FeatureData(data_l, cfg["values_column"], feature_id=f.id(), x_start=f[cfg["start_measure_column"]], x_delta=f[cfg["interval_column"]])
-        if hasattr(viewer, "add_data_column"):
-            viewer.add_data_column(fd, cfg["name"], cfg["uom"])
-        if hasattr(viewer, "add_data_row"):
-            viewer.add_data_row(fd, cfg["name"], cfg["uom"])            
-    else:
-        # TODO
-        pass
+    for item in lw.selectedItems():
+        # now add the selected configuration
+        cfg = item.data(Qt.UserRole)
+        uri, provider = cfg["source"]
+        data_l = QgsVectorLayer(uri, "data_layer", provider)
+        req = QgsFeatureRequest()
+        req.setFilterExpression("{}={}".format(cfg["feature_ref_column"], feature_id))
+        f = None
+        for f in data_l.getFeatures(req):
+            pass
+        if f is None:
+            return
+        if cfg["type"] == "continuous":
+            fd = FeatureData(data_l, cfg["values_column"], feature_id=f.id(), x_start=f[cfg["start_measure_column"]], x_delta=f[cfg["interval_column"]])
+            if hasattr(viewer, "add_data_column"):
+                viewer.add_data_column(fd, cfg["name"], cfg["uom"])
+            if hasattr(viewer, "add_data_row"):
+                viewer.add_data_row(fd, cfg["name"], cfg["uom"])
+        else:
+            # TODO
+            pass
     
 
 class WellLogViewWrapper(WellLogView):

@@ -47,7 +47,7 @@ class StratigraphyItem(LogItem):
         if style_file:
             doc = QDomDocument()
             doc.setContent(open(style_file, "r").read())
-            self.__renderer = QgsFeatureRendererV2.load(doc.documentElement())
+            self.__renderer = QgsFeatureRendererV2._load(doc.documentElement())
         else:
             self.__renderer = QgsFeatureRendererV2.defaultRenderer(POLYGON_RENDERER)
 
@@ -200,7 +200,7 @@ class StratigraphyStyleDialog(QDialog):
         if fn:
             doc = QDomDocument()
             doc.setContent(open(fn, "r").read())
-            self.__renderer = QgsFeatureRendererV2.load(doc.documentElement())
+            self.__renderer = QgsFeatureRendererV2._load(doc.documentElement())
             for i, c in enumerate(self.__classes):
                 _, cls, wcls = c
                 if self.__renderer.__class__ == cls:

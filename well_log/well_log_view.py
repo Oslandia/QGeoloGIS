@@ -378,10 +378,10 @@ if __name__=='__main__':
     import sys
     import random
 
-    from qt_qgis_compat import QgsApplication, QgsVectorLayer, QgsFeature
+    from qt_qgis_compat import qgsApplication, QgsVectorLayer, QgsFeature
     from data_interface import LayerData, FeatureData
 
-    app = QgsApplication(sys.argv, True)
+    app = qgsApplication(sys.argv, True)
     app.initQgis()
 
     # layer example

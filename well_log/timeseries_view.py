@@ -343,14 +343,13 @@ class TimeSeriesView(QWidget):
 
 # QGIS_PREFIX_PATH=~/src/qgis_2_18/build_ninja/output PYTHONPATH=~/src/qgis_2_18/build_ninja/output/python/ python timeseries_view.py
 if __name__=='__main__':
-
     import sys
     import random
 
-    from qt_qgis_compat import QgsApplication, QgsVectorLayer, QgsFeature
+    from qt_qgis_compat import qgsApplication, QgsVectorLayer, QgsFeature
     from data_interface import FeatureData
 
-    app = QgsApplication(sys.argv, True)
+    app = qgsApplication(sys.argv, True)
     app.initQgis()
 
     # feature example

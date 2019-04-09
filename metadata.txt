@@ -3,5 +3,6 @@ name=qgis_well_log
 description=Visualization of well logs in QGIS
 version=1.0.0
 qgisMinimumVersion=2.18
+qgisMaximumVersion=3.99
 author=Oslandia
 email=infos@oslandia.com

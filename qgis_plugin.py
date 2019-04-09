@@ -15,7 +15,7 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from well_log.qt_qgis_compat import QgsMapTool, QgsPoint, QgsCoordinateTransform, QgsRectangle, QgsGeometry
+from well_log.qt_qgis_compat import QgsMapTool, QgsPoint, qgsCoordinateTransform, QgsRectangle, QgsGeometry
 from well_log.qt_qgis_compat import QgsMessageBar, QgsFeatureRequest, QgsVectorLayer
 
 from well_log.well_log_view import WellLogView
@@ -53,7 +53,7 @@ class FeatureSelectionTool(QgsMapTool):
 
             canvas_rect = QgsRectangle(tr.toMapCoordinates(x-self.__tolerance_px, y-self.__tolerance_px),
                                        tr.toMapCoordinates(x+self.__tolerance_px, y+self.__tolerance_px))
-            ct = QgsCoordinateTransform(self.canvas().mapSettings().destinationCrs(), self.__layer.crs())
+            ct = qgsCoordinateTransform(self.canvas().mapSettings().destinationCrs(), self.__layer.crs())
             box = QgsGeometry.fromRect(canvas_rect)
             box.transform(ct)
 

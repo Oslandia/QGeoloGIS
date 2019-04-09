@@ -15,6 +15,8 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
+__package__ = "qgis_well_log_plugin"
+
 from qgis_plugin import WellLogPlugin
 
 def classFactory(iface):

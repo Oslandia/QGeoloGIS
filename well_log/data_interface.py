@@ -204,8 +204,14 @@ class FeatureData(DataInterface):
         if not f:
             return
 
-        self.__y_values = [None if value == 'NULL' else float(value)
-                           for value in f[self.__y_fieldname][1:-1].split(",")]
+        raw_data = f[self.__y_fieldname]
+        if isinstance(raw_data, list):
+            # QGIS 3 natively reads array values
+            self.__y_values = raw_data
+        else:
+            self.__y_values = [None if value == 'NULL' else float(value)
+                               for value in raw_data[1:-1].split(",")]
+
         if self.__x_values is None:
             self.__x_values = np.linspace(self.__x_start, self.__x_delta * len(self.__y_values), len(self.__y_values))
 

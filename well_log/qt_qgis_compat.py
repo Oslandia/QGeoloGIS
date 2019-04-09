@@ -39,12 +39,13 @@ if sys.version_info.major == 3:
     # ===========================
     QgsFeatureRendererV2 = QgsFeatureRenderer
 
+    QgsFeatureRendererV2._load = lambda doc: QgsFeatureRenderer.load(doc, QgsReadWriteContext())
+
     # restore QgsFeature.setFeatureId()
     QgsFeature.setFeatureId = lambda self, id: self.setId(id)
 
-    # override QgsApplication.__init__
-    old_init = QgsApplication.__init__
-    QgsApplication.__init__ = lambda self, args, b: old_init(self, [bytes(x, "utf8") for x in args], b)
+    def qgsApplication(args, b):
+        return QgsApplication([bytes(x, "utf8") for x in args], b)
 
     # symbology
     QgsSimpleFillSymbolLayer.setBorderWidth = lambda self, w: self.setStrokeWidth(w)
@@ -59,9 +60,20 @@ if sys.version_info.major == 3:
 
     QgsDataSourceURI = QgsDataSourceUri
 
+    QgsMessageBar.CRITICAL = Qgis.Critical
+
+    def qgsCoordinateTransform(src, tgt):
+        return QgsCoordinateTransform(src, tgt, QgsProject.instance().transformContext())
+
     # ===========================
     #
     #           Qt
     #
     # ===========================
     QWheelEvent.delta = lambda self: self.angleDelta().y()
+else:
+    def qgsApplication(args, b):
+        return QgsApplication(args, b)
+    def qgsCoordinateTransform(src, tgt):
+        return QgsCoordinateTransform(src, tgt)
+    QgsFeatureRendererV2._load = QgsFeatureRendererV2.load

@@ -175,8 +175,8 @@ class TimeSeriesView(QWidget):
 
         log_item.set_min_depth(self._min_x)
         log_item.set_max_depth(self._max_x)
-        self.__rows.append((log_item, legend_item))
-        self.__row_heights.append(log_item.boundingRect().height())
+        self.__rows.insert(0, (log_item, legend_item))
+        self.__row_heights.insert(0, log_item.boundingRect().height())
 
         self._place_items()
 

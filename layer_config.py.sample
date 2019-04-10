@@ -2,13 +2,13 @@
 
 layer_config = {
     # connection parameters for the base layer
-    ("""service='my_service' sslmode=disable key='id' srid=4326 type=Point table="station"."station" (point) sql=""", "postgres") :
+    ("""service='bdlhes' sslmode=disable key='id' srid=4326 type=Point table="station"."station" (point) sql=""", "postgres") :
     {
         "name_column": "name",
         # configuration for the stratigraphy table
         "stratigraphy_config" :
         {
-            "source": ("""service='my_service' sslmode=disable key='station_id,depth_to,depth_from' table="qgis"."measure_stratigraphic_logvalue" sql=""", "postgres"),
+            "source": ("""service='bdlhes' sslmode=disable key='station_id,depth_to,depth_from' table="qgis"."measure_stratigraphic_logvalue" sql=""", "postgres"),
             "feature_ref_column" : "station_id",
             "depth_from_column" : "depth_from",
             "depth_to_column" : "depth_to",
@@ -18,7 +18,7 @@ layer_config = {
         # measure tables for well logs
         "log_measures" : [
             {
-                "source": ("""service='my_service' sslmode=disable key='id' table="measure"."{}" sql=""".format(table), "postgres"),
+                "source": ("""service='bdlhes' sslmode=disable key='id' table="measure"."{}" sql=""".format(table), "postgres"),
                 "name": name,
                 "uom": uom,
                 "feature_ref_column" : "station_id",
@@ -36,7 +36,7 @@ layer_config = {
         # timeseries tables
         "timeseries" : [
             {
-                "source": ("""service='my_service' sslmode=disable key='id' table="qgis"."measure_{}" sql=""".format(table), "postgres"),
+                "source": ("""service='bdlhes' sslmode=disable key='id' table="qgis"."measure_{}" sql=""".format(table), "postgres"),
                 "name": name,
                 "uom": uom,
                 "feature_ref_column" : "station_id",

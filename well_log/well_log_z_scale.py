@@ -18,7 +18,7 @@
 
 from qgis.PyQt.QtCore import QRectF
 
-from well_log_common import LogItem
+from .well_log_common import LogItem
 
 class ZScaleItem(LogItem):
     SCALE_POSSIBLE_STEPS = [0.1, 0.5, 1, 2, 5, 10, 20, 50, 100]

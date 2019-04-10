@@ -18,7 +18,7 @@
 
 from qgis.PyQt.QtCore import QRectF
 
-from well_log_common import LogItem
+from .well_log_common import LogItem
 
 from datetime import timedelta, tzinfo, datetime
 

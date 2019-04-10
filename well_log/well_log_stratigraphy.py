@@ -22,10 +22,10 @@ from qgis.PyQt.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QComboBox
 from qgis.PyQt.QtWidgets import QPushButton, QStackedWidget, QDialogButtonBox, QFileDialog
 from qgis.PyQt.QtXml import QDomDocument
 
-from qt_qgis_compat import QgsFeatureRendererV2, QgsRectangle, QgsField, QgsFields, QgsGeometry
-from qt_qgis_compat import QgsFeature
+from .qt_qgis_compat import QgsFeatureRendererV2, QgsRectangle, QgsField, QgsFields, QgsGeometry
+from .qt_qgis_compat import QgsFeature
 
-from well_log_common import LogItem, POLYGON_RENDERER, qgis_render_context
+from .well_log_common import LogItem, POLYGON_RENDERER, qgis_render_context
 
 import os
 

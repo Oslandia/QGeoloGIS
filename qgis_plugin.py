@@ -15,12 +15,12 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from well_log.qt_qgis_compat import QgsMapTool, QgsPoint, qgsCoordinateTransform, QgsRectangle, QgsGeometry
-from well_log.qt_qgis_compat import QgsMessageBar, QgsFeatureRequest, QgsVectorLayer
+from .well_log.qt_qgis_compat import QgsMapTool, QgsPoint, qgsCoordinateTransform, QgsRectangle, QgsGeometry
+from .well_log.qt_qgis_compat import QgsMessageBar, QgsFeatureRequest, QgsVectorLayer
 
-from well_log.well_log_view import WellLogView
-from well_log.timeseries_view import TimeSeriesView
-from well_log.data_interface import FeatureData
+from .well_log.well_log_view import WellLogView
+from .well_log.timeseries_view import TimeSeriesView
+from .well_log.data_interface import FeatureData
 
 from qgis.PyQt.QtCore import Qt, pyqtSignal
 from qgis.PyQt.QtWidgets import QAction, QDialog, QVBoxLayout, QDialogButtonBox, QAbstractItemView
@@ -162,7 +162,7 @@ class WellLogPlugin:
 
         # look for the layer_config
         try:
-            from layer_config import layer_config
+            from .layer_config import layer_config
         except ImportError:
             self.iface.messageBar().pushMessage(u"Cannot find the layer config !", QgsMessageBar.CRITICAL)
             return
@@ -187,7 +187,7 @@ class WellLogPlugin:
         self.view_timeseries_action.setParent(None)
 
     def on_view_graph(self, graph_class):
-        from layer_config import layer_config
+        from .layer_config import layer_config
         if self.iface.activeLayer() is None:
             self.iface.messageBar().pushMessage(u"Please select an active layer", QgsMessageBar.CRITICAL)
             return

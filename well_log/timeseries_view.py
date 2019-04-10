@@ -20,10 +20,10 @@ from qgis.PyQt.QtCore import Qt, QRectF, QSizeF
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel, QVBoxLayout
 
-from well_log_common import LINE_RENDERER, ORIENTATION_UPWARD, ORIENTATION_LEFT_TO_RIGHT
-from well_log_plot import PlotItem
-from well_log_time_scale import TimeScaleItem
-from legend_item import LegendItem
+from .well_log_common import LINE_RENDERER, ORIENTATION_UPWARD, ORIENTATION_LEFT_TO_RIGHT
+from .well_log_plot import PlotItem
+from .well_log_time_scale import TimeScaleItem
+from .legend_item import LegendItem
 
 import os
 
@@ -346,8 +346,8 @@ if __name__=='__main__':
     import sys
     import random
 
-    from qt_qgis_compat import qgsApplication, QgsVectorLayer, QgsFeature
-    from data_interface import FeatureData
+    from .qt_qgis_compat import qgsApplication, QgsVectorLayer, QgsFeature
+    from .data_interface import FeatureData
 
     app = qgsApplication(sys.argv, True)
     app.initQgis()

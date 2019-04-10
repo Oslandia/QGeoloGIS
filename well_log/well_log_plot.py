@@ -19,10 +19,10 @@
 from qgis.PyQt.QtCore import Qt, QSizeF, QRectF
 from qgis.PyQt.QtWidgets import QGraphicsItem, QComboBox, QDialog, QVBoxLayout, QDialogButtonBox
 from qgis.PyQt.QtWidgets import QStackedWidget
-from qt_qgis_compat import QgsFeatureRendererV2, QgsGeometry, QgsFields, QgsFeature, QgsRectangle
+from .qt_qgis_compat import QgsFeatureRendererV2, QgsGeometry, QgsFields, QgsFeature, QgsRectangle
 
-from well_log_common import POINT_RENDERER, LINE_RENDERER, POLYGON_RENDERER
-from well_log_common import ORIENTATION_UPWARD, ORIENTATION_DOWNWARD, ORIENTATION_LEFT_TO_RIGHT, LogItem, qgis_render_context
+from .well_log_common import POINT_RENDERER, LINE_RENDERER, POLYGON_RENDERER
+from .well_log_common import ORIENTATION_UPWARD, ORIENTATION_DOWNWARD, ORIENTATION_LEFT_TO_RIGHT, LogItem, qgis_render_context
 
 import numpy as np
 import bisect

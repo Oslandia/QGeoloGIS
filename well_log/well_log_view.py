@@ -21,12 +21,12 @@ from qgis.PyQt.QtCore import Qt, QRectF, QSizeF
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel, QVBoxLayout
 
-from well_log_common import POLYGON_RENDERER, ORIENTATION_DOWNWARD, ORIENTATION_LEFT_TO_RIGHT
+from .well_log_common import POLYGON_RENDERER, ORIENTATION_DOWNWARD, ORIENTATION_LEFT_TO_RIGHT
 
-from well_log_plot import PlotItem
-from well_log_z_scale import ZScaleItem
-from well_log_stratigraphy import StratigraphyItem
-from legend_item import LegendItem
+from .well_log_plot import PlotItem
+from .well_log_z_scale import ZScaleItem
+from .well_log_stratigraphy import StratigraphyItem
+from .legend_item import LegendItem
 
 import os
 

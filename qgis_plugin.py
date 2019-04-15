@@ -148,7 +148,7 @@ class WellLogViewWrapper(WellLogView):
         self.add_stratigraphy(l, (cfg["depth_from_column"], cfg["depth_to_column"], cfg["formation_code_column"], cfg["rock_code_column"]), "Stratigraphie")
 
     def on_add_column(self):
-        sources = self.__config["log_measures"]
+        sources = list(self.__config["log_measures"])
         sources += [dict(list(d.items()) + [("type","image")]) for d in self.__config["imagery_data"]]
         select_data_to_add(self, self.__feature.id(), sources)
 

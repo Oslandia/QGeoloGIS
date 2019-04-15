@@ -54,6 +54,18 @@ layer_config = {
                                        ("water_precipitation", "Water precipitation", "m"),
                                        ("potential_evaporation", "Potential evaporation", "m"),
                                        ("water_ph", "pH", "")]
-        ]
+        ] + [
+            {
+                "source": ("""service='bdlhes' sslmode=disable key='id' table="qgis"."measure_{}" sql=""".format(table), "postgres"),
+                "name": name,
+                "uom": uom,
+                "feature_ref_column" : "station_id",
+                # type: continuous | instantaneous
+                "type": "instantaneous",
+                # settings for the instantaneous type
+                "event_column" : "measure_epoch",
+                "value_column": "measure_value"
+            } for table, name, uom in [("instantaneous_ground_water_level", "Ground water level (instantaneous)", "m"),
+                                       ("instantaneous_water_level", "Water level (instantaneous)", "m")]
     }
 }

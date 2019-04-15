@@ -20,7 +20,7 @@ from .well_log.qt_qgis_compat import QgsMessageBar, QgsFeatureRequest, QgsVector
 
 from .well_log.well_log_view import WellLogView
 from .well_log.timeseries_view import TimeSeriesView
-from .well_log.data_interface import FeatureData
+from .well_log.data_interface import FeatureData, LayerData
 
 from qgis.PyQt.QtCore import Qt, pyqtSignal
 from qgis.PyQt.QtWidgets import QAction, QDialog, QVBoxLayout, QDialogButtonBox, QAbstractItemView
@@ -89,13 +89,14 @@ def select_data_to_add(viewer, feature_id, config_list):
     vbox.addWidget(btn)
 
     for cfg in config_list:
-        uri, provider = cfg["source"]
-        # check number of features for this station
-        data_l = QgsVectorLayer(uri, "data_layer", provider)
-        req = QgsFeatureRequest()
-        req.setFilterExpression("{}={}".format(cfg["feature_ref_column"], feature_id))
-        if len(list(data_l.getFeatures(req))) == 0:
-            continue
+        if cfg["type"] in ("continuous", "instantaneous"):
+            uri, provider = cfg["source"]
+            # check number of features for this station
+            data_l = QgsVectorLayer(uri, "data_layer", provider)
+            req = QgsFeatureRequest()
+            req.setFilterExpression("{}={}".format(cfg["feature_ref_column"], feature_id))
+            if len(list(data_l.getFeatures(req))) == 0:
+                continue
 
         item = QListWidgetItem(cfg["name"])
         item.setData(Qt.UserRole, cfg)
@@ -111,25 +112,27 @@ def select_data_to_add(viewer, feature_id, config_list):
     for item in lw.selectedItems():
         # now add the selected configuration
         cfg = item.data(Qt.UserRole)
-        uri, provider = cfg["source"]
-        data_l = QgsVectorLayer(uri, "data_layer", provider)
-        req = QgsFeatureRequest()
-        req.setFilterExpression("{}={}".format(cfg["feature_ref_column"], feature_id))
-        f = None
-        for f in data_l.getFeatures(req):
-            pass
-        if f is None:
-            return
-        if cfg["type"] == "continuous":
-            fd = FeatureData(data_l, cfg["values_column"], feature_id=f.id(), x_start=f[cfg["start_measure_column"]], x_delta=f[cfg["interval_column"]])
+        if cfg["type"] in ("continuous", "instantaneous"):
+            uri, provider = cfg["source"]
+            data_l = QgsVectorLayer(uri, "data_layer", provider)
+            req = QgsFeatureRequest()
+            filter_expr = "{}={}".format(cfg["feature_ref_column"], feature_id)
+            req.setFilterExpression(filter_expr)
+            f = None
+            for f in data_l.getFeatures(req):
+                pass
+            if f is None:
+                return
+            if cfg["type"] == "continuous":
+                data = FeatureData(data_l, cfg["values_column"], feature_id=f.id(), x_start=f[cfg["start_measure_column"]], x_delta=f[cfg["interval_column"]])
+            if cfg["type"] == "instantaneous":
+                data = LayerData(data_l, cfg["event_column"], cfg["value_column"], filter_expression = filter_expr)
             if hasattr(viewer, "add_data_column"):
-                viewer.add_data_column(fd, cfg["name"], cfg["uom"])
+                viewer.add_data_column(data, cfg["name"], cfg["uom"])
             if hasattr(viewer, "add_data_row"):
-                viewer.add_data_row(fd, cfg["name"], cfg["uom"])
-        else:
-            # TODO
-            pass
-    
+                viewer.add_data_row(data, cfg["name"], cfg["uom"])
+        elif cfg["type"] == "image":
+            viewer.add_imagery_from_db(cfg)
 
 class WellLogViewWrapper(WellLogView):
     def __init__(self, config, feature):
@@ -145,7 +148,41 @@ class WellLogViewWrapper(WellLogView):
         self.add_stratigraphy(l, (cfg["depth_from_column"], cfg["depth_to_column"], cfg["formation_code_column"], cfg["rock_code_column"]), "Stratigraphie")
 
     def on_add_column(self):
-        select_data_to_add(self, self.__feature.id(), self.__config["log_measures"])
+        sources = self.__config["log_measures"]
+        sources += [dict(list(d.items()) + [("type","image")]) for d in self.__config["imagery_data"]]
+        select_data_to_add(self, self.__feature.id(), sources)
+
+    def add_imagery_from_db(self, cfg):
+        if cfg.get("provider", "postgres_bytea") != "postgres_bytea":
+            raise "Access method not implemented !"
+            
+        import psycopg2
+        import tempfile
+        conn = psycopg2.connect(cfg["source"])
+        cur = conn.cursor()
+        cur.execute("select {depth_from}, {depth_to}, {data}, {format} from {schema}.{table} where {ref_column}=%s"\
+                    .format(depth_from=cfg.get("depth_from_column", "depth_from"),
+                            depth_to=cfg.get("depth_to_column", "depth_to"),
+                            data=cfg.get("image_data_column", "image_data"),
+                            format=cfg.get("image_data_column", "image_format"),
+                            schema=cfg["schema"],
+                            table=cfg["table"],
+                            ref_column=cfg["feature_ref_column"]),
+                    (self.__feature.id(),))
+        r = cur.fetchone()
+        if r is None:
+            return
+
+        depth_from, depth_to = float(r[0]), float(r[1])
+        image_data = r[2]
+        image_format = r[3]
+        f = tempfile.NamedTemporaryFile(mode="wb", suffix=image_format.lower())
+        image_filename = f.name
+        f.close()
+        with open(image_filename, "wb") as fo:
+            fo.write(image_data)
+        self.add_imagery(image_filename, cfg["name"], depth_from, depth_to)
+        
 
 class TimeSeriesWrapper(TimeSeriesView):
     def __init__(self, config, feature):

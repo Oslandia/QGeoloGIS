@@ -16,7 +16,6 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-
 from qgis.PyQt.QtCore import Qt, QRectF, QSizeF
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel, QVBoxLayout
@@ -27,6 +26,7 @@ from .well_log_plot import PlotItem
 from .well_log_z_scale import ZScaleItem
 from .well_log_stratigraphy import StratigraphyItem
 from .legend_item import LegendItem
+from .imagery_data import ImageryDataItem
 
 import os
 
@@ -120,11 +120,19 @@ class WellLogView(QWidget):
         self.__action_remove_column = QAction(QIcon(os.path.join(image_dir, "remove.svg")), "Remove the column", self.__toolbar)
         self.__action_remove_column.triggered.connect(self.on_remove_column)
 
+        self.__action_move_content_right = QAction("Move content right", self.__toolbar)
+        self.__action_move_content_left = QAction("Move content left", self.__toolbar)
+        self.__action_move_content_left.triggered.connect(self.on_move_content_left)
+        self.__action_move_content_right.triggered.connect(self.on_move_content_right)
+
         self.__toolbar.addAction(self.__action_move_column_left)
         self.__toolbar.addAction(self.__action_move_column_right)
         self.__toolbar.addAction(self.__action_edit_style)
         self.__toolbar.addAction(self.__action_add_column)
         self.__toolbar.addAction(self.__action_remove_column)
+
+        self.__toolbar.addAction(self.__action_move_content_left)
+        self.__toolbar.addAction(self.__action_move_content_right)
 
         self.__title_label = QLabel()
         if title is not None:
@@ -287,7 +295,18 @@ class WellLogView(QWidget):
 
         item.set_data([[f[c] for c in column_mapping] for f in layer.getFeatures()])
         
-        self._add_column(item, legend_item)        
+        self._add_column(item, legend_item)
+
+    def add_imagery(self, image_filename, title, depth_from, depth_to):
+        item = ImageryDataItem(self.DEFAULT_COLUMN_WIDTH,
+                               self.__log_scene.height(),
+                               image_filename,
+                               depth_from,
+                               depth_to)
+        
+        legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH, title)
+
+        self._add_column(item, legend_item)
 
     def select_column_at(self, pos):
         x = pos.x()
@@ -372,6 +391,15 @@ class WellLogView(QWidget):
         # to be overridden by subclasses
         pass
 
+    def on_move_content_right(self):
+        if self.__selected_column == -1 or self.__selected_column >= len(self.__columns) - 1:
+            return
+        self.__columns[self.__selected_column][0].move_right()
+    def on_move_content_left(self):
+        if self.__selected_column == -1 or self.__selected_column >= len(self.__columns) - 1:
+            return
+        self.__columns[self.__selected_column][0].move_left()
+
 # QGIS_PREFIX_PATH=~/src/qgis_2_18/build/output PYTHONPATH=~/src/qgis_2_18/build/output/python/ python test_canvas.py
 if __name__=='__main__':
 
@@ -410,6 +438,8 @@ if __name__=='__main__':
     x_values = [float(x) for x in range(1, 1001)]
     w.add_data_column(FeatureData(layer, "y", x_values, 1), "test title", "m")
 
+    w.add_imagery("/home/hme/src/1805_03_ceadam_visu_geol/data/VALDUC/DIAGRAPHIE/B8/DIAGRAPHIE_DIFFEREE/OBI/20161201/OBI.jpg", "Image", 5.0, 48.0)
+    
     w.show()
 
     app.exec_()

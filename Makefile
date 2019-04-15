@@ -6,6 +6,7 @@ SOURCES=__init__.py \
 	metadata.txt \
 	well_log/__init__.py \
 	well_log/data_interface.py \
+	well_log/imagery_data.py \
 	well_log/legend_item.py \
 	well_log/qt_qgis_compat.py \
 	well_log/timeseries_view.py \

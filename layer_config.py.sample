@@ -62,10 +62,29 @@ layer_config = {
                 "feature_ref_column" : "station_id",
                 # type: continuous | instantaneous
                 "type": "instantaneous",
-                # settings for the instantaneous type
+                # settings for the continuous type
                 "event_column" : "measure_epoch",
                 "value_column": "measure_value"
             } for table, name, uom in [("instantaneous_ground_water_level", "Ground water level (instantaneous)", "m"),
                                        ("instantaneous_water_level", "Water level (instantaneous)", "m")]
+        ],
+        # imagery data
+        "imagery_data" : [
+            {
+                # uncomment to override default values
+                #
+                # only postgres_bytea is handled for now
+                "name": "Optical imagery",
+                #"provider": "postgres_bytea",
+                "source": "service=bdlhes",
+                "schema": "qgis",
+                "table": "measure_optical_imagery",
+                "feature_ref_column": "station_id",
+                #"depth_from_column": "depth_from",
+                #"depth_to_column": "depth_to",
+                #"image_data_column": "image_data",
+                #"image_format_column": "image_format"
+                }
+            ]
     }
 }

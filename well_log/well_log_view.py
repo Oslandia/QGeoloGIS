@@ -120,10 +120,10 @@ class WellLogView(QWidget):
         self.__action_remove_column = QAction(QIcon(os.path.join(image_dir, "remove.svg")), "Remove the column", self.__toolbar)
         self.__action_remove_column.triggered.connect(self.on_remove_column)
 
-        self.__action_move_content_right = QAction("Move content right", self.__toolbar)
-        self.__action_move_content_left = QAction("Move content left", self.__toolbar)
-        self.__action_move_content_left.triggered.connect(self.on_move_content_left)
-        self.__action_move_content_right.triggered.connect(self.on_move_content_right)
+        #self.__action_move_content_right = QAction("Move content right", self.__toolbar)
+        #self.__action_move_content_left = QAction("Move content left", self.__toolbar)
+        #self.__action_move_content_left.triggered.connect(self.on_move_content_left)
+        #self.__action_move_content_right.triggered.connect(self.on_move_content_right)
 
         self.__toolbar.addAction(self.__action_move_column_left)
         self.__toolbar.addAction(self.__action_move_column_right)
@@ -131,8 +131,8 @@ class WellLogView(QWidget):
         self.__toolbar.addAction(self.__action_add_column)
         self.__toolbar.addAction(self.__action_remove_column)
 
-        self.__toolbar.addAction(self.__action_move_content_left)
-        self.__toolbar.addAction(self.__action_move_content_right)
+        #self.__toolbar.addAction(self.__action_move_content_left)
+        #self.__toolbar.addAction(self.__action_move_content_right)
 
         self.__title_label = QLabel()
         if title is not None:
@@ -390,15 +390,6 @@ class WellLogView(QWidget):
     def on_add_column(self):
         # to be overridden by subclasses
         pass
-
-    def on_move_content_right(self):
-        if self.__selected_column == -1 or self.__selected_column >= len(self.__columns) - 1:
-            return
-        self.__columns[self.__selected_column][0].move_right()
-    def on_move_content_left(self):
-        if self.__selected_column == -1 or self.__selected_column >= len(self.__columns) - 1:
-            return
-        self.__columns[self.__selected_column][0].move_left()
 
 # QGIS_PREFIX_PATH=~/src/qgis_2_18/build/output PYTHONPATH=~/src/qgis_2_18/build/output/python/ python test_canvas.py
 if __name__=='__main__':

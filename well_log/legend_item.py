@@ -21,7 +21,6 @@ from qgis.PyQt.QtGui import QFont, QFontMetrics
 
 from .well_log_common import LogItem
 
-
 class LegendItem(LogItem):
     # margin all around the whole legend item
     LEGEND_ITEM_MARGIN = 3
@@ -95,13 +94,19 @@ class LegendItem(LogItem):
         painter.setFont(self.__font2)
         fm = painter.fontMetrics()
         y += fm.ascent()
+        
         if self.__min_value is not None:
-            painter.drawText(self.LEGEND_ITEM_MARGIN, y, str(self.__min_value))
+            painter.drawText(self.LEGEND_ITEM_MARGIN, y, format_number(float(self.__min_value)))
         if self.__max_value is not None:
-            t = str(self.__max_value)
+            t = format_number(float(self.__max_value))
             painter.drawText(self.__width - self.LEGEND_ITEM_MARGIN - fm.width(t), y, t)
         if self.__uom is not None:
             t = self.__uom
             painter.drawText((self.__width - fm.width(t)) /2, y, t)
         painter.restore()
 
+def format_number(f):
+    if f < 10000:
+        return "{:.1f}".format(f)
+    else:
+        return "{:.1e}".format(f)

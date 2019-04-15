@@ -36,7 +36,7 @@ class ImageryDataItem(LogItem):
         QgsMapLayerRegistry.instance().addMapLayers([self.__layer], addToLegend = False)
         self.__image_depth_range = (depth_from, depth_to)
 
-        #self.__x_offset = self.__layer.width()/2.0
+        # unused for now
         self.__x_offset = 0
 
     def boundingRect(self):
@@ -57,12 +57,12 @@ class ImageryDataItem(LogItem):
     def set_height(self, height):
         self.__height = height
 
-    def move_right(self):
-        self.__x_offset -= 10.0 / self.__width * self.__layer.width()
-        self.update()
-    def move_left(self):
-        self.__x_offset += 10.0 / self.__width * self.__layer.width()
-        self.update()
+    #def move_right(self):
+    #    self.__x_offset -= 10.0 / self.__width * self.__layer.width()
+    #    self.update()
+    #def move_left(self):
+    #    self.__x_offset += 10.0 / self.__width * self.__layer.width()
+    #    self.update()
 
     def paint(self, painter, option, widget):
         self.draw_background(painter)

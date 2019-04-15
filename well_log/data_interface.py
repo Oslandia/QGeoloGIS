@@ -70,7 +70,7 @@ class LayerData(DataInterface):
     They will be sorted on X before being displayed.
     """
 
-    def __init__(self, layer, x_fieldname, y_fieldname):
+    def __init__(self, layer, x_fieldname, y_fieldname, filter_expression = None):
 
         DataInterface.__init__(self)
 
@@ -83,6 +83,7 @@ class LayerData(DataInterface):
         self.__x_max = None
         self.__y_min = None
         self.__y_max = None
+        self.__filter_expression = filter_expression
 
         layer.attributeValueChanged.connect(self.__build_data)
         layer.featureAdded.connect(self.__build_data)
@@ -113,15 +114,18 @@ class LayerData(DataInterface):
 
     def __build_data(self):
 
+        req = QgsFeatureRequest()
+        if self.__filter_expression is not None:
+            req.setFilterExpression(self.__filter_expression)
         # TODO It should have been way more better to use addOrderBy on
         # QgsFeatureRequest but it doesn't work well (with memory data for
         # instance) in QGIS 2 To be changed in QGIS 3
 
         # Sort data on x for correct display
         xy_values = list(zip([f[self.__x_fieldname]
-                              for f in self.__layer.getFeatures()],
+                              for f in self.__layer.getFeatures(req)],
                              [f[self.__y_fieldname]
-                              for f in self.__layer.getFeatures()]))
+                              for f in self.__layer.getFeatures(req)]))
 
         # sort on x
         xy_values.sort(key=lambda coord: coord[0])

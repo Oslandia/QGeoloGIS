@@ -25,9 +25,12 @@ from .qt_qgis_compat import QgsFeatureRendererV2, QgsGeometry, QgsFields, QgsFea
 from .well_log_common import POINT_RENDERER, LINE_RENDERER, POLYGON_RENDERER
 from .well_log_common import ORIENTATION_UPWARD, ORIENTATION_DOWNWARD, ORIENTATION_LEFT_TO_RIGHT, LogItem, qgis_render_context
 
+from .well_log_time_scale import UTC
+
 import numpy as np
 import bisect
 import math
+from datetime import datetime
 
 class PlotItem(LogItem):
 
@@ -76,14 +79,11 @@ class PlotItem(LogItem):
     def boundingRect(self):
         return QRectF(0, 0, self.__item_size.width(), self.__item_size.height())
 
-    def set_item_size(self, size):
-        self.prepareGeometryChange()
-        self.__item_size = size
-
     def height(self):
         return self.__item_size.height()
     def set_height(self, height):
         self.__item_size.setHeight(height)
+
     def width(self):
         return self.__item_size.width()
     def set_width(self, width):
@@ -302,15 +302,20 @@ class PlotItem(LogItem):
         elif self.__x_orientation == ORIENTATION_DOWNWARD and self.__y_orientation == ORIENTATION_LEFT_TO_RIGHT:
             xx = (event.scenePos().y() - self.pos().y()) / self.height() * self.__data_rect.width() + self.__data_rect.x()
         i = bisect.bisect_left(self.__x_values, xx)
-        # change the attached point when we are between two points
-        if i > 0 and (xx - self.__x_values[i-1]) < (self.__x_values[i] - xx):
-            i = i -1
-        self.__point_to_label = i
+        if i >= 0 and i < len(self.__x_values):
+            # switch the attached point when we are between two points
+            if i > 0 and (xx - self.__x_values[i-1]) < (self.__x_values[i] - xx):
+                i -= 1
+            self.__point_to_label = i
+        else:
+            self.__point_to_label = None
         if self.__point_to_label != self.__old_point_to_label:
             self.update()
+        if self.__point_to_label is not None:
             x, y = self.__x_values[i], self.__y_values[i]
             if self.__x_orientation == ORIENTATION_LEFT_TO_RIGHT and self.__y_orientation == ORIENTATION_UPWARD:
-                txt = "Time: {} Value: {}".format(x,y)
+                dt = datetime.fromtimestamp(x, UTC())
+                txt = "Time: {} Value: {}".format(unicode(dt.strftime("%x %X"), "utf8"),y)
             elif self.__x_orientation == ORIENTATION_DOWNWARD and self.__y_orientation == ORIENTATION_LEFT_TO_RIGHT:
                 txt = "Depth: {} Value: {}".format(x,y)
             self.tooltipRequested.emit(txt)

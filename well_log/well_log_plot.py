@@ -16,9 +16,10 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from qgis.PyQt.QtCore import Qt, QSizeF, QRectF
+from qgis.PyQt.QtCore import Qt, QSizeF, QRectF, QPoint
+from qgis.PyQt.QtGui import QBrush, QColor, QFontMetrics
 from qgis.PyQt.QtWidgets import QGraphicsItem, QComboBox, QDialog, QVBoxLayout, QDialogButtonBox
-from qgis.PyQt.QtWidgets import QStackedWidget
+from qgis.PyQt.QtWidgets import QStackedWidget, QToolTip
 from .qt_qgis_compat import QgsFeatureRendererV2, QgsGeometry, QgsFields, QgsFeature, QgsRectangle
 
 from .well_log_common import POINT_RENDERER, LINE_RENDERER, POLYGON_RENDERER
@@ -68,8 +69,11 @@ class PlotItem(LogItem):
         symbol.symbolLayers()[0].setBorderWidth(1.0)
         self.__renderer = self.__renderers[self.__render_type]
 
+        # index of the current point to label
+        self.__old_point_to_label = None
+        self.__point_to_label = None
+
     def boundingRect(self):
-        #return QRectF(self.pos().x(), self.pos().y(), self.__item_size.width(), self.__item_size.height())
         return QRectF(0, 0, self.__item_size.width(), self.__item_size.height())
 
     def set_item_size(self, size):
@@ -280,55 +284,38 @@ class PlotItem(LogItem):
         self.__renderer.renderFeature(feature, context)
         self.__renderer.stopRender(context)
 
-    def mouseMoveEvent(self, event):
-        if not self.__allow_mouse_translation:
-            return QGraphicsItem.mouseMoveEvent(self, event)
-
-        if self.__translation_orig is not None:
-            delta = self.__translation_orig - event.pos()
+        if self.__point_to_label is not None:
+            i = self.__point_to_label
+            x, y = self.__x_values[i], self.__y_values[i]
             if self.__x_orientation == ORIENTATION_LEFT_TO_RIGHT and self.__y_orientation == ORIENTATION_UPWARD:
-                deltaX = delta.x() / self.__item_size.width() * self.__data_rect.width()
-                deltaY = -delta.y() / self.__item_size.height() * self.__data_rect.height()
+                px = (x - self.__data_rect.x()) * rw
+                py = self.__item_size.height() - (y - self.__data_rect.y()) * rh
             elif self.__x_orientation == ORIENTATION_DOWNWARD and self.__y_orientation == ORIENTATION_LEFT_TO_RIGHT:
-                deltaX = delta.y() / self.__item_size.height() * self.__data_rect.width()
-                deltaY = delta.x() / self.__item_size.width() * self.__data_rect.height()
-            self.__data_rect = QRectF(self.__translation_orig_rect)
-            self.__data_rect.translate(deltaX, deltaY)
-            self.update()
-        return QGraphicsItem.mouseMoveEvent(self, event)
+                px = (y - self.__data_rect.y()) * rh
+                py = (x - self.__data_rect.x()) * rw
+            painter.drawLine(px-5, py, px+5, py)
+            painter.drawLine(px, py-5, px, py+5)
 
-    def mousePressEvent(self, event):
-        if not self.__allow_mouse_translation:
-            return QGraphicsItem.mousePressEvent(self, event)
-        self.__translation_orig = None
-        if event.buttons() == Qt.LeftButton:
-            self.__translation_orig = event.pos()
-            self.__translation_orig_rect = QRectF(self.__data_rect)
-        return QGraphicsItem.mousePressEvent(self, event)
-
-    def wheelEvent(self, event):
-        if not self.__allow_wheel_zoom:
-            return QGraphicsItem.wheelEvent(self, event)
-        delta = -event.delta() / 100.0
-
-        w = self.__data_rect.width()
-        h = self.__data_rect.height()
-        if delta > 0:
-            nw = w * delta
-            nh = h * delta
-        else:
-            nw = w / -delta
-            nh = h / -delta
+    def mouseMoveEvent(self, event):
         if self.__x_orientation == ORIENTATION_LEFT_TO_RIGHT and self.__y_orientation == ORIENTATION_UPWARD:
-            dx = self.__data_rect.x() + event.pos().x() / self.__item_size.width() * (w - nw)
-            dy = self.__data_rect.y() + (self.__item_size.height() - event.pos().y()) / self.__item_size.height() * (h - nh)
+            xx = (event.scenePos().x() - self.pos().x()) / self.width() * self.__data_rect.width() + self.__data_rect.x()
         elif self.__x_orientation == ORIENTATION_DOWNWARD and self.__y_orientation == ORIENTATION_LEFT_TO_RIGHT:
-            dx = self.__data_rect.x() + event.pos().y() / self.__item_size.height() * (w - nw)
-            dy = self.__data_rect.y() + event.pos().x() / self.__item_size.width() * (h - nh)
-        self.__data_rect.setWidth(nw)
-        self.__data_rect.setHeight(nh)
-        self.__data_rect.moveTo(dx, dy)
-        self.update()
+            xx = (event.scenePos().y() - self.pos().y()) / self.height() * self.__data_rect.width() + self.__data_rect.x()
+        i = bisect.bisect_left(self.__x_values, xx)
+        # change the attached point when we are between two points
+        if i > 0 and (xx - self.__x_values[i-1]) < (self.__x_values[i] - xx):
+            i = i -1
+        self.__point_to_label = i
+        if self.__point_to_label != self.__old_point_to_label:
+            self.update()
+            x, y = self.__x_values[i], self.__y_values[i]
+            if self.__x_orientation == ORIENTATION_LEFT_TO_RIGHT and self.__y_orientation == ORIENTATION_UPWARD:
+                txt = "Time: {} Value: {}".format(x,y)
+            elif self.__x_orientation == ORIENTATION_DOWNWARD and self.__y_orientation == ORIENTATION_LEFT_TO_RIGHT:
+                txt = "Depth: {} Value: {}".format(x,y)
+            self.tooltipRequested.emit(txt)
+
+        self.__old_point_to_label = self.__point_to_label
 
     def edit_style(self):
         from qgis.gui import QgsSingleSymbolRendererV2Widget

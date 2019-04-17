@@ -19,6 +19,7 @@
 from qgis.PyQt.QtCore import Qt, QRectF, QSizeF
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel, QVBoxLayout
+from qgis.PyQt.QtWidgets import QStatusBar
 
 from .well_log_common import LINE_RENDERER, ORIENTATION_UPWARD, ORIENTATION_LEFT_TO_RIGHT
 from .well_log_plot import PlotItem
@@ -35,6 +36,8 @@ class TimeSeriesGraphicsView(QGraphicsView):
         self.__translation_orig = None
         self.__translation_min_x = None
         self.__translation_max_x = None
+
+        self.setMouseTracking(True)
 
     def resizeEvent(self, event):
         QGraphicsView.resizeEvent(self, event)
@@ -81,9 +84,22 @@ class TimeSeriesGraphicsView(QGraphicsView):
     def mouseReleaseEvent(self, event):
         if event.pos() == self.__translation_orig:
             self.parentWidget().select_row_at(event.pos())
+        self.__translation_orig = None
 
         return QGraphicsView.mouseReleaseEvent(self, event)
 
+class MyScene(QGraphicsScene):
+    def __init__(self, x, y, w, h):
+        QGraphicsScene.__init__(self, x, y, w, h)
+
+    def mouseMoveEvent(self, event):
+        # pass the event to the underlying item
+        for item in list(self.items()):
+            r = item.boundingRect()
+            r.translate(item.pos())
+            if r.contains(event.scenePos()):
+                return item.mouseMoveEvent(event)
+        return QGraphicsScene.mouseMoveEvent(self, event)
 
 class TimeSeriesView(QWidget):
 
@@ -93,7 +109,7 @@ class TimeSeriesView(QWidget):
         QWidget.__init__(self, parent)
 
         self.__toolbar = QToolBar()
-        self.__scene = QGraphicsScene(0, 0, 600, 400)
+        self.__scene = MyScene(0, 0, 600, 400)
         self.__view = TimeSeriesGraphicsView(self.__scene)
         self.__view.setAlignment(Qt.AlignLeft|Qt.AlignTop)
 
@@ -126,10 +142,13 @@ class TimeSeriesView(QWidget):
         if title is not None:
             self.set_title(title)
 
+        self.__status_bar = QStatusBar()
+
         vbox = QVBoxLayout()
         vbox.addWidget(self.__title_label)
         vbox.addWidget(self.__toolbar)
         vbox.addWidget(self.__view)
+        vbox.addWidget(self.__status_bar)
         self.setLayout(vbox)
 
         self.__station_id = None
@@ -214,6 +233,9 @@ class TimeSeriesView(QWidget):
         # Rows not found
         assert False
 
+    def on_plot_tooltip(self, txt):
+        self.__status_bar.showMessage(txt)
+
     def add_data_row(self, data, title, uom):
         plot_item = PlotItem(size=QSizeF(self.__scene.width(), self.DEFAULT_ROW_HEIGHT),
                              render_type = LINE_RENDERER,
@@ -221,6 +243,7 @@ class TimeSeriesView(QWidget):
                              y_orientation = ORIENTATION_UPWARD)
 
         plot_item.set_layer(data.get_layer())
+        plot_item.tooltipRequested.connect(self.on_plot_tooltip)
 
         legend_item = LegendItem(self.DEFAULT_ROW_HEIGHT, title, unit_of_measure=uom, is_vertical=True)
         data.data_modified.connect(lambda data=data : self._update_data_row(data))

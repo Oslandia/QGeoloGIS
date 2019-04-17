@@ -16,9 +16,10 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from qgis.PyQt.QtCore import Qt, QRectF, QSizeF
+from qgis.PyQt.QtCore import Qt, QRectF, QSizeF, QPoint
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel, QVBoxLayout
+from qgis.PyQt.QtWidgets import QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel, QVBoxLayout, QToolTip
+from qgis.PyQt.QtWidgets import QStatusBar
 
 from .well_log_common import POLYGON_RENDERER, ORIENTATION_DOWNWARD, ORIENTATION_LEFT_TO_RIGHT
 
@@ -38,6 +39,8 @@ class LogGraphicsView(QGraphicsView):
         self.__translation_orig = None
         self.__translation_min_z = None
         self.__translation_max_z = None
+
+        self.setMouseTracking(True)
 
     def resizeEvent(self, event):
         QGraphicsView.resizeEvent(self, event)
@@ -85,9 +88,22 @@ class LogGraphicsView(QGraphicsView):
     def mouseReleaseEvent(self, event):
         if event.pos() == self.__translation_orig:
             self.parentWidget().select_column_at(event.pos())
+        self.__translation_orig = None
 
         return QGraphicsView.mouseReleaseEvent(self, event)
 
+class MyScene(QGraphicsScene):
+    def __init__(self, x, y, w, h):
+        QGraphicsScene.__init__(self, x, y, w, h)
+
+    def mouseMoveEvent(self, event):
+        # pass the event to the underlying item
+        for item in list(self.items()):
+            r = item.boundingRect()
+            r.translate(item.pos())
+            if r.contains(event.scenePos()):
+                return item.mouseMoveEvent(event)
+        return QGraphicsScene.mouseMoveEvent(self, event)
 
 class WellLogView(QWidget):
 
@@ -96,8 +112,8 @@ class WellLogView(QWidget):
     def __init__(self, title=None,image_dir=None, parent=None):
         QWidget.__init__(self, parent)
 
-        self.__toolbar = QToolBar()
-        self.__log_scene = QGraphicsScene(0, 0, 600, 600)
+        toolbar = QToolBar()
+        self.__log_scene = MyScene(0, 0, 600, 600)
         self.__log_view = LogGraphicsView(self.__log_scene)
         self.__log_view.setAlignment(Qt.AlignLeft|Qt.AlignTop)
 
@@ -106,30 +122,30 @@ class WellLogView(QWidget):
         if image_dir is None:
             image_dir = os.path.join(os.path.dirname(__file__), "img")
 
-        self.__action_move_column_left = QAction(QIcon(os.path.join(image_dir, "left.svg")), "Move the column to the left", self.__toolbar)
+        self.__action_move_column_left = QAction(QIcon(os.path.join(image_dir, "left.svg")), "Move the column to the left", toolbar)
         self.__action_move_column_left.triggered.connect(self.on_move_column_left)
-        self.__action_move_column_right = QAction(QIcon(os.path.join(image_dir, "right.svg")), "Move the column to the right", self.__toolbar)
+        self.__action_move_column_right = QAction(QIcon(os.path.join(image_dir, "right.svg")), "Move the column to the right", toolbar)
         self.__action_move_column_right.triggered.connect(self.on_move_column_right)
 
-        self.__action_edit_style = QAction(QIcon(os.path.join(image_dir, "symbology.svg")), "Edit column style", self.__toolbar)
+        self.__action_edit_style = QAction(QIcon(os.path.join(image_dir, "symbology.svg")), "Edit column style", toolbar)
         self.__action_edit_style.triggered.connect(self.on_edit_style)
 
-        self.__action_add_column = QAction(QIcon(os.path.join(image_dir, "add.svg")), "Add a data column", self.__toolbar)
+        self.__action_add_column = QAction(QIcon(os.path.join(image_dir, "add.svg")), "Add a data column", toolbar)
         self.__action_add_column.triggered.connect(self.on_add_column)
 
-        self.__action_remove_column = QAction(QIcon(os.path.join(image_dir, "remove.svg")), "Remove the column", self.__toolbar)
+        self.__action_remove_column = QAction(QIcon(os.path.join(image_dir, "remove.svg")), "Remove the column", toolbar)
         self.__action_remove_column.triggered.connect(self.on_remove_column)
 
-        #self.__action_move_content_right = QAction("Move content right", self.__toolbar)
-        #self.__action_move_content_left = QAction("Move content left", self.__toolbar)
+        #self.__action_move_content_right = QAction("Move content right", toolbar)
+        #self.__action_move_content_left = QAction("Move content left", toolbar)
         #self.__action_move_content_left.triggered.connect(self.on_move_content_left)
         #self.__action_move_content_right.triggered.connect(self.on_move_content_right)
 
-        self.__toolbar.addAction(self.__action_move_column_left)
-        self.__toolbar.addAction(self.__action_move_column_right)
-        self.__toolbar.addAction(self.__action_edit_style)
-        self.__toolbar.addAction(self.__action_add_column)
-        self.__toolbar.addAction(self.__action_remove_column)
+        toolbar.addAction(self.__action_move_column_left)
+        toolbar.addAction(self.__action_move_column_right)
+        toolbar.addAction(self.__action_edit_style)
+        toolbar.addAction(self.__action_add_column)
+        toolbar.addAction(self.__action_remove_column)
 
         #self.__toolbar.addAction(self.__action_move_content_left)
         #self.__toolbar.addAction(self.__action_move_content_right)
@@ -138,10 +154,13 @@ class WellLogView(QWidget):
         if title is not None:
             self.set_title(title)
 
+        self.__status_bar = QStatusBar()
+
         vbox = QVBoxLayout()
         vbox.addWidget(self.__title_label)
-        vbox.addWidget(self.__toolbar)
+        vbox.addWidget(toolbar)
         vbox.addWidget(self.__log_view)
+        vbox.addWidget(self.__status_bar)
         self.setLayout(vbox)
 
         self.__station_id = None
@@ -247,6 +266,9 @@ class WellLogView(QWidget):
         self._place_items()
         self._update_button_visibility()
 
+    def on_plot_tooltip(self, txt):
+        self.__status_bar.showMessage(txt)
+
     def add_data_column(self, data, title, uom):
         plot_item = PlotItem(size=QSizeF(self.DEFAULT_COLUMN_WIDTH, self.__log_scene.height()),
                              render_type = POLYGON_RENDERER,
@@ -254,6 +276,7 @@ class WellLogView(QWidget):
                              y_orientation = ORIENTATION_LEFT_TO_RIGHT)
 
         plot_item.set_layer(data.get_layer())
+        plot_item.tooltipRequested.connect(self.on_plot_tooltip)
 
         legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH, title, unit_of_measure=uom)
         data.data_modified.connect(lambda data=data : self._update_data_column(data))
@@ -429,7 +452,7 @@ if __name__=='__main__':
     x_values = [float(x) for x in range(1, 1001)]
     w.add_data_column(FeatureData(layer, "y", x_values, 1), "test title", "m")
 
-    w.add_imagery("/home/hme/src/1805_03_ceadam_visu_geol/data/VALDUC/DIAGRAPHIE/B8/DIAGRAPHIE_DIFFEREE/OBI/20161201/OBI.jpg", "Image", 5.0, 48.0)
+    #w.add_imagery("/home/hme/src/1805_03_ceadam_visu_geol/data/VALDUC/DIAGRAPHIE/B8/DIAGRAPHIE_DIFFEREE/OBI/20161201/OBI.optimized.tiff", "Image", 5.0, 48.0)
     
     w.show()
 

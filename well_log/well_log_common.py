@@ -16,9 +16,9 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from qgis.PyQt.QtCore import Qt
+from qgis.PyQt.QtCore import Qt, pyqtSignal
 from qgis.PyQt.QtGui import QColor, QPen, QBrush
-from qgis.PyQt.QtWidgets import QGraphicsItem
+from qgis.PyQt.QtWidgets import QGraphicsWidget
 
 from qgis.core import QgsMapToPixel, QgsRenderContext
 
@@ -47,9 +47,13 @@ def qgis_render_context(painter, width, height):
     context.setPainter(painter)
     return context
 
-class LogItem(QGraphicsItem):
+class LogItem(QGraphicsWidget):
+
+    # the item has requested to display a tooltip string
+    tooltipRequested = pyqtSignal(str)
+
     def __init__(self, parent=None):
-        QGraphicsItem.__init__(self, parent)
+        QGraphicsWidget.__init__(self, parent)
 
         self.__selected = False
 

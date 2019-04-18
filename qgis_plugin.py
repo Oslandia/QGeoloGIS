@@ -97,6 +97,9 @@ def select_data_to_add(viewer, feature_id, config_list):
             req.setFilterExpression("{}={}".format(cfg["feature_ref_column"], feature_id))
             if len(list(data_l.getFeatures(req))) == 0:
                 continue
+        elif cfg["type"] == "image":
+            if not viewer.has_imagery_data(cfg):
+                continue
 
         item = QListWidgetItem(cfg["name"])
         item.setData(Qt.UserRole, cfg)
@@ -156,6 +159,21 @@ class WellLogViewWrapper(WellLogView):
         sources = list(self.__config["log_measures"])
         sources += [dict(list(d.items()) + [("type","image")]) for d in self.__config["imagery_data"]]
         select_data_to_add(self, self.__feature.id(), sources)
+
+    def has_imagery_data(self, cfg):
+        if cfg.get("provider", "postgres_bytea") != "postgres_bytea":
+            # not implemented
+            return False
+
+        import psycopg2
+        conn = psycopg2.connect(cfg["source"])
+        cur = conn.cursor()
+        cur.execute("select count(*) from {schema}.{table} where {ref_column}=%s"\
+                    .format(schema=cfg["schema"],
+                            table=cfg["table"],
+                            ref_column=cfg["feature_ref_column"]),
+                    (self.__feature.id(),))
+        return cur.fetchone()[0] > 0
 
     def add_imagery_from_db(self, cfg):
         if cfg.get("provider", "postgres_bytea") != "postgres_bytea":

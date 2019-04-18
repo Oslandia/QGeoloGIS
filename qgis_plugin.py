@@ -145,7 +145,7 @@ class WellLogViewWrapper(WellLogView):
         l = QgsVectorLayer(uri, "layer", provider)
         f = "{}={}".format(cfg["feature_ref_column"], feature.id())
         l.setSubsetString(f)
-        self.add_stratigraphy(l, (cfg["depth_from_column"], cfg["depth_to_column"], cfg["formation_code_column"], cfg["rock_code_column"]), "Stratigraphie")
+        self.add_stratigraphy(l, (cfg["depth_from_column"], cfg["depth_to_column"], cfg["formation_code_column"], cfg["rock_code_column"]), "Stratigraphy")
 
     def on_add_column(self):
         sources = list(self.__config["log_measures"])

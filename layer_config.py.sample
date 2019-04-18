@@ -32,6 +32,17 @@ layer_config = {
                                        ("tool_instant_speed", "Tool instant speed", "m/s"),
                                        ("tool_injection_pressure", "Tool injection pressure", "Pa"),
                                        ("tool_rotation_couple", "Tool rotation couple", "N.m")]
+        ] + [
+            {
+                "source": ("""service='bdlhes' sslmode=disable key='station_id,altitude' table="qgis"."measure_fracturing_rate" sql=""", "postgres"),
+                "name": "Fracturing rate",
+                "uom": "%",
+                "feature_ref_column" : "station_id",
+                # type: continuous | instantaneous
+                "type": "instantaneous",
+                "event_column" : "altitude",
+                "value_column": "value"
+            }
         ],
         # timeseries tables
         "timeseries" : [

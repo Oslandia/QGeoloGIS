@@ -102,12 +102,13 @@ class StratigraphyItem(LogItem):
             painter.drawLine(0, y2, self.__width-1, y2)
 
             # legend text
-            fm = painter.fontMetrics()
-            w = fm.width(formation_code)
-            x = (self.__width/2 - w) / 2 + self.__width/2
-            y = (y1+y2)/2
-            if y - fm.ascent() > y1 and y + fm.descent() < y2:
-                painter.drawText(x, y, formation_code)
+            if formation_code:
+                fm = painter.fontMetrics()
+                w = fm.width(formation_code)
+                x = (self.__width/2 - w) / 2 + self.__width/2
+                y = (y1+y2)/2
+                if y - fm.ascent() > y1 and y + fm.descent() < y2:
+                    painter.drawText(x, y, formation_code)
             #'~/.qgis2/python/plugins/thyrsis/styles/usgs' || rock_code || '.svg'
             # polygon
             geom = QgsGeometry.fromQPolygonF(QPolygonF(QRectF(0, self.__height-y1, self.__width/2, y1-y2)))

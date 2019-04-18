@@ -42,7 +42,7 @@ class LegendItem(LogItem):
         # title font
         self.__font1 = QFont()
         self.__font1.setBold(True)
-        self.__font1.setPointSize(12)
+        self.__font1.setPointSize(10)
 
         # value font
         self.__font2 = QFont()

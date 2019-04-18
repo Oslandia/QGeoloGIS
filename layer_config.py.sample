@@ -13,7 +13,9 @@ layer_config = {
             "depth_from_column" : "depth_from",
             "depth_to_column" : "depth_to",
             "formation_code_column" : "formation_code",
-            "rock_code_column" : "rock_code"
+            "rock_code_column" : "rock_code",
+            "formation_description_column" : "formation_description",
+            "rock_description_column" : "rock_description"
         },
         # measure tables for well logs
         "log_measures" : [

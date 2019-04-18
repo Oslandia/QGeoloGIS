@@ -90,7 +90,7 @@ class StratigraphyItem(LogItem):
         self.__renderer.startRender(context, fields)
 
         for i, d in enumerate(self.__data):
-            depth_from, depth_to, formation_code, rock_code = d
+            depth_from, depth_to, formation_code, rock_code, _, _ = d
 
             y1 = (depth_from - self.__min_z) / (self.__max_z - self.__min_z) * self.__height
             y2 = (depth_to - self.__min_z) / (self.__max_z - self.__min_z) * self.__height
@@ -121,6 +121,14 @@ class StratigraphyItem(LogItem):
             self.__renderer.renderFeature(feature, context)
 
         self.__renderer.stopRender(context)
+
+    def mouseMoveEvent(self, event):
+        z = (event.scenePos().y() - self.pos().y()) / self.height() * (self.__max_z - self.__min_z) + self.__min_z
+        for d in self.__data:
+            depth_from, depth_to, _, _, formation_description, rock_description = d
+            if z > depth_from and z < depth_to:
+                self.tooltipRequested.emit(u"Formation: {} Rock: {}".format(formation_description, rock_description))
+                break
 
     def edit_style(self):
         dlg = StratigraphyStyleDialog(self.__layer, self.__renderer)

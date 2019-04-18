@@ -266,7 +266,7 @@ class WellLogView(QWidget):
         self._place_items()
         self._update_button_visibility()
 
-    def on_plot_tooltip(self, txt):
+    def on_tooltip(self, txt):
         self.__status_bar.showMessage(txt)
 
     def add_data_column(self, data, title, uom):
@@ -276,7 +276,7 @@ class WellLogView(QWidget):
                              y_orientation = ORIENTATION_LEFT_TO_RIGHT)
 
         plot_item.set_layer(data.get_layer())
-        plot_item.tooltipRequested.connect(self.on_plot_tooltip)
+        plot_item.tooltipRequested.connect(self.on_tooltip)
 
         legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH, title, unit_of_measure=uom)
         data.data_modified.connect(lambda data=data : self._update_data_column(data))
@@ -315,8 +315,9 @@ class WellLogView(QWidget):
         legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH, title)
 
         item.set_layer(layer)
+        item.tooltipRequested.connect(self.on_tooltip)
 
-        item.set_data([[f[c] for c in column_mapping] for f in layer.getFeatures()])
+        item.set_data([[f[c] if c is not None else None for c in column_mapping] for f in layer.getFeatures()])
         
         self._add_column(item, legend_item)
 

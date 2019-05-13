@@ -184,6 +184,7 @@ def select_data_to_add(viewer, feature_id, config_list):
 class WellLogViewWrapper(WellLogView):
     def __init__(self, config, feature):
         WellLogView.__init__(self, feature[config["name_column"]])
+        self.setWindowTitle("Well log viewer")
         self.__config = config
         self.__feature = feature
 
@@ -254,6 +255,7 @@ class WellLogViewWrapper(WellLogView):
 class TimeSeriesWrapper(TimeSeriesView):
     def __init__(self, config, feature):
         TimeSeriesView.__init__(self, feature[config["name_column"]])
+        self.setWindowTitle("Time series viewer")
         self.__config = config
         self.__feature = feature
 

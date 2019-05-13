@@ -137,12 +137,16 @@ class PlotItem(LogItem):
                 self.__x_values.pop(i)
 
         # Initialize data rect to display all data
+        # with a 20% buffer around Y values
         min_x = min(self.__x_values)
         max_x = max(self.__x_values)
         min_y = min(self.__y_values)
         max_y = max(self.__y_values)
         if max_y == 0.0:
             max_y = 1.0
+        h = max_y - min_y
+        min_y -= h * 0.1
+        max_y += h * 0.1
         self.__data_rect = QRectF(
             min_x, min_y,
             max_x-min_x, max_y-min_y)

@@ -258,8 +258,8 @@ class TimeSeriesView(QWidget):
         self._update_row_depths()
 
     def add_time_scale(self, title="Time"):
-        scale_item = TimeScaleItem(self.__scene.width(), self.DEFAULT_ROW_HEIGHT * 2 / 3, self._min_x, self._max_x)
-        legend_item = LegendItem(self.DEFAULT_ROW_HEIGHT * 2 / 3, title, is_vertical = True)
+        scale_item = TimeScaleItem(self.__scene.width(), self.DEFAULT_ROW_HEIGHT * 3 / 4, self._min_x, self._max_x)
+        legend_item = LegendItem(self.DEFAULT_ROW_HEIGHT * 3 / 4, title, is_vertical = True)
         self._add_row(scale_item, legend_item)
 
     def _update_data_row(self, data):

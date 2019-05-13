@@ -80,6 +80,21 @@ layer_config = {
                 "value_column": "measure_value"
             } for table, name, uom in [("instantaneous_ground_water_level", "Ground water level (instantaneous)", "m"),
                                        ("instantaneous_water_level", "Water level (instantaneous)", "m")]
+        ] + [
+            {
+                "source": ("""service='bdlhes' sslmode=disable key='id' table="qgis"."measure_chemical_analysis_result" sql=""".format(table), "postgres"),
+                "name": "Chemical analysis",
+                "uom_column": "measure_unit",
+                "feature_ref_column" : "station_id",
+                # Filter on chemical_element
+                "feature_filter_type" : "unique_data_from_values",
+                "feature_filter_column" : "chemical_element",
+                # type: continuous | instantaneous
+                "type": "instantaneous",
+                # settings for the continuous type
+                "event_column" : "measure_epoch",
+                "value_column": "measure_value"
+            }
         ],
         # imagery data
         "imagery_data" : [

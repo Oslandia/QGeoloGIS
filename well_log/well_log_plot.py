@@ -141,6 +141,8 @@ class PlotItem(LogItem):
         max_x = max(self.__x_values)
         min_y = min(self.__y_values)
         max_y = max(self.__y_values)
+        if max_y == 0.0:
+            max_y = 1.0
         self.__data_rect = QRectF(
             min_x, min_y,
             max_x-min_x, max_y-min_y)

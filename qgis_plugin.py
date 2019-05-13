@@ -24,7 +24,7 @@ from .well_log.data_interface import FeatureData, LayerData
 
 from qgis.PyQt.QtCore import Qt, pyqtSignal
 from qgis.PyQt.QtWidgets import QAction, QDialog, QVBoxLayout, QDialogButtonBox, QAbstractItemView
-from qgis.PyQt.QtWidgets import QListWidget, QListWidgetItem
+from qgis.PyQt.QtWidgets import QListWidget, QListWidgetItem, QHBoxLayout, QLabel, QComboBox
 
 class FeatureSelectionTool(QgsMapTool):   
     pointClicked = pyqtSignal(QgsPoint)
@@ -85,8 +85,39 @@ def select_data_to_add(viewer, feature_id, config_list):
     lw = QListWidget()
     lw.setSelectionMode(QAbstractItemView.ExtendedSelection)
 
+    hbox = QHBoxLayout()
+    lbl = QLabel("Sub selection")
+    sub_selection_combo = QComboBox()
+    sub_selection_combo.setEnabled(False)
+    hbox.addWidget(lbl)
+    hbox.addWidget(sub_selection_combo)
+
     vbox.addWidget(lw)
+    vbox.addLayout(hbox)
     vbox.addWidget(btn)
+
+    def on_selection_changed():
+        sub_selection_combo.clear()
+        sub_selection_combo.setEnabled(False)
+        for item in lw.selectedItems():
+            cfg = item.data(Qt.UserRole)
+            if "filter_unique_values" in cfg:
+                for v in cfg["filter_unique_values"]:
+                    sub_selection_combo.addItem(v)
+            if "filter_value" in cfg:
+                sub_selection_combo.setCurrentIndex(sub_selection_combo.findText(cfg["filter_value"]))
+            sub_selection_combo.setEnabled(True)
+            return
+
+    def on_combo_changed(text):
+        for item in lw.selectedItems():
+            cfg = item.data(Qt.UserRole)
+            cfg["filter_value"] = text
+            item.setData(Qt.UserRole, cfg)
+            return
+
+    lw.itemSelectionChanged.connect(on_selection_changed)
+    sub_selection_combo.currentIndexChanged[str].connect(on_combo_changed)
 
     for cfg in config_list:
         if cfg["type"] in ("continuous", "instantaneous"):
@@ -97,6 +128,11 @@ def select_data_to_add(viewer, feature_id, config_list):
             req.setFilterExpression("{}={}".format(cfg["feature_ref_column"], feature_id))
             if len(list(data_l.getFeatures(req))) == 0:
                 continue
+
+            if cfg.get("feature_filter_type") == "unique_data_from_values":
+                # get unique filter values
+                cfg["filter_unique_values"] = sorted(list(set([f[cfg["feature_filter_column"]] for f in data_l.getFeatures(req)])))
+
         elif cfg["type"] == "image":
             if not viewer.has_imagery_data(cfg):
                 continue
@@ -126,14 +162,22 @@ def select_data_to_add(viewer, feature_id, config_list):
                 pass
             if f is None:
                 return
+            if "filter_value" in cfg:
+                filter_expr += " and {}='{}'".format(cfg["feature_filter_column"], cfg["filter_value"])
+                title = cfg["filter_value"]
+            else:
+                title = cfg["name"]
             if cfg["type"] == "continuous":
                 data = FeatureData(data_l, cfg["values_column"], feature_id=f.id(), x_start=f[cfg["start_measure_column"]], x_delta=f[cfg["interval_column"]])
+                uom = cfg["uom"]
             if cfg["type"] == "instantaneous":
-                data = LayerData(data_l, cfg["event_column"], cfg["value_column"], filter_expression = filter_expr)
+                uom = cfg["uom"] if "uom" in cfg else "@" + cfg["uom_column"]
+                data = LayerData(data_l, cfg["event_column"], cfg["value_column"], filter_expression=filter_expr, uom=uom)
+                uom = data.uom()
             if hasattr(viewer, "add_data_column"):
-                viewer.add_data_column(data, cfg["name"], cfg["uom"])
+                viewer.add_data_column(data, title, uom)
             if hasattr(viewer, "add_data_row"):
-                viewer.add_data_row(data, cfg["name"], cfg["uom"])
+                viewer.add_data_row(data, title, uom)
         elif cfg["type"] == "image":
             viewer.add_imagery_from_db(cfg)
 

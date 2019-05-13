@@ -70,7 +70,7 @@ class LayerData(DataInterface):
     They will be sorted on X before being displayed.
     """
 
-    def __init__(self, layer, x_fieldname, y_fieldname, filter_expression = None):
+    def __init__(self, layer, x_fieldname, y_fieldname, filter_expression = None, nodata_value = 0.0, uom = None):
 
         DataInterface.__init__(self)
 
@@ -84,6 +84,8 @@ class LayerData(DataInterface):
         self.__y_min = None
         self.__y_max = None
         self.__filter_expression = filter_expression
+        self.__nodata_value = nodata_value
+        self.__uom = uom
 
         layer.attributeValueChanged.connect(self.__build_data)
         layer.featureAdded.connect(self.__build_data)
@@ -112,6 +114,9 @@ class LayerData(DataInterface):
     def get_y_max(self):
         return self.__y_max
 
+    def uom(self):
+        return self.__uom
+
     def __build_data(self):
 
         req = QgsFeatureRequest()
@@ -124,8 +129,14 @@ class LayerData(DataInterface):
         # Sort data on x for correct display
         xy_values = list(zip([f[self.__x_fieldname]
                               for f in self.__layer.getFeatures(req)],
-                             [f[self.__y_fieldname]
+                             [f[self.__y_fieldname] or self.__nodata_value
                               for f in self.__layer.getFeatures(req)]))
+
+        # Get unit of the first feature if needed
+        if self.__uom is not None and self.__uom.startswith("@"):
+            for f in self.__layer.getFeatures(req):
+                self.__uom = f[self.__uom[1:]]
+                break
 
         # sort on x
         xy_values.sort(key=lambda coord: coord[0])

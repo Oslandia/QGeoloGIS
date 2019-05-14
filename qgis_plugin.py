@@ -24,7 +24,7 @@ from .well_log.data_interface import FeatureData, LayerData
 
 from qgis.PyQt.QtCore import Qt, pyqtSignal
 from qgis.PyQt.QtWidgets import QAction, QDialog, QVBoxLayout, QDialogButtonBox, QAbstractItemView
-from qgis.PyQt.QtWidgets import QListWidget, QListWidgetItem, QHBoxLayout, QLabel, QComboBox
+from qgis.PyQt.QtWidgets import QListWidget, QListWidgetItem, QHBoxLayout, QLabel, QComboBox, QPushButton
 
 class FeatureSelectionTool(QgsMapTool):   
     pointClicked = pyqtSignal(QgsPoint)
@@ -73,113 +73,165 @@ class FeatureSelectionTool(QgsMapTool):
     def isEditTool(self):
         return True
 
-def select_data_to_add(viewer, feature_id, config_list):
-    dlg = QDialog()
+class DataSelector(QDialog):
+    #def select_data_to_add(viewer, feature_id, config_list):
+    def __init__(self, viewer, feature_id, feature_name, config_list, config):
+        QDialog.__init__(self)
 
-    vbox = QVBoxLayout()
+        self.__viewer = viewer
+        self.__feature_id = feature_id
+        self.__config_list = config_list
+        self.__config = config
 
-    btn = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
-    btn.accepted.connect(dlg.accept)
-    btn.rejected.connect(dlg.reject)
+        vbox = QVBoxLayout()
 
-    lw = QListWidget()
-    lw.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        btn = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        btn.accepted.connect(self.accept)
+        btn.rejected.connect(self.reject)
 
-    hbox = QHBoxLayout()
-    lbl = QLabel("Sub selection")
-    sub_selection_combo = QComboBox()
-    sub_selection_combo.setEnabled(False)
-    hbox.addWidget(lbl)
-    hbox.addWidget(sub_selection_combo)
+        self.__list = QListWidget()
+        self.__list.setSelectionMode(QAbstractItemView.ExtendedSelection)
 
-    vbox.addWidget(lw)
-    vbox.addLayout(hbox)
-    vbox.addWidget(btn)
+        hbox = QHBoxLayout()
+        lbl = QLabel("Sub selection")
+        self.__sub_selection_combo = QComboBox()
+        self.__sub_selection_combo.setEnabled(False)
+        hbox.addWidget(lbl)
+        hbox.addWidget(self.__sub_selection_combo)
 
-    def on_selection_changed():
-        sub_selection_combo.clear()
-        sub_selection_combo.setEnabled(False)
-        for item in lw.selectedItems():
+        from_elsewhere_btn = QPushButton("Select another station")
+
+        self.__title_label = QLabel()
+
+        hbox2 = QHBoxLayout()
+        hbox2.addWidget(self.__title_label)
+        hbox2.addWidget(from_elsewhere_btn)
+        
+        vbox.addLayout(hbox2)
+        vbox.addWidget(self.__list)
+        vbox.addLayout(hbox)
+        vbox.addWidget(btn)
+
+        self.__list.itemSelectionChanged.connect(self.on_selection_changed)
+        self.__sub_selection_combo.currentIndexChanged[str].connect(self.on_combo_changed)
+        from_elsewhere_btn.clicked.connect(self.on_from_elsewhere_clicked)
+
+        self.setLayout(vbox)
+        self.setWindowTitle("Choose the data to add")
+        self.resize(400,200)
+
+        self._populate_list()
+        self.set_title(feature_name)
+
+    def set_title(self, title):
+        self.__title_label.setText("Station: {}".format(title))
+
+    def _populate_list(self):
+        self.__list.clear()
+        for cfg in self.__config_list:
+            if cfg["type"] in ("continuous", "instantaneous"):
+                uri, provider = cfg["source"]
+                # check number of features for this station
+                data_l = QgsVectorLayer(uri, "data_layer", provider)
+                req = QgsFeatureRequest()
+                req.setFilterExpression("{}={}".format(cfg["feature_ref_column"], self.__feature_id))
+                if len(list(data_l.getFeatures(req))) == 0:
+                    continue
+
+                if cfg.get("feature_filter_type") == "unique_data_from_values":
+                    # get unique filter values
+                    cfg["filter_unique_values"] = sorted(list(set([f[cfg["feature_filter_column"]] for f in data_l.getFeatures(req)])))
+
+            elif cfg["type"] == "image":
+                if not self.__viewer.has_imagery_data(cfg):
+                    continue
+
+            item = QListWidgetItem(cfg["name"])
+            item.setData(Qt.UserRole, cfg)
+            self.__list.addItem(item)
+
+    def accept(self):
+        for item in self.__list.selectedItems():
+            # now add the selected configuration
+            cfg = item.data(Qt.UserRole)
+            if cfg["type"] in ("continuous", "instantaneous"):
+                uri, provider = cfg["source"]
+                data_l = QgsVectorLayer(uri, "data_layer", provider)
+                req = QgsFeatureRequest()
+                filter_expr = "{}={}".format(cfg["feature_ref_column"], self.__feature_id)
+                req.setFilterExpression(filter_expr)
+                f = None
+                for f in data_l.getFeatures(req):
+                    pass
+                if f is None:
+                    return
+                if "filter_value" in cfg:
+                    filter_expr += " and {}='{}'".format(cfg["feature_filter_column"], cfg["filter_value"])
+                    title = cfg["filter_value"]
+                else:
+                    title = cfg["name"]
+                if cfg["type"] == "continuous":
+                    data = FeatureData(data_l, cfg["values_column"], feature_id=f.id(), x_start=f[cfg["start_measure_column"]], x_delta=f[cfg["interval_column"]])
+                    uom = cfg["uom"]
+                if cfg["type"] == "instantaneous":
+                    uom = cfg["uom"] if "uom" in cfg else "@" + cfg["uom_column"]
+                    data = LayerData(data_l, cfg["event_column"], cfg["value_column"], filter_expression=filter_expr, uom=uom)
+                    uom = data.uom()
+                if hasattr(self.__viewer, "add_data_column"):
+                    self.__viewer.add_data_column(data, title, uom)
+                if hasattr(self.__viewer, "add_data_row"):
+                    self.__viewer.add_data_row(data, title, uom)
+            elif cfg["type"] == "image":
+                self.__viewer.add_imagery_from_db(cfg)
+
+        QDialog.accept(self)
+
+    def on_selection_changed(self):
+        self.__sub_selection_combo.clear()
+        self.__sub_selection_combo.setEnabled(False)
+        for item in self.__list.selectedItems():
             cfg = item.data(Qt.UserRole)
             if "filter_unique_values" in cfg:
                 for v in cfg["filter_unique_values"]:
-                    sub_selection_combo.addItem(v)
+                    self.__sub_selection_combo.addItem(v)
             if "filter_value" in cfg:
-                sub_selection_combo.setCurrentIndex(sub_selection_combo.findText(cfg["filter_value"]))
-            sub_selection_combo.setEnabled(True)
+                self.__sub_selection_combo.setCurrentIndex(self.__sub_selection_combo.findText(cfg["filter_value"]))
+            self.__sub_selection_combo.setEnabled(True)
             return
 
-    def on_combo_changed(text):
-        for item in lw.selectedItems():
+    def on_combo_changed(self, text):
+        for item in self.__list.selectedItems():
             cfg = item.data(Qt.UserRole)
             cfg["filter_value"] = text
             item.setData(Qt.UserRole, cfg)
             return
 
-    lw.itemSelectionChanged.connect(on_selection_changed)
-    sub_selection_combo.currentIndexChanged[str].connect(on_combo_changed)
+    def on_from_elsewhere_clicked(self):
+        from .layer_config import layer_config
+        from qgis.utils import iface
+        if iface.activeLayer() is None:
+            iface.messageBar().pushMessage(u"Please select an active layer", QgsMessageBar.CRITICAL)
+            return
+        uri, provider = iface.activeLayer().source(), iface.activeLayer().dataProvider().name()
+        if (uri, provider) not in layer_config:
+            iface.messageBar().pushMessage(u"Unconfigured layer", QgsMessageBar.CRITICAL)
+            return
 
-    for cfg in config_list:
-        if cfg["type"] in ("continuous", "instantaneous"):
-            uri, provider = cfg["source"]
-            # check number of features for this station
-            data_l = QgsVectorLayer(uri, "data_layer", provider)
-            req = QgsFeatureRequest()
-            req.setFilterExpression("{}={}".format(cfg["feature_ref_column"], feature_id))
-            if len(list(data_l.getFeatures(req))) == 0:
-                continue
+        config = layer_config[(uri, provider)]
+        iface.messageBar().pushMessage(u"Please select a feature on the active layer")
+        self.__tool = FeatureSelectionTool(iface.mapCanvas(), iface.activeLayer())
+        iface.mapCanvas().setMapTool(self.__tool)
+        self.__tool.featureSelected.connect(self.on_other_station_selected)
 
-            if cfg.get("feature_filter_type") == "unique_data_from_values":
-                # get unique filter values
-                cfg["filter_unique_values"] = sorted(list(set([f[cfg["feature_filter_column"]] for f in data_l.getFeatures(req)])))
+        self.setModal(False)
+        self.setWindowState(Qt.WindowMinimized)
 
-        elif cfg["type"] == "image":
-            if not viewer.has_imagery_data(cfg):
-                continue
-
-        item = QListWidgetItem(cfg["name"])
-        item.setData(Qt.UserRole, cfg)
-        lw.addItem(item)
-
-    dlg.setLayout(vbox)
-    dlg.setWindowTitle("Choose the data to add")
-    dlg.resize(400,200)
-    r = dlg.exec_()
-    if r != QDialog.Accepted:
-        return
-
-    for item in lw.selectedItems():
-        # now add the selected configuration
-        cfg = item.data(Qt.UserRole)
-        if cfg["type"] in ("continuous", "instantaneous"):
-            uri, provider = cfg["source"]
-            data_l = QgsVectorLayer(uri, "data_layer", provider)
-            req = QgsFeatureRequest()
-            filter_expr = "{}={}".format(cfg["feature_ref_column"], feature_id)
-            req.setFilterExpression(filter_expr)
-            f = None
-            for f in data_l.getFeatures(req):
-                pass
-            if f is None:
-                return
-            if "filter_value" in cfg:
-                filter_expr += " and {}='{}'".format(cfg["feature_filter_column"], cfg["filter_value"])
-                title = cfg["filter_value"]
-            else:
-                title = cfg["name"]
-            if cfg["type"] == "continuous":
-                data = FeatureData(data_l, cfg["values_column"], feature_id=f.id(), x_start=f[cfg["start_measure_column"]], x_delta=f[cfg["interval_column"]])
-                uom = cfg["uom"]
-            if cfg["type"] == "instantaneous":
-                uom = cfg["uom"] if "uom" in cfg else "@" + cfg["uom_column"]
-                data = LayerData(data_l, cfg["event_column"], cfg["value_column"], filter_expression=filter_expr, uom=uom)
-                uom = data.uom()
-            if hasattr(viewer, "add_data_column"):
-                viewer.add_data_column(data, title, uom)
-            if hasattr(viewer, "add_data_row"):
-                viewer.add_data_row(data, title, uom)
-        elif cfg["type"] == "image":
-            viewer.add_imagery_from_db(cfg)
+    def on_other_station_selected(self, selected):
+        self.__feature_id = selected[0].id()
+        self._populate_list()
+        self.set_title(selected[0][self.__config["name_column"]])
+        self.setModal(True)
+        self.setWindowState(Qt.WindowActive)
 
 class WellLogViewWrapper(WellLogView):
     def __init__(self, config, feature):
@@ -203,7 +255,8 @@ class WellLogViewWrapper(WellLogView):
     def on_add_column(self):
         sources = list(self.__config["log_measures"])
         sources += [dict(list(d.items()) + [("type","image")]) for d in self.__config["imagery_data"]]
-        select_data_to_add(self, self.__feature.id(), sources)
+        s = DataSelector(self, self.__feature.id(), self.__feature[sources["name_column"]], sources, self.__config)
+        s.exec_()
 
     def has_imagery_data(self, cfg):
         if cfg.get("provider", "postgres_bytea") != "postgres_bytea":
@@ -260,7 +313,8 @@ class TimeSeriesWrapper(TimeSeriesView):
         self.__feature = feature
 
     def on_add_row(self):
-        select_data_to_add(self, self.__feature.id(), self.__config["timeseries"])
+        s = DataSelector(self, self.__feature.id(), self.__feature[self.__config["name_column"]], self.__config["timeseries"], self.__config)
+        s.exec_()
 
 class WellLogPlugin:
     def __init__(self, iface):

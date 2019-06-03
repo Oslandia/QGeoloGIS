@@ -255,7 +255,7 @@ class WellLogViewWrapper(WellLogView):
     def on_add_column(self):
         sources = list(self.__config["log_measures"])
         sources += [dict(list(d.items()) + [("type","image")]) for d in self.__config["imagery_data"]]
-        s = DataSelector(self, self.__feature.id(), self.__feature[sources["name_column"]], sources, self.__config)
+        s = DataSelector(self, self.__feature.id(), self.__feature[self.__config["name_column"]], sources, self.__config)
         s.exec_()
 
     def has_imagery_data(self, cfg):

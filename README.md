@@ -33,7 +33,7 @@ The configuration file can also be changed once the plugin is launched, through 
 First you can add QGeoloGIS as a dependency of your project with a git submodule. Type this inside your main python module
 
 ```shell
-git submodule add https://github.com/Oslandia/qgis_well_log.git
+git submodule add https://github.com/Oslandia/QGeoloGIS.git
 ```
 
 Then you have to add this module in Python path by editing your main *__init__.py* file
@@ -44,7 +44,7 @@ import sys
 
 # append sub modules
 sys.path.append(os.path.join(os.path.dirname(__file__),
-                             "qgis_well_log"))
+                             "qgeologis"))
 
 ```
 

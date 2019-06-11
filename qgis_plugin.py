@@ -22,9 +22,10 @@ from .well_log.well_log_view import WellLogView
 from .well_log.timeseries_view import TimeSeriesView
 from .well_log.data_interface import FeatureData, LayerData
 
-from qgis.PyQt.QtCore import Qt, pyqtSignal
+from qgis.PyQt.QtCore import Qt, pyqtSignal, QSettings
 from qgis.PyQt.QtWidgets import QAction, QDialog, QVBoxLayout, QDialogButtonBox, QAbstractItemView
 from qgis.PyQt.QtWidgets import QListWidget, QListWidgetItem, QHBoxLayout, QLabel, QComboBox, QPushButton
+from qgis.PyQt.QtWidgets import QFileDialog
 
 class FeatureSelectionTool(QgsMapTool):   
     pointClicked = pyqtSignal(QgsPoint)
@@ -207,7 +208,7 @@ class DataSelector(QDialog):
             return
 
     def on_from_elsewhere_clicked(self):
-        from .layer_config import layer_config
+        layer_config = get_layer_config()
         from qgis.utils import iface
         if iface.activeLayer() is None:
             iface.messageBar().pushMessage(u"Please select an active layer", QgsMessageBar.CRITICAL)
@@ -316,14 +317,28 @@ class TimeSeriesWrapper(TimeSeriesView):
         s = DataSelector(self, self.__feature.id(), self.__feature[self.__config["name_column"]], self.__config["timeseries"], self.__config)
         s.exec_()
 
+def get_layer_config():
+    """Open and parse the configuration file"""
+
+    import os
+    s = QSettings("Oslandia", "qgis_well_logs")
+    config_file = s.value("config_file", os.path.join(os.path.dirname(__file__), "layer_config.py"))
+    f = open(config_file, "r")
+    layer_config = {}
+    # the configuration file is a regular Python file
+    # exec() will parse it and populate layer_config
+
+    exec(f.read())  # FIXME port to python 3
+    return layer_config
+        
 class WellLogPlugin:
     def __init__(self, iface):
         self.iface = iface
 
         # look for the layer_config
         try:
-            from .layer_config import layer_config
-        except ImportError:
+            get_layer_config()
+        except IOError:
             self.iface.messageBar().pushMessage(u"Cannot find the layer config !", QgsMessageBar.CRITICAL)
             return
             
@@ -343,6 +358,10 @@ class WellLogPlugin:
         self.iface.addToolBarIcon(self.view_timeseries_action)
         self.iface.addToolBarIcon(self.load_base_layer_action)
 
+        self.load_config_action = QAction("Load configuration file", self.iface.mainWindow())
+        self.load_config_action.triggered.connect(self.on_load_config)
+        self.iface.addPluginToMenu(u"QGIS &Well Logs", self.load_config_action)
+
     def unload(self):
         self.iface.removeToolBarIcon(self.view_log_action)
         self.iface.removeToolBarIcon(self.view_timeseries_action)
@@ -350,9 +369,12 @@ class WellLogPlugin:
         self.view_log_action.setParent(None)
         self.view_timeseries_action.setParent(None)
         self.load_base_layer_action.setParent(None)
+        
+        self.iface.removePluginMenu(u"QGIS &Well Logs", self.load_config_action)
+        self.load_config_action.setParent(None)
 
     def on_view_graph(self, graph_class):
-        from .layer_config import layer_config
+        layer_config = get_layer_config()
         if self.iface.activeLayer() is None:
             self.iface.messageBar().pushMessage(u"Please select an active layer", QgsMessageBar.CRITICAL)
             return
@@ -374,7 +396,7 @@ class WellLogPlugin:
 
     def on_load_base_layer(self):
         # look for base layers in the config
-        from .layer_config import layer_config
+        layer_config = get_layer_config()
 
         dlg = QDialog()
         vbox = QVBoxLayout()
@@ -401,3 +423,11 @@ class WellLogPlugin:
             if item:
                 uri, provider = item.data(Qt.UserRole)
                 self.iface.addVectorLayer(uri, item.text(), provider)
+
+    def on_load_config(self):
+        import os
+        file_name = QFileDialog.getOpenFileName(None, "Choose a configuration file to load", os.path.dirname(__file__))
+        if file_name:
+            s = QSettings("Oslandia", "qgis_well_logs")
+            s.setValue("config_file", file_name)
+            get_layer_config()

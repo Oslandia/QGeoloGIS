@@ -15,9 +15,9 @@
 #   You should have received a copy of the GNU Library General Public
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
-"""QGIS well log widget"""
+"""QGeoloGIS"""
 
 __author__ = "Oslandia"
-__copyright__ = "Copyright 2018, Oslandia"
+__copyright__ = "Copyright 2019, Oslandia"
 __license__ = "GPL"
-__version__ = "0.0.1"
+__version__ = "1.1.0"

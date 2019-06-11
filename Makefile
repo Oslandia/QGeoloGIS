@@ -4,23 +4,23 @@ VERSION=$(shell grep "^version" metadata.txt | cut -d'=' -f2)
 SOURCES=__init__.py \
 	qgis_plugin.py \
 	metadata.txt \
-	well_log/__init__.py \
-	well_log/data_interface.py \
-	well_log/imagery_data.py \
-	well_log/legend_item.py \
-	well_log/qt_qgis_compat.py \
-	well_log/timeseries_view.py \
-	well_log/well_log_common.py \
-	well_log/well_log_time_scale.py \
-	well_log/well_log_plot.py \
-	well_log/well_log_view.py \
-	well_log/well_log_z_scale.py \
-	well_log/well_log_stratigraphy.py \
-	well_log/img/*.svg \
-	well_log/styles/*.svg \
-	well_log/styles/*.xml
+	qgeologis/__init__.py \
+	qgeologis/data_interface.py \
+	qgeologis/imagery_data.py \
+	qgeologis/legend_item.py \
+	qgeologis/qt_qgis_compat.py \
+	qgeologis/timeseries_view.py \
+	qgeologis/common.py \
+	qgeologis/time_scale.py \
+	qgeologis/log_plot.py \
+	qgeologis/log_view.py \
+	qgeologis/z_scale.py \
+	qgeologis/stratigraphy.py \
+	qgeologis/img/*.svg \
+	qgeologis/styles/*.svg \
+	qgeologis/styles/*.xml
 
-ZIP_FILE=qgiswelllog-$(VERSION).zip
+ZIP_FILE=$(PLUGIN_NAME)-$(VERSION).zip
 
 QGIS2_PATH=~/.qgis2/python/plugins/$(PLUGIN_NAME)
 QGIS3_PATH=~/.local/share/QGIS/QGIS3/profiles/default/python/plugins/$(PLUGIN_NAME)

@@ -15,12 +15,12 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from .well_log.qt_qgis_compat import QgsMapTool, QgsPoint, qgsCoordinateTransform, QgsRectangle, QgsGeometry
-from .well_log.qt_qgis_compat import QgsMessageBar, QgsFeatureRequest, QgsVectorLayer
+from .qgeologis.qt_qgis_compat import QgsMapTool, QgsPoint, qgsCoordinateTransform, QgsRectangle, QgsGeometry
+from .qgeologis.qt_qgis_compat import QgsMessageBar, QgsFeatureRequest, QgsVectorLayer
 
-from .well_log.well_log_view import WellLogView
-from .well_log.timeseries_view import TimeSeriesView
-from .well_log.data_interface import FeatureData, LayerData
+from .qgeologis.log_view import WellLogView
+from .qgeologis.timeseries_view import TimeSeriesView
+from .qgeologis.data_interface import FeatureData, LayerData
 
 from qgis.PyQt.QtCore import Qt, pyqtSignal, QSettings
 from qgis.PyQt.QtWidgets import QAction, QDialog, QVBoxLayout, QDialogButtonBox, QAbstractItemView
@@ -321,7 +321,7 @@ def get_layer_config():
     """Open and parse the configuration file"""
 
     import os
-    s = QSettings("Oslandia", "qgis_well_logs")
+    s = QSettings("Oslandia", "qgeologis")
     config_file = s.value("config_file", os.path.join(os.path.dirname(__file__), "layer_config.py"))
     f = open(config_file, "r")
     layer_config = {}
@@ -331,7 +331,7 @@ def get_layer_config():
     exec(f.read())  # FIXME port to python 3
     return layer_config
         
-class WellLogPlugin:
+class QGeoloGISPlugin:
     def __init__(self, iface):
         self.iface = iface
 
@@ -360,7 +360,7 @@ class WellLogPlugin:
 
         self.load_config_action = QAction("Load configuration file", self.iface.mainWindow())
         self.load_config_action.triggered.connect(self.on_load_config)
-        self.iface.addPluginToMenu(u"QGIS &Well Logs", self.load_config_action)
+        self.iface.addPluginToMenu(u"QGeoloGIS", self.load_config_action)
 
     def unload(self):
         self.iface.removeToolBarIcon(self.view_log_action)
@@ -370,7 +370,7 @@ class WellLogPlugin:
         self.view_timeseries_action.setParent(None)
         self.load_base_layer_action.setParent(None)
         
-        self.iface.removePluginMenu(u"QGIS &Well Logs", self.load_config_action)
+        self.iface.removePluginMenu(u"QGeoloGIS", self.load_config_action)
         self.load_config_action.setParent(None)
 
     def on_view_graph(self, graph_class):
@@ -428,6 +428,6 @@ class WellLogPlugin:
         import os
         file_name = QFileDialog.getOpenFileName(None, "Choose a configuration file to load", os.path.dirname(__file__))
         if file_name:
-            s = QSettings("Oslandia", "qgis_well_logs")
+            s = QSettings("Oslandia", "qgeologis")
             s.setValue("config_file", file_name)
             get_layer_config()

@@ -22,10 +22,10 @@ from qgis.PyQt.QtWidgets import QGraphicsItem, QComboBox, QDialog, QVBoxLayout, 
 from qgis.PyQt.QtWidgets import QStackedWidget, QToolTip
 from .qt_qgis_compat import QgsFeatureRendererV2, QgsGeometry, QgsFields, QgsFeature, QgsRectangle
 
-from .well_log_common import POINT_RENDERER, LINE_RENDERER, POLYGON_RENDERER
-from .well_log_common import ORIENTATION_UPWARD, ORIENTATION_DOWNWARD, ORIENTATION_LEFT_TO_RIGHT, LogItem, qgis_render_context
+from .common import POINT_RENDERER, LINE_RENDERER, POLYGON_RENDERER
+from .common import ORIENTATION_UPWARD, ORIENTATION_DOWNWARD, ORIENTATION_LEFT_TO_RIGHT, LogItem, qgis_render_context
 
-from .well_log_time_scale import UTC
+from .time_scale import UTC
 
 import numpy as np
 import bisect

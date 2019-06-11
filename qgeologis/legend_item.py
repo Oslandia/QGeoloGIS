@@ -19,7 +19,7 @@
 from qgis.PyQt.QtCore import Qt, QRectF
 from qgis.PyQt.QtGui import QFont, QFontMetrics
 
-from .well_log_common import LogItem
+from .common import LogItem
 
 class LegendItem(LogItem):
     # margin all around the whole legend item

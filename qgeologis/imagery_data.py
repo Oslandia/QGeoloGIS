@@ -21,7 +21,7 @@ from qgis.PyQt.QtGui import QColor
 
 from .qt_qgis_compat import QgsRasterLayer, QgsMapSettings, QgsMapRendererCustomPainterJob, QgsMapLayerRegistry, QgsRectangle
 
-from .well_log_common import LogItem
+from .common import LogItem
 
 class ImageryDataItem(LogItem):
     def __init__(self, width, height, image_file, depth_from, depth_to, parent=None):

@@ -1,6 +1,6 @@
-# QGIS Well log widget
+# QGeoloGIS plugin
 
-This project allows to visualize logs of drilling wells or boreholes.
+This project allows to visualize logs of drilling wells or boreholes and time series.
 
 **Warning** This is still experimental.
 
@@ -13,7 +13,7 @@ Currently three types of data are handled:
 - continuous series of data that represent data sampled continuously underground (a sample every centimer for instance). This could also be reused to plot time series.
 - scatter plots of data
 
-![Example in a QGIS application](qgis_well_log.png)
+![Example in a QGIS application](qgeologis.png)
 
 See the [corresponding video](https://vimeo.com/303279452)
 
@@ -30,7 +30,7 @@ The configuration file can also be changed once the plugin is launched, through 
 
 # How to use it in your own plugin
 
-First you can add qgs_well_log as a dependency of your project with a git submodule. Type this inside your main python module
+First you can add QGeoloGIS as a dependency of your project with a git submodule. Type this inside your main python module
 
 ```shell
 git submodule add https://github.com/Oslandia/qgis_well_log.git
@@ -48,7 +48,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__),
 
 ```
 
-Finally you have to choose your interface *LayerData* or *FeatureData*, create a WellLogView object and add it to your application. See [main entry point](well_log/well_log_view.py) for examples.
+Finally you have to choose your interface *LayerData* or *FeatureData*, create a WellLogView object and add it to your application. See [main entry point](qgeologis/log_view.py) for examples.
 
 
 

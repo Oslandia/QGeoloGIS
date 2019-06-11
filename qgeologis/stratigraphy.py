@@ -25,7 +25,7 @@ from qgis.PyQt.QtXml import QDomDocument
 from .qt_qgis_compat import QgsFeatureRendererV2, QgsRectangle, QgsField, QgsFields, QgsGeometry
 from .qt_qgis_compat import QgsFeature
 
-from .well_log_common import LogItem, POLYGON_RENDERER, qgis_render_context
+from .common import LogItem, POLYGON_RENDERER, qgis_render_context
 
 import os
 

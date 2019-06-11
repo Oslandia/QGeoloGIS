@@ -21,9 +21,9 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel, QVBoxLayout
 from qgis.PyQt.QtWidgets import QStatusBar
 
-from .well_log_common import LINE_RENDERER, ORIENTATION_UPWARD, ORIENTATION_LEFT_TO_RIGHT
-from .well_log_plot import PlotItem
-from .well_log_time_scale import TimeScaleItem
+from .common import LINE_RENDERER, ORIENTATION_UPWARD, ORIENTATION_LEFT_TO_RIGHT
+from .log_plot import PlotItem
+from .time_scale import TimeScaleItem
 from .legend_item import LegendItem
 
 import os

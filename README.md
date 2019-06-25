@@ -2,8 +2,6 @@
 
 This project allows to visualize logs of drilling wells or boreholes and time series.
 
-**Warning** This is still experimental.
-
 It is based on QT and the QGIS rendering engine to plot series of measurements. This allows to:
 - use the rich symbology engine of QGIS to display underground data
 - have decent display performances, since QGIS is optimized to quickly render geometries possibly made by lots of points

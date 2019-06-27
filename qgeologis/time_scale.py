@@ -70,7 +70,8 @@ class TimeScaleItem(LogItem):
         self.__width = width
 
     def mouseMoveEvent(self, event):
-        print(event.pos().x(), event.pos().y())
+        #print(event.pos().x(), event.pos().y())
+        pass
 
     def paint(self, painter, option, widget):
         import math

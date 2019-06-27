@@ -161,6 +161,7 @@ class DataSelector(QDialog):
                 req = QgsFeatureRequest()
                 filter_expr = "{}={}".format(cfg["feature_ref_column"], self.__feature_id)
                 req.setFilterExpression(filter_expr)
+                print("Layer", uri, "Filter", filter_expr)
                 f = None
                 for f in data_l.getFeatures(req):
                     pass

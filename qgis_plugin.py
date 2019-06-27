@@ -338,8 +338,9 @@ def get_layer_config():
     # the configuration file is a regular Python file
     # exec() will parse it and populate layer_config
 
-    exec(f.read())  # FIXME port to python 3
-    return layer_config
+    v={}
+    exec(f.read(), v)
+    return v['layer_config']
         
 class QGeoloGISPlugin:
     def __init__(self, iface):
@@ -437,6 +438,9 @@ class QGeoloGISPlugin:
     def on_load_config(self):
         import os
         file_name = QFileDialog.getOpenFileName(None, "Choose a configuration file to load", os.path.dirname(__file__))
+        if isinstance(file_name, tuple): #Qt5
+            file_name = file_name[0]
+
         if file_name:
             s = QSettings("Oslandia", "qgeologis")
             s.setValue("config_file", file_name)

@@ -19,7 +19,8 @@
 from qgis.PyQt.QtCore import QRectF, QSize
 from qgis.PyQt.QtGui import QColor
 
-from .qt_qgis_compat import QgsRasterLayer, QgsMapSettings, QgsMapRendererCustomPainterJob, QgsMapLayerRegistry, QgsRectangle
+from .qt_qgis_compat import QgsRasterLayer, QgsMapSettings, QgsMapRendererCustomPainterJob, QgsRectangle
+from .qt_qgis_compat import qgsAddMapLayer
 
 from .common import LogItem
 
@@ -33,7 +34,7 @@ class ImageryDataItem(LogItem):
         self.__max_z = 100
 
         self.__layer = QgsRasterLayer(image_file, "rl")
-        QgsMapLayerRegistry.instance().addMapLayers([self.__layer], addToLegend = False)
+        qgsAddMapLayer(self.__layer, addToLegend = False)
         self.__image_depth_range = (depth_from, depth_to)
 
         # unused for now

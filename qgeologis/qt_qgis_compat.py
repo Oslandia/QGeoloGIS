@@ -65,6 +65,9 @@ if sys.version_info.major == 3:
     def qgsCoordinateTransform(src, tgt):
         return QgsCoordinateTransform(src, tgt, QgsProject.instance().transformContext())
 
+    def qgsAddMapLayer(layer, addToLegend = True):
+        QgsProject.instance().addMapLayers([layer], addToLegend)
+
     # ===========================
     #
     #           Qt
@@ -77,3 +80,6 @@ else:
     def qgsCoordinateTransform(src, tgt):
         return QgsCoordinateTransform(src, tgt)
     QgsFeatureRendererV2._load = QgsFeatureRendererV2.load
+
+    def qgsAddMapLayer(layer, addToLegend = True):
+        QgsMapLayerRegistry.instance().addMapLayers([layer], addToLegend)

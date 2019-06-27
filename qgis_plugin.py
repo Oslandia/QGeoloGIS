@@ -162,23 +162,32 @@ class DataSelector(QDialog):
                 filter_expr = "{}={}".format(cfg["feature_ref_column"], self.__feature_id)
                 req.setFilterExpression(filter_expr)
                 print("Layer", uri, "Filter", filter_expr)
-                f = None
-                for f in data_l.getFeatures(req):
-                    pass
-                if f is None:
-                    return
-                if "filter_value" in cfg:
-                    filter_expr += " and {}='{}'".format(cfg["feature_filter_column"], cfg["filter_value"])
-                    title = cfg["filter_value"]
-                else:
-                    title = cfg["name"]
-                if cfg["type"] == "continuous":
-                    data = FeatureData(data_l, cfg["values_column"], feature_id=f.id(), x_start=f[cfg["start_measure_column"]], x_delta=f[cfg["interval_column"]])
-                    uom = cfg["uom"]
+
+                title = cfg["name"]
+
                 if cfg["type"] == "instantaneous":
+                    if "filter_value" in cfg:
+                        filter_expr += " and {}='{}'".format(cfg["feature_filter_column"], cfg["filter_value"])
+                        title = cfg["filter_value"]
+                    else:
+                        title = cfg["name"]
+
+                    f = None
+                    for f in data_l.getFeatures(req):
+                        pass
+                    if f is None:
+                        return
                     uom = cfg["uom"] if "uom" in cfg else "@" + cfg["uom_column"]
                     data = LayerData(data_l, cfg["event_column"], cfg["value_column"], filter_expression=filter_expr, uom=uom)
                     uom = data.uom()
+
+                if cfg["type"] == "continuous":
+                    uom = cfg["uom"]
+                    fids = [f.id() for f in data_l.getFeatures(req)]
+                    data = FeatureData(data_l, cfg["values_column"], feature_ids=fids,
+                                       x_start_fieldname=cfg["start_measure_column"],
+                                       x_delta_fieldname=cfg["interval_column"])
+
                 if hasattr(self.__viewer, "add_data_column"):
                     self.__viewer.add_data_column(data, title, uom)
                 if hasattr(self.__viewer, "add_data_row"):

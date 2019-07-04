@@ -81,6 +81,7 @@ class DataSelector(QDialog):
 
         self.__viewer = viewer
         self.__feature_id = feature_id
+        self.__feature_name = feature_name
         self.__config_list = config_list
         self.__config = config
 
@@ -191,7 +192,7 @@ class DataSelector(QDialog):
                 if hasattr(self.__viewer, "add_data_column"):
                     self.__viewer.add_data_column(data, title, uom)
                 if hasattr(self.__viewer, "add_data_row"):
-                    self.__viewer.add_data_row(data, title, uom)
+                    self.__viewer.add_data_row(data, title, uom, station_name = self.__feature_name)
             elif cfg["type"] == "image":
                 self.__viewer.add_imagery_from_db(cfg)
 
@@ -240,7 +241,8 @@ class DataSelector(QDialog):
     def on_other_station_selected(self, selected):
         self.__feature_id = selected[0].id()
         self._populate_list()
-        self.set_title(selected[0][self.__config["name_column"]])
+        self.__feature_name = selected[0][self.__config["name_column"]]
+        self.set_title(self.__feature_name)
         self.setModal(True)
         self.setWindowState(Qt.WindowActive)
 

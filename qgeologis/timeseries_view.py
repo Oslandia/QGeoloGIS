@@ -233,17 +233,20 @@ class TimeSeriesView(QWidget):
         # Rows not found
         assert False
 
-    def on_plot_tooltip(self, txt):
-        self.__status_bar.showMessage(txt)
+    def on_plot_tooltip(self, station_name, txt):
+        if station_name is not None:
+            self.__status_bar.showMessage(u"Station: {} ".format(station_name) + txt)
+        else:
+            self.__status_bar.showMessage(txt)
 
-    def add_data_row(self, data, title, uom):
+    def add_data_row(self, data, title, uom, station_name = None):
         plot_item = PlotItem(size=QSizeF(self.__scene.width(), self.DEFAULT_ROW_HEIGHT),
                              render_type = LINE_RENDERER,
                              x_orientation = ORIENTATION_LEFT_TO_RIGHT,
                              y_orientation = ORIENTATION_UPWARD)
 
         plot_item.set_layer(data.get_layer())
-        plot_item.tooltipRequested.connect(self.on_plot_tooltip)
+        plot_item.tooltipRequested.connect(lambda txt:self.on_plot_tooltip(station_name, txt))
 
         legend_item = LegendItem(self.DEFAULT_ROW_HEIGHT, title, unit_of_measure=uom, is_vertical=True)
         data.data_modified.connect(lambda data=data : self._update_data_row(data))

@@ -94,19 +94,30 @@ class LegendItem(LogItem):
         painter.setFont(self.__font2)
         fm = painter.fontMetrics()
         y += fm.ascent()
-        
+
+        # make sure min and max have distinct values
+        if self.__min_value is not None and self.__max_value is not None:
+            num_decimals = 1
+            while num_decimals < 4:
+                min_str = format_number(float(self.__min_value), num_decimals)
+                max_str = format_number(float(self.__max_value), num_decimals)
+                if min_str == max_str:
+                    num_decimals +=1
+                else:
+                    break
+
         if self.__min_value is not None:
-            painter.drawText(self.LEGEND_ITEM_MARGIN, y, format_number(float(self.__min_value)))
+            painter.drawText(self.LEGEND_ITEM_MARGIN, y, min_str)
         if self.__max_value is not None:
-            t = format_number(float(self.__max_value))
-            painter.drawText(self.__width - self.LEGEND_ITEM_MARGIN - fm.width(t), y, t)
+            painter.drawText(self.__width - self.LEGEND_ITEM_MARGIN - fm.width(max_str), y, max_str)
         if self.__uom is not None:
             t = self.__uom
             painter.drawText((self.__width - fm.width(t)) /2, y, t)
         painter.restore()
 
-def format_number(f):
+def format_number(f, num_decimals = 1):
     if f < 10000:
-        return "{:.1f}".format(f)
+        fmt = "{:." + "{}".format(num_decimals) + "f}"
+        return fmt.format(f)
     else:
         return "{:.1e}".format(f)

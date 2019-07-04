@@ -278,9 +278,7 @@ class TimeSeriesView(QWidget):
         #plot_item.set_data_window(r)
 
         # legend
-        min_str = "{:.1f}".format(data.get_y_min())
-        max_str = "{:.1f}".format(data.get_y_max())
-        legend_item.set_scale(min_str, max_str)
+        legend_item.set_scale(data.get_y_min(), data.get_y_max())
 
         self.__scene.update()
 

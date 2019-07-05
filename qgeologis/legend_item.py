@@ -95,16 +95,18 @@ class LegendItem(LogItem):
         fm = painter.fontMetrics()
         y += fm.ascent()
 
+        if self.__min_value is not None:
+            min_str = format_number(float(self.__min_value))
+        if self.__max_value is not None:
+            max_str = format_number(float(self.__max_value))
+
         # make sure min and max have distinct values
         if self.__min_value is not None and self.__max_value is not None:
             num_decimals = 1
-            while num_decimals < 4:
+            while min_str == max_str and num_decimals < 4:
+                num_decimals +=1
                 min_str = format_number(float(self.__min_value), num_decimals)
                 max_str = format_number(float(self.__max_value), num_decimals)
-                if min_str == max_str:
-                    num_decimals +=1
-                else:
-                    break
 
         if self.__min_value is not None:
             painter.drawText(self.LEGEND_ITEM_MARGIN, y, min_str)

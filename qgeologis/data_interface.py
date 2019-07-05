@@ -273,6 +273,6 @@ class FeatureData(DataInterface):
                 current_data_range = (self.__x_values[0], self.__x_values[-1])
 
         self.__x_min, self.__x_max = (min(self.__x_values), max(self.__x_values))
-        self.__y_min, self.__y_max = (min(self.__y_values), max(self.__y_values))
+        self.__y_min, self.__y_max = (min([y for y in self.__y_values if y is not None]), max(self.__y_values))
 
         self.data_modified.emit()

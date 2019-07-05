@@ -17,7 +17,7 @@ See the [corresponding video](https://vimeo.com/303279452)
 
 # How to use it as a standalone plugin
 
-Install the plugin in the QGIS plugin directory and enable it.
+Install the plugin in the QGIS plugin directory and enable it. You can install it by typing `make deploy` in the main folder.
 
 It requires a configuration that describes what is the base layer that displays measure points and how to access the different measure layers.
 

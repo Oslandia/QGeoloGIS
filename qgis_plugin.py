@@ -145,7 +145,7 @@ class DataSelector(QDialog):
                     cfg["filter_unique_values"] = sorted(list(set([f[cfg["feature_filter_column"]] for f in data_l.getFeatures(req)])))
 
             elif cfg["type"] == "image":
-                if not self.__viewer.has_imagery_data(cfg):
+                if not self.__viewer.has_imagery_data(cfg, self.__feature_id):
                     continue
 
             item = QListWidgetItem(cfg["name"])
@@ -194,7 +194,7 @@ class DataSelector(QDialog):
                 if hasattr(self.__viewer, "add_data_row"):
                     self.__viewer.add_data_row(data, title, uom, station_name = self.__feature_name)
             elif cfg["type"] == "image":
-                self.__viewer.add_imagery_from_db(cfg)
+                self.__viewer.add_imagery_from_db(cfg, self.__feature_id)
 
         QDialog.accept(self)
 
@@ -271,7 +271,7 @@ class WellLogViewWrapper(WellLogView):
         s = DataSelector(self, self.__feature.id(), self.__feature[self.__config["name_column"]], sources, self.__config)
         s.exec_()
 
-    def has_imagery_data(self, cfg):
+    def has_imagery_data(self, cfg, feature_id):
         if cfg.get("provider", "postgres_bytea") != "postgres_bytea":
             # not implemented
             return False
@@ -283,10 +283,10 @@ class WellLogViewWrapper(WellLogView):
                     .format(schema=cfg["schema"],
                             table=cfg["table"],
                             ref_column=cfg["feature_ref_column"]),
-                    (self.__feature.id(),))
+                    (feature_id,))
         return cur.fetchone()[0] > 0
 
-    def add_imagery_from_db(self, cfg):
+    def add_imagery_from_db(self, cfg, feature_id):
         if cfg.get("provider", "postgres_bytea") != "postgres_bytea":
             raise "Access method not implemented !"
             
@@ -302,7 +302,7 @@ class WellLogViewWrapper(WellLogView):
                             schema=cfg["schema"],
                             table=cfg["table"],
                             ref_column=cfg["feature_ref_column"]),
-                    (self.__feature.id(),))
+                    (feature_id,))
         r = cur.fetchone()
         if r is None:
             return

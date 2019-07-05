@@ -90,6 +90,9 @@ class TimeScaleItem(LogItem):
         min_label_distance = 60
         
         duration_s = self.__max_t - self.__min_t
+        # prevent division by zero
+        if duration_s == 0:
+            duration_s = 1.0
         # get the widest and narrowest scale
         min_slot_idx = None
         for slot_idx, (slot_duration, _) in enumerate(self.DURATION_FORMATS):

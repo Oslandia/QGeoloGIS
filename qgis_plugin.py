@@ -190,7 +190,7 @@ class DataSelector(QDialog):
                                        x_delta_fieldname=cfg["interval_column"])
 
                 if hasattr(self.__viewer, "add_data_column"):
-                    self.__viewer.add_data_column(data, title, uom)
+                    self.__viewer.add_data_column(data, title, uom, station_name = self.__feature_name)
                 if hasattr(self.__viewer, "add_data_row"):
                     self.__viewer.add_data_row(data, title, uom, station_name = self.__feature_name)
             elif cfg["type"] == "image":

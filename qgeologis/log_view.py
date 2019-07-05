@@ -266,17 +266,20 @@ class WellLogView(QWidget):
         self._place_items()
         self._update_button_visibility()
 
-    def on_tooltip(self, txt):
-        self.__status_bar.showMessage(txt)
+    def on_plot_tooltip(self, txt, station_name = None):
+        if station_name is not None:
+            self.__status_bar.showMessage(u"Station: {} ".format(station_name) + txt)
+        else:
+            self.__status_bar.showMessage(txt)
 
-    def add_data_column(self, data, title, uom):
+    def add_data_column(self, data, title, uom, station_name = None):
         plot_item = PlotItem(size=QSizeF(self.DEFAULT_COLUMN_WIDTH, self.__log_scene.height()),
                              render_type = POLYGON_RENDERER,
                              x_orientation = ORIENTATION_DOWNWARD,
                              y_orientation = ORIENTATION_LEFT_TO_RIGHT)
 
         plot_item.set_layer(data.get_layer())
-        plot_item.tooltipRequested.connect(self.on_tooltip)
+        plot_item.tooltipRequested.connect(lambda txt: self.on_plot_tooltip(txt, station_name))
 
         legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH, title, unit_of_measure=uom)
         data.data_modified.connect(lambda data=data : self._update_data_column(data))
@@ -315,7 +318,7 @@ class WellLogView(QWidget):
         legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH, title)
 
         item.set_layer(layer)
-        item.tooltipRequested.connect(self.on_tooltip)
+        item.tooltipRequested.connect(self.on_plot_tooltip)
 
         item.set_data([[f[c] if c is not None else None for c in column_mapping] for f in layer.getFeatures()])
         

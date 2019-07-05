@@ -23,7 +23,7 @@ from .common import LogItem
 
 class LegendItem(LogItem):
     # margin all around the whole legend item
-    LEGEND_ITEM_MARGIN = 3
+    LEGEND_ITEM_MARGIN = 5
     # margin between title and legend line
     LEGEND_LINE_MARGIN = 4
 
@@ -85,10 +85,11 @@ class LegendItem(LogItem):
 
         # legend line
         xmin = 0
-        xmax = self.__width - 1
+        xmax = self.__width
+        ymax = self.__height
         painter.drawLine(xmin, y+5, xmax, y+5)
-        painter.drawLine(xmin, y, xmin, y+10)
-        painter.drawLine(xmax, y, xmax, y+10)
+        painter.drawLine(xmin, y, xmin, ymax)
+        painter.drawLine(xmax, y, xmax, ymax)
         y+= 10 + self.LEGEND_LINE_MARGIN
 
         painter.setFont(self.__font2)

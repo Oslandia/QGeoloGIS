@@ -185,13 +185,25 @@ class PlotItem(LogItem):
         n_points = len(x_values_slice)
 
         if self.__x_orientation == ORIENTATION_LEFT_TO_RIGHT and self.__y_orientation == ORIENTATION_UPWARD:
-            rw = float(self.__item_size.width()) / self.__data_rect.width()
-            rh = float(self.__item_size.height()) / self.__data_rect.height()
+            if self.__data_rect.width() > 0:
+                rw = float(self.__item_size.width()) / self.__data_rect.width()
+            else:
+                rw = float(self.__item_size.width())
+            if self.__data_rect.height() > 0:
+                rh = float(self.__item_size.height()) / self.__data_rect.height()
+            else:
+                rh = float(self.__item_size.height())
             xx = (x_values_slice - self.__data_rect.x()) * rw
             yy = (y_values_slice - self.__data_rect.y()) * rh
         elif self.__x_orientation == ORIENTATION_DOWNWARD and self.__y_orientation == ORIENTATION_LEFT_TO_RIGHT:
-            rw = float(self.__item_size.height()) / self.__data_rect.width()
-            rh = float(self.__item_size.width()) / self.__data_rect.height()
+            if self.__data_rect.width() > 0:
+                rw = float(self.__item_size.height()) / self.__data_rect.width()
+            else:
+                rw = float(self.__item_size.height())
+            if self.__data_rect.height() > 0:
+                rh = float(self.__item_size.width()) / self.__data_rect.height()
+            else:
+                rh = float(self.__item_size.width())
             xx = (y_values_slice - self.__data_rect.y()) * rh
             yy = self.__item_size.height() - (x_values_slice - self.__data_rect.x()) * rw
         if self.__render_type == LINE_RENDERER:

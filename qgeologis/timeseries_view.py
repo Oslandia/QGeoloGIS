@@ -21,7 +21,7 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel, QVBoxLayout
 from qgis.PyQt.QtWidgets import QStatusBar
 
-from .common import LINE_RENDERER, ORIENTATION_UPWARD, ORIENTATION_LEFT_TO_RIGHT
+from .common import POINT_RENDERER, ORIENTATION_UPWARD, ORIENTATION_LEFT_TO_RIGHT
 from .log_plot import PlotItem
 from .time_scale import TimeScaleItem
 from .legend_item import LegendItem
@@ -241,7 +241,7 @@ class TimeSeriesView(QWidget):
 
     def add_data_row(self, data, title, uom, station_name = None):
         plot_item = PlotItem(size=QSizeF(self.__scene.width(), self.DEFAULT_ROW_HEIGHT),
-                             render_type = LINE_RENDERER,
+                             render_type = POINT_RENDERER,
                              x_orientation = ORIENTATION_LEFT_TO_RIGHT,
                              y_orientation = ORIENTATION_UPWARD)
 

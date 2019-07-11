@@ -215,6 +215,10 @@ class WellLogView(QWidget):
     def _fit_to_max_depth(self):
         self._min_z = min([i.min_depth() for i, _ in self.__columns if i.min_depth() is not None])
         self._max_z = max([i.max_depth() for i, _ in self.__columns if i.max_depth() is not None])
+        # if we have only one value, center it on a 2 meters range
+        if self._min_z == self._max_z:
+            self._min_z -= 1.0
+            self._max_z += 1.0
 
     def _update_column_depths(self):
         for item, _ in self.__columns:

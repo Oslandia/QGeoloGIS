@@ -258,8 +258,8 @@ class FeatureData(DataInterface):
                 self.__y_values = y_values
             else:
                 # look for overlap
-                if (current_data_range[0] <= data_range[0] <= current_data_range[1]) or \
-                   (current_data_range[0] <= data_range[1] <= current_data_range[1]):
+                if (current_data_range[0] < data_range[0] < current_data_range[1]) or \
+                   (current_data_range[0] < data_range[1] < current_data_range[1]):
                     print("Overlap in data around feature #{}".format(f.id()))
                     continue
                 if current_data_range[0] > data_range[1]:

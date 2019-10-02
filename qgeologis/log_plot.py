@@ -7,7 +7,7 @@
 #   modify it under the terms of the GNU Library General Public
 #   License as published by the Free Software Foundation; either
 #   version 2 of the License, or (at your option) any later version.
-#   
+#
 #   This library is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -16,14 +16,15 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from qgis.PyQt.QtCore import Qt, QSizeF, QRectF, QPoint
-from qgis.PyQt.QtGui import QBrush, QColor, QFontMetrics
-from qgis.PyQt.QtWidgets import QGraphicsItem, QComboBox, QDialog, QVBoxLayout, QDialogButtonBox
-from qgis.PyQt.QtWidgets import QStackedWidget, QToolTip
-from .qt_qgis_compat import QgsFeatureRendererV2, QgsGeometry, QgsFields, QgsFeature, QgsRectangle
+from qgis.PyQt.QtCore import QSizeF, QRectF
+from qgis.PyQt.QtWidgets import QComboBox, QDialog, QVBoxLayout, QDialogButtonBox
+from qgis.PyQt.QtWidgets import QStackedWidget
 
-from .common import POINT_RENDERER, LINE_RENDERER, POLYGON_RENDERER
-from .common import ORIENTATION_UPWARD, ORIENTATION_DOWNWARD, ORIENTATION_LEFT_TO_RIGHT, LogItem, qgis_render_context
+from qgis.core import QgsGeometry, QgsFields, QgsFeature, QgsRectangle
+from qgis.core import QgsFeatureRenderer
+
+from .common import POINT_RENDERER, LINE_RENDERER, POLYGON_RENDERER, qgis_render_context
+from .common import ORIENTATION_UPWARD, ORIENTATION_DOWNWARD, ORIENTATION_LEFT_TO_RIGHT, LogItem
 
 from .time_scale import UTC
 
@@ -32,10 +33,11 @@ import bisect
 import math
 from datetime import datetime
 
+
 class PlotItem(LogItem):
 
     def __init__(self,
-                 size=QSizeF(400,200),
+                 size=QSizeF(400, 200),
                  render_type=POINT_RENDERER,
                  x_orientation=ORIENTATION_LEFT_TO_RIGHT,
                  y_orientation=ORIENTATION_UPWARD,
@@ -61,9 +63,9 @@ class PlotItem(LogItem):
 
         self.__layer = None
 
-        self.__renderers = [QgsFeatureRendererV2.defaultRenderer(POINT_RENDERER),
-                            QgsFeatureRendererV2.defaultRenderer(LINE_RENDERER),
-                            QgsFeatureRendererV2.defaultRenderer(POLYGON_RENDERER)]
+        self.__renderers = [QgsFeatureRenderer.defaultRenderer(POINT_RENDERER),
+                            QgsFeatureRenderer.defaultRenderer(LINE_RENDERER),
+                            QgsFeatureRenderer.defaultRenderer(POLYGON_RENDERER)]
         symbol = self.__renderers[1].symbol()
         symbol.setWidth(1.0)
         symbol = self.__renderers[0].symbol()
@@ -138,10 +140,10 @@ class PlotItem(LogItem):
 
         # Initialize data rect to display all data
         # with a 20% buffer around Y values
-        min_x = min(self.__x_values)
-        max_x = max(self.__x_values)
-        min_y = min(self.__y_values)
-        max_y = max(self.__y_values)
+        min_x = min(self.__x_values) if self.__x_values else 0
+        max_x = max(self.__x_values) if self.__x_values else 0
+        min_y = min(self.__y_values) if self.__y_values else 0
+        max_y = max(self.__y_values) if self.__y_values else 0
         if max_y == 0.0:
             max_y = 1.0
         h = max_y - min_y
@@ -341,16 +343,16 @@ class PlotItem(LogItem):
         self.__old_point_to_label = self.__point_to_label
 
     def edit_style(self):
-        from qgis.gui import QgsSingleSymbolRendererV2Widget
-        from qgis.core import QgsStyleV2
+        from qgis.gui import QgsSingleSymbolRendererWidget
+        from qgis.core import QgsStyle
 
-        style = QgsStyleV2()
+        style = QgsStyle()
         sw = QStackedWidget()
         sw.addWidget
         for i in range(3):
-            w = QgsSingleSymbolRendererV2Widget(self.__layer, style, self.__renderers[i])
+            w = QgsSingleSymbolRendererWidget(self.__layer, style, self.__renderers[i])
             sw.addWidget(w)
-        
+
         combo = QComboBox()
         combo.addItem("Points")
         combo.addItem("Line")
@@ -358,7 +360,7 @@ class PlotItem(LogItem):
 
         combo.currentIndexChanged[int].connect(sw.setCurrentIndex)
         combo.setCurrentIndex(self.__render_type)
-        
+
         dlg = QDialog()
 
         vbox = QVBoxLayout()

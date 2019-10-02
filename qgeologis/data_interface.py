@@ -144,8 +144,8 @@ class LayerData(DataInterface):
         self.__x_values = [coord[0] for coord in xy_values]
         self.__y_values = [coord[1] for coord in xy_values]
 
-        self.__x_min, self.__x_max = (min(self.__x_values), max(self.__x_values))
-        self.__y_min, self.__y_max = (min(self.__y_values), max(self.__y_values))
+        self.__x_min, self.__x_max = (min(self.__x_values), max(self.__x_values)) if self.__x_values else (0, 0)
+        self.__y_min, self.__y_max = (min(self.__y_values), max(self.__y_values)) if self.__y_values else (0, 0)
 
         self.data_modified.emit()
 

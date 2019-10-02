@@ -7,7 +7,7 @@
 #   modify it under the terms of the GNU Library General Public
 #   License as published by the Free Software Foundation; either
 #   version 2 of the License, or (at your option) any later version.
-#   
+#
 #   This library is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -19,10 +19,11 @@
 from qgis.PyQt.QtCore import QRectF, QSize
 from qgis.PyQt.QtGui import QColor
 
-from .qt_qgis_compat import QgsRasterLayer, QgsMapSettings, QgsMapRendererCustomPainterJob, QgsRectangle
-from .qt_qgis_compat import qgsAddMapLayer
+from qgis.core import (QgsRasterLayer, QgsMapSettings, QgsMapRendererCustomPainterJob,
+                       QgsRectangle, QgsProject)
 
 from .common import LogItem
+
 
 class ImageryDataItem(LogItem):
     def __init__(self, width, height, image_file, depth_from, depth_to, parent=None):
@@ -34,7 +35,7 @@ class ImageryDataItem(LogItem):
         self.__max_z = 100
 
         self.__layer = QgsRasterLayer(image_file, "rl")
-        qgsAddMapLayer(self.__layer, addToLegend = False)
+        QgsProject.instance().addMapLayers([self.__layer], False)
         self.__image_depth_range = (depth_from, depth_to)
 
         # unused for now
@@ -45,6 +46,7 @@ class ImageryDataItem(LogItem):
 
     def min_depth(self):
         return self.__min_z
+
     def max_depth(self):
         return self.__max_z
 

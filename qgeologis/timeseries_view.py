@@ -378,10 +378,10 @@ if __name__=='__main__':
     import sys
     import random
 
-    from .qt_qgis_compat import qgsApplication, QgsVectorLayer, QgsFeature
+    from qgis.core import QgsApplication, QgsVectorLayer, QgsFeature
     from .data_interface import FeatureData
 
-    app = qgsApplication(sys.argv, True)
+    app = QgsApplication([bytes(x, "utf8") for x in sys.argv], True)
     app.initQgis()
 
     # feature example
@@ -395,7 +395,7 @@ if __name__=='__main__':
     x_values = [float(x) for x in range(1, 1001)]
 
     layer2 = QgsVectorLayer("None?field=y:double", "test_feature",
-                           "memory")
+                            "memory")
     feature = QgsFeature()
     y_values2 = ",".join([str(random.uniform(1., 100.)) for i in range(1000)])
     feature.setAttributes([y_values2])

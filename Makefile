@@ -13,7 +13,6 @@ SOURCES=__init__.py \
 	qgeologis/data_interface.py \
 	qgeologis/imagery_data.py \
 	qgeologis/legend_item.py \
-	qgeologis/qt_qgis_compat.py \
 	qgeologis/timeseries_view.py \
 	qgeologis/common.py \
 	qgeologis/time_scale.py \

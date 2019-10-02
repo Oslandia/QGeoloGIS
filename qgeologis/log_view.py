@@ -270,6 +270,9 @@ class WellLogView(QWidget):
         self._place_items()
         self._update_button_visibility()
 
+        # still add z scale
+        self.add_z_scale()
+
     def on_plot_tooltip(self, txt, station_name = None):
         if station_name is not None:
             self.__status_bar.showMessage(u"Station: {} ".format(station_name) + txt)
@@ -309,16 +312,16 @@ class WellLogView(QWidget):
 #        plot_item.set_data_window(r)
 
         # legend
-        min_str = "{:.1f}".format(min(data.get_y_values()))
-        max_str = "{:.1f}".format(max(data.get_y_values()))
+        min_str = "{:.1f}".format(min(data.get_y_values()) if data.get_y_values() else 0)
+        max_str = "{:.1f}".format(max(data.get_y_values()) if data.get_y_values() else 0)
         legend_item.set_scale(min_str, max_str)
 
         self.__log_scene.update()
 
-    def add_stratigraphy(self, layer, column_mapping, title):
+    def add_stratigraphy(self, layer, column_mapping, title, style_file):
         item = StratigraphyItem(self.DEFAULT_COLUMN_WIDTH,
                                 self.__log_scene.height(),
-                                style_file=os.path.join(self.__style_dir, "stratigraphy_style.xml"))
+                                style_file=style_file)
         legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH, title)
 
         item.set_layer(layer)
@@ -428,10 +431,10 @@ if __name__=='__main__':
     import sys
     import random
 
-    from qt_qgis_compat import qgsApplication, QgsVectorLayer, QgsFeature
+    from qgis.core import QgsApplication, QgsVectorLayer, QgsFeature
     from data_interface import LayerData, FeatureData
 
-    app = qgsApplication(sys.argv, True)
+    app = QgsApplication([bytes(x, "utf8") for x in sys.argv], True)
     app.initQgis()
 
     # layer example

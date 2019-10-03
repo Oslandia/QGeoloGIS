@@ -125,7 +125,6 @@ class DataSelector(QDialog):
                         filter_expr += " and {}='{}'".format(cfg["feature_filter_column"],
                                                              cfg.get_filter_value())
 
-                        print("filter_expr={}".format(filter_expr))
                         title = cfg.get_filter_value()
                     else:
                         title = cfg["name"]

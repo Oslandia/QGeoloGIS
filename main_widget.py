@@ -91,16 +91,13 @@ class WellLogViewWrapper(WellLogView):
             f = "{}='{}'".format(cfg["feature_ref_column"],
                                  feature[self.__config["id_column"]])
 
-            # TODO julien use filter expression not subsetstring
-            layer.setSubsetString(f)
-
             self.add_stratigraphy(
-                layer, (cfg["depth_from_column"],
-                        cfg["depth_to_column"],
-                        cfg["formation_code_column"],
-                        cfg["rock_code_column"],
-                        cfg.get("formation_description_column"),
-                        cfg.get("rock_description_column")), "Stratigraphy",
+                layer, f, (cfg["depth_from_column"],
+                           cfg["depth_to_column"],
+                           cfg["formation_code_column"],
+                           cfg["rock_code_column"],
+                           cfg.get("formation_description_column"),
+                           cfg.get("rock_description_column")), "Stratigraphy",
                 cfg.get_style_file())
 
         load_plots(feature, self.__config, self.add_data_column,

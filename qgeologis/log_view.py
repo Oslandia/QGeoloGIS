@@ -16,11 +16,13 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from qgis.PyQt.QtCore import Qt, QRectF, QSizeF, QSize
+from qgis.PyQt.QtCore import Qt, QSizeF
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import (QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel,
                                  QVBoxLayout)
 from qgis.PyQt.QtWidgets import QStatusBar
+
+from qgis.core import QgsFeatureRequest
 
 from .common import POLYGON_RENDERER, ORIENTATION_DOWNWARD, ORIENTATION_LEFT_TO_RIGHT
 
@@ -326,7 +328,7 @@ class WellLogView(QWidget):
 
         self.__log_scene.update()
 
-    def add_stratigraphy(self, layer, column_mapping, title, style_file):
+    def add_stratigraphy(self, layer, filter_expression, column_mapping, title, style_file):
         item = StratigraphyItem(self.DEFAULT_COLUMN_WIDTH,
                                 self.__log_scene.height(),
                                 style_file=style_file)
@@ -335,8 +337,11 @@ class WellLogView(QWidget):
         item.set_layer(layer)
         item.tooltipRequested.connect(self.on_plot_tooltip)
 
-        item.set_data([[f[c] if c is not None else None for c in column_mapping] for f in layer.getFeatures()])
-        
+        req = QgsFeatureRequest()
+        req.setFilterExpression(filter_expression)
+        item.set_data([[f[c] if c is not None else None for c in column_mapping]
+                       for f in layer.getFeatures(req)])
+
         self._add_column(item, legend_item)
 
     def add_imagery(self, image_filename, title, depth_from, depth_to):

@@ -17,11 +17,9 @@
 
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtWidgets import QDialog, QVBoxLayout, QDialogButtonBox, QAbstractItemView
-from qgis.PyQt.QtWidgets import (QListWidget, QListWidgetItem, QHBoxLayout, QLabel, QComboBox,
-                                 QPushButton)
+from qgis.PyQt.QtWidgets import (QListWidget, QListWidgetItem, QHBoxLayout, QLabel, QComboBox)
 
 from qgis.core import QgsProject, QgsFeatureRequest
-from qgis.gui import QgsMessageBar
 
 from .qgeologis.data_interface import FeatureData, LayerData
 
@@ -35,7 +33,6 @@ class DataSelector(QDialog):
         self.__features = features
         self.__config_list = config_list
         self.__config = config
-
         vbox = QVBoxLayout()
 
         btn = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
@@ -84,8 +81,19 @@ class DataSelector(QDialog):
 
                 if cfg.get("feature_filter_type") == "unique_data_from_values":
                     # get unique filter values
-                    cfg["filter_unique_values"] = sorted(list(set([f[cfg["feature_filter_column"]]
-                                                                   for f in data_l.getFeatures(req)])))
+
+                    layerid = cfg["source"]
+                    data_l = QgsProject.instance().mapLayers()[layerid]
+                    values = set()
+                    for feature in self.__features:
+                        feature_id = feature[self.__config["id_column"]]
+                        req = QgsFeatureRequest()
+                        req.setFilterExpression("{}={}".format(cfg["feature_ref_column"],
+                                                               feature_id))
+                        values.update([f[cfg["feature_filter_column"]]
+                                       for f in data_l.getFeatures(req)])
+
+                        cfg.set_filter_unique_values(sorted(list(values)))
 
             item = QListWidgetItem(cfg["name"])
             item.setData(Qt.UserRole, cfg)
@@ -113,10 +121,12 @@ class DataSelector(QDialog):
                 title = cfg["name"]
 
                 if cfg["type"] == "instantaneous":
-                    if "filter_value" in cfg:
+                    if cfg.get_filter_value():
                         filter_expr += " and {}='{}'".format(cfg["feature_filter_column"],
-                                                             cfg["filter_value"])
-                        title = cfg["filter_value"]
+                                                             cfg.get_filter_value())
+
+                        print("filter_expr={}".format(filter_expr))
+                        title = cfg.get_filter_value()
                     else:
                         title = cfg["name"]
 
@@ -125,7 +135,7 @@ class DataSelector(QDialog):
                         pass
                     if f is None:
                         return
-                    uom = cfg["uom"] if "uom" in cfg else "@" + cfg["uom_column"]
+                    uom = cfg.get_uom()
                     data = LayerData(data_l, cfg["event_column"], cfg["value_column"],
                                      filter_expression=filter_expr, uom=uom)
                     uom = data.uom()
@@ -152,26 +162,17 @@ class DataSelector(QDialog):
         self.__sub_selection_combo.setEnabled(False)
         for item in self.__list.selectedItems():
             cfg = item.data(Qt.UserRole)
-            if "filter_unique_values" in cfg:
-                for v in cfg["filter_unique_values"]:
-                    self.__sub_selection_combo.addItem(v)
-            if "filter_value" in cfg:
+            for v in cfg.get_filter_unique_values():
+                self.__sub_selection_combo.addItem(v)
+            if cfg.get_filter_value():
                 self.__sub_selection_combo.setCurrentIndex(
-                    self.__sub_selection_combo.findText(cfg["filter_value"]))
+                    self.__sub_selection_combo.findText(cfg.get_filter_value()))
             self.__sub_selection_combo.setEnabled(True)
             return
 
     def on_combo_changed(self, text):
         for item in self.__list.selectedItems():
             cfg = item.data(Qt.UserRole)
-            cfg["filter_value"] = text
+            cfg.set_filter_value(text)
             item.setData(Qt.UserRole, cfg)
             return
-
-    def on_other_station_selected(self, selected):
-        self.__feature_id = selected[0].id()
-        self._populate_list()
-        self.__feature_name = selected[0][self.__config["name_column"]]
-        self.set_title(self.__feature_name)
-        self.setModal(True)
-        self.setWindowState(Qt.WindowActive)

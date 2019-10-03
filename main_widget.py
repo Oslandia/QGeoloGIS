@@ -33,7 +33,9 @@ def load_plots(feature, config, add_function, config_list):
 
     for cfg in config_list:
 
-        if not cfg.is_visible():
+        if cfg.get("feature_filter_type") == "unique_data_from_values":
+            # don't load it now, we need to filter
+            # we will load it from data selector
             continue
 
         if cfg["type"] in ("continuous", "instantaneous"):
@@ -84,9 +86,6 @@ class WellLogViewWrapper(WellLogView):
 
         # TODO julien isoler dans une fonction
         for cfg in self.__config.get_stratigraphy_plots():
-
-            if not cfg.is_visible():
-                continue
 
             layer = QgsProject.instance().mapLayers()[cfg.get_layerid()]
             f = "{}='{}'".format(cfg["feature_ref_column"],

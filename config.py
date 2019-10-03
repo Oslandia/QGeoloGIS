@@ -23,9 +23,8 @@ class PlotConfig:
 
     def __init__(self, config):
         self.__config = config
-
-    def is_visible(self):
-        return self.__config.get("visible", True)
+        self.__filter_value = None
+        self.__filter_unique_values = []
 
     def get_layerid(self):
         return self.__config["source"]
@@ -47,6 +46,20 @@ class PlotConfig:
 
     def __getitem__(self, key):
         return self.__config[key]
+
+    # TODO: filter_value and filter_unique_values setter and getter
+    # are only helper method and should not be part of the configuration
+    def set_filter_value(self, value):
+        self.__filter_value = value
+
+    def set_filter_unique_values(self, values):
+        self.__filter_unique_values = values
+
+    def get_filter_value(self):
+        return self.__filter_value
+
+    def get_filter_unique_values(self):
+        return self.__filter_unique_values
 
 
 class LayerConfig:

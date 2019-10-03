@@ -62,10 +62,6 @@ def load_plots(feature, config, add_function, config_list):
 
             add_function(data, title, uom, station_name=feature_name)
 
-        elif cfg["type"] == "image":
-            raise "Error : not implemented"
-#            self.__well_log_view.add_imagery_from_db(cfg, self.__feature_id)
-
 
 class WellLogViewWrapper(WellLogView):
     def __init__(self, config, iface):
@@ -110,6 +106,10 @@ class WellLogViewWrapper(WellLogView):
 
         load_plots(self.__feature, self.__config, self.add_data_column,
                    self.__config.get_log_plots())
+
+        feature_id = self.__feature[self.__config["id_column"]]
+        for cfg in self.__config["imagery_data"]:
+            self.add_imagery_from_db(cfg, feature_id)
 
     def on_add_column(self):
 

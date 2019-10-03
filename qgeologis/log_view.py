@@ -371,7 +371,9 @@ class WellLogView(QWidget):
         idx = self.__selected_column
         self.__action_move_column_left.setEnabled(idx != -1 and idx > 0)
         self.__action_move_column_right.setEnabled(idx != -1 and idx < len(self.__columns) - 1)
-        self.__action_edit_style.setEnabled(idx != -1)
+
+        item = self.__columns[idx][0] if idx > 0 else None
+        self.__action_edit_style.setEnabled(bool(item and not isinstance(item, ImageryDataItem)))
         self.__action_remove_column.setEnabled(idx != -1)
 
     def on_move_column_left(self):

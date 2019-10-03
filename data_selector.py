@@ -85,12 +85,6 @@ class DataSelector(QDialog):
         for cfg in self.__config_list:
             if cfg["type"] in ("continuous", "instantaneous"):
                 # check number of features for this station
-                layerid = cfg["source"]
-                data_l = QgsProject.instance().mapLayers()[layerid]
-                req = QgsFeatureRequest()
-                req.setFilterExpression("{}={}".format(cfg["feature_ref_column"], self.__feature_id))
-                if len(list(data_l.getFeatures(req))) == 0:
-                    continue
 
                 if cfg.get("feature_filter_type") == "unique_data_from_values":
                     # get unique filter values

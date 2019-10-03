@@ -110,7 +110,7 @@ class ImageryDataItem(LogItem):
         ms = QgsMapSettings()
         ms.setExtent(lext)
         ms.setOutputSize(QSize(mw, mh))
-        ms.setLayers([self.__layer.id()])
+        ms.setLayers([self.__layer])
         if self.selected():
             ms.setBackgroundColor(QColor("#ffff66"))
         job = QgsMapRendererCustomPainterJob(ms, painter)

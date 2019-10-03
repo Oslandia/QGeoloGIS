@@ -68,19 +68,20 @@ class WellLogViewWrapper(WellLogView):
         WellLogView.__init__(self)
         self.__config = LayerConfig(config)
         self.__iface = iface
-        self.__feature = None
+        self.__features = []
 
-    def set_feature(self, feature):
-        self.__feature = feature
+    def set_features(self, features):
+        self.__features = features
         self.update_view()
 
     def update_view(self):
 
         self.clear_data_columns()
-        # TODO julien clear time series view
 
-        if not self.__feature:
-            return
+        for feature in self.__features:
+            self.__load_feature(feature)
+
+    def __load_feature(self, feature):
 
         # TODO julien isoler dans une fonction
         for cfg in self.__config.get_stratigraphy_plots():
@@ -90,7 +91,7 @@ class WellLogViewWrapper(WellLogView):
 
             layer = QgsProject.instance().mapLayers()[cfg.get_layerid()]
             f = "{}='{}'".format(cfg["feature_ref_column"],
-                                 self.__feature[self.__config["id_column"]])
+                                 feature[self.__config["id_column"]])
 
             # TODO julien use filter expression not subsetstring
             layer.setSubsetString(f)
@@ -104,43 +105,26 @@ class WellLogViewWrapper(WellLogView):
                         cfg.get("rock_description_column")), "Stratigraphy",
                 cfg.get_style_file())
 
-        load_plots(self.__feature, self.__config, self.add_data_column,
+        load_plots(feature, self.__config, self.add_data_column,
                    self.__config.get_log_plots())
 
-        feature_id = self.__feature[self.__config["id_column"]]
+        feature_id = feature[self.__config["id_column"]]
         for cfg in self.__config["imagery_data"]:
             self.add_imagery_from_db(cfg, feature_id)
 
     def on_add_column(self):
 
-        if not self.__feature:
+        if not self.__features:
             self.__iface.messageBar().pushWarning(
                 "QGeoloGIS",
                 u"Impossible to add plot without selecting a feature")
             return
 
-        feature_id = self.__feature[self.__config["id_column"]]
         sources = list(self.__config["log_measures"])
         sources += [dict(list(d.items()) + [("type", "image")])
                     for d in self.__config["imagery_data"]]
-        s = DataSelector(self, feature_id, self.__feature[self.__config["name_column"]],
-                         sources, self.__config)
+        s = DataSelector(self, self.__features, sources, self.__config)
         s.exec_()
-
-    def has_imagery_data(self, cfg, feature_id):
-        if cfg.get("provider", "postgres_bytea") != "postgres_bytea":
-            # not implemented
-            return False
-
-        import psycopg2
-        conn = psycopg2.connect(cfg["source"])
-        cur = conn.cursor()
-        cur.execute("select count(*) from {schema}.{table} where {ref_column}=%s"\
-                    .format(schema=cfg["schema"],
-                            table=cfg["table"],
-                            ref_column=cfg["feature_ref_column"]),
-                    (feature_id,))
-        return cur.fetchone()[0] > 0
 
     def add_imagery_from_db(self, cfg, feature_id):
         if cfg.get("provider", "postgres_bytea") != "postgres_bytea":
@@ -178,25 +162,22 @@ class TimeSeriesWrapper(TimeSeriesView):
     def __init__(self, config):
         TimeSeriesView.__init__(self)
         self.__config = LayerConfig(config)
-        self.__feature = None
+        self.__features = []
 
-    def set_feature(self, feature):
-        self.__feature = feature
+    def set_features(self, features):
+        self.__features = features
         self.update_view()
 
     def update_view(self):
 
         self.clear_data_rows()
 
-        if not self.__feature:
-            return
-
-        load_plots(self.__feature, self.__config, self.add_data_row,
-                   self.__config.get_timeseries())
+        for feature in self.__features:
+            load_plots(feature, self.__config, self.add_data_row,
+                       self.__config.get_timeseries())
 
     def on_add_row(self):
-        s = DataSelector(self, self.__feature.id(), self.__feature[self.__config["name_column"]],
-                         self.__config.get_timeseries(),  self.__config)
+        s = DataSelector(self, self.__features,  self.__config.get_timeseries(),  self.__config)
         s.exec_()
 
 
@@ -237,8 +218,5 @@ class MainDialog(QWidget):
         if not self.__layer.selectedFeatureCount():
             return
 
-        feature = self.__layer.selectedFeatures()[0]
-        self.__well_log_view.set_feature(feature)
-        self.__time_series_view.set_feature(feature)
-
-
+        self.__well_log_view.set_features(self.__layer.selectedFeatures())
+        self.__time_series_view.set_features(self.__layer.selectedFeatures())

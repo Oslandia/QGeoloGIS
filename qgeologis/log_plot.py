@@ -71,7 +71,7 @@ class PlotItem(LogItem):
         symbol = self.__renderers[0].symbol()
         symbol.setSize(5.0)
         symbol = self.__renderers[2].symbol()
-        symbol.symbolLayers()[0].setBorderWidth(1.0)
+        symbol.symbolLayers()[0].setStrokeWidth(1.0)
         self.__renderer = self.__renderers[self.__render_type]
 
         # index of the current point to label
@@ -288,7 +288,7 @@ class PlotItem(LogItem):
         # build a geometry from the WKB
         # since numpy arrays have buffer protocol, sip is able to read it
         geom = QgsGeometry()
-        geom.fromWkb(wkb)
+        geom.fromWkb(wkb.tobytes())
 
         painter.setClipRect(0, 0, self.__item_size.width(), self.__item_size.height())
 

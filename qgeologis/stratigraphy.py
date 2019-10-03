@@ -48,7 +48,7 @@ class StratigraphyItem(LogItem):
         if style_file:
             doc = QDomDocument()
             doc.setContent(open(style_file, "r").read())
-            self.__renderer = QgsFeatureRenderer._load(doc.documentElement())
+            self.__renderer = QgsFeatureRenderer.load(doc.documentElement(), QgsReadWriteContext())
         else:
             self.__renderer = QgsFeatureRenderer.defaultRenderer(POLYGON_RENDERER)
 

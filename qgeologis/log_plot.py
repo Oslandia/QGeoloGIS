@@ -335,9 +335,9 @@ class PlotItem(LogItem):
             x, y = self.__x_values[i], self.__y_values[i]
             if self.__x_orientation == ORIENTATION_LEFT_TO_RIGHT and self.__y_orientation == ORIENTATION_UPWARD:
                 dt = datetime.fromtimestamp(x, UTC())
-                txt = "Time: {} Value: {}".format(unicode(dt.strftime("%x %X"), "utf8"),y)
+                txt = "Time: {} Value: {}".format(dt.strftime("%x %X"), y)
             elif self.__x_orientation == ORIENTATION_DOWNWARD and self.__y_orientation == ORIENTATION_LEFT_TO_RIGHT:
-                txt = "Depth: {} Value: {}".format(x,y)
+                txt = "Depth: {} Value: {}".format(x, y)
             self.tooltipRequested.emit(txt)
 
         self.__old_point_to_label = self.__point_to_label

@@ -129,7 +129,8 @@ class TimeScaleItem(LogItem):
             if dt.year < 1900:
                 dt_str = "--"
             else:
-                dt_str = unicode(dt.strftime(hformat), "utf8")
+                dt_str = dt.strftime(hformat)
+
             r = fm.boundingRect(dt_str)
 
             # draw the text rotated

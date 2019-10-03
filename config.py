@@ -18,21 +18,14 @@
 
 import os
 
-from PyQt5.QtCore import QObject, pyqtSignal
 
-
-class PlotConfig(QObject):
-
-    visibility_changed = pyqtSignal()
+class PlotConfig:
 
     def __init__(self, config):
         self.__config = config
 
     def is_visible(self):
         return self.__config.get("visible", True)
-
-    def set_visible(self, visible):
-        self.__config["visible"] = visible
 
     def get_layerid(self):
         return self.__config["source"]
@@ -63,12 +56,16 @@ class LayerConfig:
 
         self.__stratigraphy_plots = []
         self.__log_plots = []
+        self.__timeseries = []
 
         for plot in self.__config.get("stratigraphy_config", []):
             self.__stratigraphy_plots.append(PlotConfig(plot))
 
         for plot in self.__config.get("log_measures", []):
             self.__log_plots.append(PlotConfig(plot))
+
+        for timeserie in self.__config.get("timeseries", []):
+            self.__timeseries.append(PlotConfig(timeserie))
 
     def __getitem__(self, key):
         return self.__config[key]
@@ -78,6 +75,9 @@ class LayerConfig:
 
     def get_log_plots(self):
         return self.__log_plots
+
+    def get_timeseries(self):
+        return self.__timeseries
 
     def get_vertical_plots(self):
         return self.__stratigraphy_plots + self.__log_plots

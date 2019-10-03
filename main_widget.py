@@ -27,6 +27,46 @@ from .data_selector import DataSelector
 from .config import LayerConfig
 
 
+def load_plots(feature, config, add_function, config_list):
+
+    feature_id = feature[config["id_column"]]
+    feature_name = feature[config["name_column"]]
+
+    for cfg in config_list:
+
+        if not cfg.is_visible():
+            continue
+
+        if cfg["type"] in ("continuous", "instantaneous"):
+            layerid = cfg.get_layerid()
+            data_l = QgsProject.instance().mapLayers()[layerid]
+            filter_expr = "{}='{}'".format(cfg["feature_ref_column"],
+                                           feature_id)
+
+            title = cfg["name"]
+
+            if cfg["type"] == "instantaneous":
+                uom = cfg.get_uom()
+                data = LayerData(data_l, cfg["event_column"], cfg["value_column"],
+                                 filter_expression=filter_expr, uom=uom)
+                uom = data.uom()
+
+            if cfg["type"] == "continuous":
+                req = QgsFeatureRequest()
+                req.setFilterExpression(filter_expr)
+                uom = cfg.get_uom()
+                fids = [f.id() for f in data_l.getFeatures(req)]
+                data = FeatureData(data_l, cfg["values_column"], feature_ids=fids,
+                                   x_start_fieldname=cfg["start_measure_column"],
+                                   x_delta_fieldname=cfg["interval_column"])
+
+            add_function(data, title, uom, station_name=feature_name)
+
+        elif cfg["type"] == "image":
+            raise "Error : not implemented"
+#            self.__well_log_view.add_imagery_from_db(cfg, self.__feature_id)
+
+
 class WellLogViewWrapper(WellLogView):
     def __init__(self, config, iface):
         WellLogView.__init__(self)
@@ -68,49 +108,8 @@ class WellLogViewWrapper(WellLogView):
                         cfg.get("rock_description_column")), "Stratigraphy",
                 cfg.get_style_file())
 
-        self.__load_plots(self.add_data_column, self.__config.get_log_plots())
-
-        # TODO julien corriger timer series
-        # self.__load_plot(self.__time_series_view.add_data_row,
-        #                  "timeseries")
-
-    def __load_plots(self, add_function, config_list):
-
-        feature_id = self.__feature[self.__config["id_column"]]
-        feature_name = self.__feature[self.__config["name_column"]]
-
-        for cfg in config_list:
-
-            if not cfg.is_visible():
-                continue
-
-            if cfg["type"] in ("continuous", "instantaneous"):
-                layerid = cfg.get_layerid()
-                data_l = QgsProject.instance().mapLayers()[layerid]
-                filter_expr = "{}='{}'".format(cfg["feature_ref_column"],
-                                               feature_id)
-
-                title = cfg["name"]
-
-                if cfg["type"] == "instantaneous":
-                    uom = cfg.get_uom()
-                    data = LayerData(data_l, cfg["event_column"], cfg["value_column"],
-                                     filter_expression=filter_expr, uom=uom)
-                    uom = data.uom()
-
-                if cfg["type"] == "continuous":
-                    req = QgsFeatureRequest()
-                    req.setFilterExpression(filter_expr)
-                    uom = cfg.get_uom()
-                    fids = [f.id() for f in data_l.getFeatures(req)]
-                    data = FeatureData(data_l, cfg["values_column"], feature_ids=fids,
-                                       x_start_fieldname=cfg["start_measure_column"],
-                                       x_delta_fieldname=cfg["interval_column"])
-
-                add_function(data, title, uom, station_name=feature_name)
-
-            elif cfg["type"] == "image":
-                self.__well_log_view.add_imagery_from_db(cfg, self.__feature_id)
+        load_plots(self.__feature, self.__config, self.add_data_column,
+                   self.__config.get_log_plots())
 
     def on_add_column(self):
 
@@ -178,14 +177,26 @@ class WellLogViewWrapper(WellLogView):
 class TimeSeriesWrapper(TimeSeriesView):
     def __init__(self, config):
         TimeSeriesView.__init__(self)
-        self.__config = config
+        self.__config = LayerConfig(config)
         self.__feature = None
 
     def set_feature(self, feature):
         self.__feature = feature
+        self.update_view()
+
+    def update_view(self):
+
+        self.clear_data_rows()
+
+        if not self.__feature:
+            return
+
+        load_plots(self.__feature, self.__config, self.add_data_row,
+                   self.__config.get_timeseries())
 
     def on_add_row(self):
-        s = DataSelector(self, self.__feature.id(), self.__feature[self.__config["name_column"]], self.__config["timeseries"], self.__config)
+        s = DataSelector(self, self.__feature.id(), self.__feature[self.__config["name_column"]],
+                         self.__config.get_timeseries(),  self.__config)
         s.exec_()
 
 

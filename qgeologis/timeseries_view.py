@@ -237,6 +237,23 @@ class TimeSeriesView(QWidget):
         # Rows not found
         assert False
 
+    def clear_data_rows(self):
+        # remove item from scenes
+        for (item, legend) in self.__rows:
+            self.__scene.removeItem(legend)
+            self.__scene.removeItem(item)
+
+        # remove from internal lists
+        self.__rows = []
+        self.__rows_widths = []
+        self.__data2logitems = {}
+
+        self.select_row(-1)
+        self._place_items()
+        self._update_button_visibility()
+        self._min_x = None
+
+        
     def on_plot_tooltip(self, station_name, txt):
         if station_name is not None:
             self.__status_bar.showMessage(u"Station: {} ".format(station_name) + txt)

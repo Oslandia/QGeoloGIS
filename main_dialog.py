@@ -84,7 +84,7 @@ class WellLogViewWrapper(WellLogView):
 
     def __load_feature(self, feature):
 
-        # TODO julien isoler dans une fonction
+        # load stratigraphy
         for cfg in self.__config.get_stratigraphy_plots():
 
             layer = QgsProject.instance().mapLayers()[cfg.get_layerid()]
@@ -100,9 +100,11 @@ class WellLogViewWrapper(WellLogView):
                            cfg.get("rock_description_column")), "Stratigraphy",
                 cfg.get_style_file())
 
+        # load log measures
         load_plots(feature, self.__config, self.add_data_column,
                    self.__config.get_log_plots())
 
+        # load imagery
         feature_id = feature[self.__config["id_column"]]
         for cfg in self.__config["imagery_data"]:
             self.add_imagery_from_db(cfg, feature_id)
@@ -176,7 +178,6 @@ class TimeSeriesWrapper(TimeSeriesView):
         s.exec_()
 
 
-# TODO julien renommer fichier
 class MainDialog(QSplitter):
 
     def __init__(self, config, layer, iface):

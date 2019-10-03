@@ -26,7 +26,7 @@ from qgis.core import (QgsPoint, QgsCoordinateTransform, QgsRectangle,
                        QgsGeometry, QgsFeatureRequest, QgsProject)
 from qgis.gui import QgsMapTool
 
-from .main_widget import MainDialog
+from .main_dialog import MainDialog
 
 
 class FeatureSelectionTool(QgsMapTool):

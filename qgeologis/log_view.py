@@ -7,7 +7,7 @@
 #   modify it under the terms of the GNU Library General Public
 #   License as published by the Free Software Foundation; either
 #   version 2 of the License, or (at your option) any later version.
-#   
+#
 #   This library is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -16,9 +16,10 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from qgis.PyQt.QtCore import Qt, QRectF, QSizeF, QPoint
+from qgis.PyQt.QtCore import Qt, QRectF, QSizeF, QSize
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel, QVBoxLayout, QToolTip
+from qgis.PyQt.QtWidgets import (QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel,
+                                 QVBoxLayout)
 from qgis.PyQt.QtWidgets import QStatusBar
 
 from .common import POLYGON_RENDERER, ORIENTATION_DOWNWARD, ORIENTATION_LEFT_TO_RIGHT
@@ -31,6 +32,7 @@ from .imagery_data import ImageryDataItem
 
 import os
 
+
 class LogGraphicsView(QGraphicsView):
     def __init__(self, scene, parent=None):
         QGraphicsView.__init__(self, scene, parent)
@@ -39,6 +41,7 @@ class LogGraphicsView(QGraphicsView):
         self.__translation_orig = None
         self.__translation_min_z = None
         self.__translation_max_z = None
+        self.__max_width = 500
 
         self.setMouseTracking(True)
 
@@ -46,7 +49,9 @@ class LogGraphicsView(QGraphicsView):
         QGraphicsView.resizeEvent(self, event)
         # by default, the rect is centered on 0,0,
         # we prefer to have 0,0 in the upper left corner
-        self.scene().setSceneRect(QRectF(0, 0, event.size().width(), event.size().height()))
+        rect = self.scene().sceneRect()
+        rect.setHeight(event.size().height())
+        self.scene().setSceneRect(rect)
 
     def wheelEvent(self, event):
         delta = -event.delta() / 100.0
@@ -199,7 +204,10 @@ class WellLogView(QWidget):
             legend.setPos(x, 0)
             item.setPos(x, legend.boundingRect().height())
             x += width
-        self.__log_view.setMinimumSize(x, self.__log_view.minimumSize().height())
+
+        rect = self.__log_scene.sceneRect()
+        rect.setWidth(x)
+        self.__log_scene.setSceneRect(rect)
 
     def _add_column(self, log_item, legend_item):
         self.__log_scene.addItem(log_item)

@@ -15,9 +15,8 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-import os
-
-from qgis.PyQt.QtWidgets import QVBoxLayout, QWidget, QDialog
+from qgis.PyQt.QtWidgets import QSplitter
+from qgis.PyQt.QtCore import Qt, QSize
 from qgis.core import QgsProject, QgsFeatureRequest
 
 from .qgeologis.log_view import WellLogView
@@ -182,12 +181,13 @@ class TimeSeriesWrapper(TimeSeriesView):
 
 
 # TODO julien renommer fichier
-class MainDialog(QWidget):
+class MainDialog(QSplitter):
 
     def __init__(self, config, layer, iface):
 
-        super().__init__()
+        super().__init__(Qt.Vertical)
         self.setWindowTitle("{} plot viewer".format(layer.name()))
+        self.setMinimumSize(QSize(600, 400))
 
         self.__layer = layer
         self.__config = config
@@ -196,11 +196,8 @@ class MainDialog(QWidget):
         self.__well_log_view = WellLogViewWrapper(self.__config, self.__iface)
         self.__time_series_view = TimeSeriesWrapper(self.__config)
 
-        layout = QVBoxLayout()
-        self.setLayout(layout)
-
-        layout.addWidget(self.__well_log_view)
-        layout.addWidget(self.__time_series_view)
+        self.addWidget(self.__well_log_view)
+        self.addWidget(self.__time_series_view)
 
         self.__layer.selectionChanged.connect(self.__update_selected_features)
 

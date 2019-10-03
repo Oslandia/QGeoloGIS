@@ -7,7 +7,7 @@
 #   modify it under the terms of the GNU Library General Public
 #   License as published by the Free Software Foundation; either
 #   version 2 of the License, or (at your option) any later version.
-#   
+#
 #   This library is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -16,17 +16,18 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from qgis.PyQt.QtCore import Qt, QRectF, QSizeF
+import os
+
+from qgis.PyQt.QtCore import Qt, QRectF, QSizeF, QSize
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel, QVBoxLayout
-from qgis.PyQt.QtWidgets import QStatusBar
+from qgis.PyQt.QtWidgets import (QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel,
+                                 QStatusBar, QVBoxLayout)
 
 from .common import POINT_RENDERER, ORIENTATION_UPWARD, ORIENTATION_LEFT_TO_RIGHT
 from .log_plot import PlotItem
 from .time_scale import TimeScaleItem
 from .legend_item import LegendItem
 
-import os
 
 class TimeSeriesGraphicsView(QGraphicsView):
     def __init__(self, scene, parent=None):
@@ -43,7 +44,9 @@ class TimeSeriesGraphicsView(QGraphicsView):
         QGraphicsView.resizeEvent(self, event)
         # by default, the rect is centered on 0,0,
         # we prefer to have 0,0 in the upper left corner
-        self.scene().setSceneRect(QRectF(0, 0, event.size().width(), event.size().height()))
+        rect = self.scene().sceneRect()
+        rect.setWidth(event.size().width())
+        self.scene().setSceneRect(rect)
 
     def wheelEvent(self, event):
         delta = -event.delta() / 100.0
@@ -186,7 +189,10 @@ class TimeSeriesView(QWidget):
             legend.setPos(0, y)
             item.setPos(legend.boundingRect().width(), y)
             y += height
-        self.__view.setMinimumSize(self.__view.minimumSize().width(), y)
+
+        rect = self.__scene.sceneRect()
+        rect.setHeight(y)
+        self.__scene.setSceneRect(rect)
 
     def _add_row(self, log_item, legend_item):
         self.__scene.addItem(log_item)

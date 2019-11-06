@@ -21,6 +21,7 @@ from qgis.PyQt.QtWidgets import (QListWidget, QListWidgetItem, QHBoxLayout, QLab
 
 from qgis.core import QgsProject, QgsFeatureRequest
 
+from .config import PlotConfig
 from .qgeologis.data_interface import FeatureData, LayerData
 
 
@@ -96,7 +97,7 @@ class DataSelector(QDialog):
                         cfg.set_filter_unique_values(sorted(list(values)))
 
             item = QListWidgetItem(cfg["name"])
-            item.setData(Qt.UserRole, cfg)
+            item.setData(Qt.UserRole, PlotConfig(cfg))
             self.__list.addItem(item)
 
     def accept(self):
@@ -115,7 +116,7 @@ class DataSelector(QDialog):
                 layerid = cfg["source"]
                 data_l = QgsProject.instance().mapLayers()[layerid]
                 req = QgsFeatureRequest()
-                filter_expr = "{}={}".format(cfg["feature_ref_column"], feature_id)
+                filter_expr = "{}='{}'".format(cfg["feature_ref_column"], feature_id)
                 req.setFilterExpression(filter_expr)
 
                 title = cfg["name"]

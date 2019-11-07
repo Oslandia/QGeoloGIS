@@ -15,10 +15,14 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from qgis.PyQt.QtWidgets import QSplitter
+import os
+
+from qgis.PyQt.QtWidgets import QSplitter, QAction
+from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtCore import Qt, QSize
 from qgis.core import QgsProject, QgsFeatureRequest
 
+from .config_create_dialog import ConfigCreateDialog
 from .qgeologis.log_view import WellLogView
 from .qgeologis.timeseries_view import TimeSeriesView
 from .qgeologis.data_interface import LayerData, FeatureData
@@ -67,9 +71,23 @@ def load_plots(feature, config, add_function, config_list):
 class WellLogViewWrapper(WellLogView):
     def __init__(self, config, iface):
         WellLogView.__init__(self)
-        self.__config = LayerConfig(config)
+        self.__config = config
         self.__iface = iface
         self.__features = []
+
+        image_dir = os.path.join(os.path.dirname(__file__), "qgeologis", "img")
+        self.__action_add_configuration = QAction(QIcon(os.path.join(image_dir, "new_plot.svg")),
+                                                  "Add a new column configuration", self.toolbar)
+        self.__action_add_configuration.triggered.connect(self.on_add_configuration)
+        self.toolbar.addAction(self.__action_add_configuration)
+
+    def on_add_configuration(self):
+        dialog = ConfigCreateDialog(self)
+        if dialog.exec_():
+            config_type, plot_config = dialog.config()
+            self.__config.add_plot_config(config_type, plot_config)
+
+        self.update_view()
 
     def set_features(self, features):
         self.__features = features
@@ -97,7 +115,8 @@ class WellLogViewWrapper(WellLogView):
                            cfg["formation_code_column"],
                            cfg["rock_code_column"],
                            cfg.get("formation_description_column"),
-                           cfg.get("rock_description_column")), "Stratigraphy",
+                           cfg.get("rock_description_column")),
+                cfg.get("name", self.tr("Stratigraphy")),
                 cfg.get_style_file())
 
         # load log measures
@@ -158,7 +177,7 @@ class WellLogViewWrapper(WellLogView):
 class TimeSeriesWrapper(TimeSeriesView):
     def __init__(self, config):
         TimeSeriesView.__init__(self)
-        self.__config = LayerConfig(config)
+        self.__config = config
         self.__features = []
 
     def set_features(self, features):
@@ -187,7 +206,7 @@ class MainDialog(QSplitter):
         self.setMinimumSize(QSize(600, 400))
 
         self.__layer = layer
-        self.__config = config
+        self.__config = LayerConfig(config, layer.id())
         self.__iface = iface
 
         self.__well_log_view = WellLogViewWrapper(self.__config, self.__iface)

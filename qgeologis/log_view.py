@@ -119,7 +119,7 @@ class WellLogView(QWidget):
     def __init__(self, title=None,image_dir=None, parent=None):
         QWidget.__init__(self, parent)
 
-        toolbar = QToolBar()
+        self.toolbar = QToolBar()
         self.__log_scene = MyScene(0, 0, 600, 600)
         self.__log_view = LogGraphicsView(self.__log_scene)
         self.__log_view.setAlignment(Qt.AlignLeft|Qt.AlignTop)
@@ -129,30 +129,30 @@ class WellLogView(QWidget):
         if image_dir is None:
             image_dir = os.path.join(os.path.dirname(__file__), "img")
 
-        self.__action_move_column_left = QAction(QIcon(os.path.join(image_dir, "left.svg")), "Move the column to the left", toolbar)
+        self.__action_move_column_left = QAction(QIcon(os.path.join(image_dir, "left.svg")), "Move the column to the left", self.toolbar)
         self.__action_move_column_left.triggered.connect(self.on_move_column_left)
-        self.__action_move_column_right = QAction(QIcon(os.path.join(image_dir, "right.svg")), "Move the column to the right", toolbar)
+        self.__action_move_column_right = QAction(QIcon(os.path.join(image_dir, "right.svg")), "Move the column to the right", self.toolbar)
         self.__action_move_column_right.triggered.connect(self.on_move_column_right)
 
-        self.__action_edit_style = QAction(QIcon(os.path.join(image_dir, "symbology.svg")), "Edit column style", toolbar)
+        self.__action_edit_style = QAction(QIcon(os.path.join(image_dir, "symbology.svg")), "Edit column style", self.toolbar)
         self.__action_edit_style.triggered.connect(self.on_edit_style)
 
-        self.__action_add_column = QAction(QIcon(os.path.join(image_dir, "add.svg")), "Add a data column", toolbar)
+        self.__action_add_column = QAction(QIcon(os.path.join(image_dir, "add.svg")), "Add a data column from configured ones", self.toolbar)
         self.__action_add_column.triggered.connect(self.on_add_column)
 
-        self.__action_remove_column = QAction(QIcon(os.path.join(image_dir, "remove.svg")), "Remove the column", toolbar)
+        self.__action_remove_column = QAction(QIcon(os.path.join(image_dir, "remove.svg")), "Remove the column", self.toolbar)
         self.__action_remove_column.triggered.connect(self.on_remove_column)
 
-        #self.__action_move_content_right = QAction("Move content right", toolbar)
-        #self.__action_move_content_left = QAction("Move content left", toolbar)
+        #self.__action_move_content_right = QAction("Move content right", self.toolbar)
+        #self.__action_move_content_left = QAction("Move content left", self.toolbar)
         #self.__action_move_content_left.triggered.connect(self.on_move_content_left)
         #self.__action_move_content_right.triggered.connect(self.on_move_content_right)
 
-        toolbar.addAction(self.__action_move_column_left)
-        toolbar.addAction(self.__action_move_column_right)
-        toolbar.addAction(self.__action_edit_style)
-        toolbar.addAction(self.__action_add_column)
-        toolbar.addAction(self.__action_remove_column)
+        self.toolbar.addAction(self.__action_move_column_left)
+        self.toolbar.addAction(self.__action_move_column_right)
+        self.toolbar.addAction(self.__action_edit_style)
+        self.toolbar.addAction(self.__action_add_column)
+        self.toolbar.addAction(self.__action_remove_column)
 
         #self.__toolbar.addAction(self.__action_move_content_left)
         #self.__toolbar.addAction(self.__action_move_content_right)
@@ -165,7 +165,7 @@ class WellLogView(QWidget):
 
         vbox = QVBoxLayout()
         vbox.addWidget(self.__title_label)
-        vbox.addWidget(toolbar)
+        vbox.addWidget(self.toolbar)
         vbox.addWidget(self.__log_view)
         vbox.addWidget(self.__status_bar)
         self.setLayout(vbox)
@@ -190,7 +190,7 @@ class WellLogView(QWidget):
 
         # by default we have a Z scale
         self.add_z_scale()
-
+        
     def on_rect_changed(self, rect):
         for item, _ in self.__columns:
             item.set_height(rect.height())

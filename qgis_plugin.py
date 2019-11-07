@@ -121,7 +121,7 @@ class QGeoloGISPlugin:
             self.iface.messageBar().pushInfo("QGeoloGIS", u"There is no plot configured for this layer")
             return
 
-        dialog = MainDialog(self.__config.get(layer.id(), {}), layer, self.iface)
+        dialog = MainDialog(self.__config, layer, self.iface)
         dialog.show()
         self.__dialogs.append(dialog)
 

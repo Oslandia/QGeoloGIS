@@ -17,7 +17,8 @@
 
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtWidgets import QDialog, QVBoxLayout, QDialogButtonBox, QAbstractItemView
-from qgis.PyQt.QtWidgets import (QListWidget, QListWidgetItem, QHBoxLayout, QLabel, QComboBox)
+from qgis.PyQt.QtWidgets import (QListWidget, QListWidgetItem, QHBoxLayout, QLabel, QComboBox,
+                                 QPushButton)
 
 from qgis.core import QgsProject, QgsFeatureRequest
 

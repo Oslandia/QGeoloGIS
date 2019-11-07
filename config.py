@@ -17,6 +17,8 @@
 #
 
 import os
+import json
+from qgis.core import QgsProject
 
 
 class PlotConfig:
@@ -61,11 +63,15 @@ class PlotConfig:
     def get_filter_unique_values(self):
         return self.__filter_unique_values
 
+    def get_dict(self):
+        return self.__config
+
 
 class LayerConfig:
 
-    def __init__(self, config):
-        self.__config = config
+    def __init__(self, config, layer_id):
+        self.__global_config = config
+        self.__config = config.get(layer_id)
 
         self.__stratigraphy_plots = []
         self.__log_plots = []
@@ -79,6 +85,9 @@ class LayerConfig:
 
         for timeserie in self.__config.get("timeseries", []):
             self.__timeseries.append(PlotConfig(timeserie))
+
+    def get(self, key, default=None):
+        return self.__config.get(key, default)
 
     def __getitem__(self, key):
         return self.__config[key]
@@ -94,3 +103,20 @@ class LayerConfig:
 
     def get_vertical_plots(self):
         return self.__stratigraphy_plots + self.__log_plots
+
+    def add_plot_config(self, config_type, plot_config):
+        plots = (self.__stratigraphy_plots if config_type == "stratigraphy_config" else
+                 self.__log_plots if config_type == "log_measures" else
+                 self.__timeseries if config_type == "timeseries" else None)
+
+        plots.append(plot_config)
+
+        if config_type not in self.__config:
+            self.__config[config_type] = []
+
+        self.__config[config_type].append(plot_config.get_dict())
+        self.config_modified()
+
+    def config_modified(self):
+        json_config = json.dumps(self.__global_config)
+        QgsProject.instance().writeEntry("QGeoloGIS", "config", json_config)

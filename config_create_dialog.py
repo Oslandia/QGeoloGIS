@@ -25,7 +25,6 @@ class ConfigCreateDialog(QDialog):
             if layer.type() == QgsMapLayer.VectorLayer:
                 self._source.addItem(layer.name(), layer)
 
-
     def __on_type_changed(self, index):
         self._type_widgets.setCurrentIndex(index)
 

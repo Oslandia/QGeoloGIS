@@ -26,6 +26,7 @@ from qgis.core import (QgsPoint, QgsCoordinateTransform, QgsRectangle,
                        QgsGeometry, QgsFeatureRequest, QgsProject)
 from qgis.gui import QgsMapTool
 
+from .configure_plot_dialog import ConfigurePlotDialog
 from .main_dialog import MainDialog
 
 
@@ -118,8 +119,16 @@ class QGeoloGISPlugin:
             return
 
         if layer.id() not in self.__config:
-            self.iface.messageBar().pushInfo("QGeoloGIS", u"There is no plot configured for this layer")
-            return
+            dlg = ConfigurePlotDialog(layer, self.iface.mainWindow())
+            if dlg.exec_():
+                conf = dlg.config()
+                self.__config[layer.id()] = conf
+
+                json_config = json.dumps(self.__config)
+                QgsProject.instance().writeEntry("QGeoloGIS", "config", json_config)
+
+            else:
+                return
 
         dialog = MainDialog(self.__config, layer, self.iface)
         dialog.show()

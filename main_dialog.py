@@ -222,11 +222,11 @@ class MainDialog(QSplitter):
     def __update_selected_features(self):
 
         self.__well_log_view.setVisible(
-            len(self.__config.get("stratigraphy_config", []))
-            + len(self.__config.get("log_measures", [])))
+            self.__config.get("stratigraphy_config") is not None
+            or self.__config.get("log_measures") is not None)
 
         self.__time_series_view.setVisible(
-            len(self.__config.get("timeseries", [])))
+            self.__config.get("timeseries") is not None)
 
         if not self.__layer.selectedFeatureCount():
             return

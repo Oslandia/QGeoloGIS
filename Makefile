@@ -1,5 +1,10 @@
+# Install with QGIS3_PROFILE=xxx make deploy
+
 PLUGIN_NAME=$(shell grep "^name" metadata.txt | cut -d'=' -f2)
 VERSION=$(shell grep "^version" metadata.txt | cut -d'=' -f2)
+ifeq ($(QGIS3_PROFILE),)
+QGIS3_PROFILE=default
+endif
 
 SOURCES=__init__.py \
 	qgis_plugin.py \
@@ -23,7 +28,7 @@ SOURCES=__init__.py \
 ZIP_FILE=$(PLUGIN_NAME)-$(VERSION).zip
 
 QGIS2_PATH=~/.qgis2/python/plugins/$(PLUGIN_NAME)
-QGIS3_PATH=~/.local/share/QGIS/QGIS3/profiles/default/python/plugins/$(PLUGIN_NAME)
+QGIS3_PATH=~/.local/share/QGIS/QGIS3/profiles/$(QGIS3_PROFILE)/python/plugins/$(PLUGIN_NAME)
 
 .PHONY = zip
 zip: $(ZIP_FILE)

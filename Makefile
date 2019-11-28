@@ -7,6 +7,13 @@ QGIS3_PROFILE=default
 endif
 
 SOURCES=__init__.py \
+	config.py \
+	config_create_dialog.py \
+	config_create_dialog.ui \
+	configure_plot_dialog.py \
+	configure_plot_dialog.ui \
+	data_selector.py \
+	main_dialog.py \
 	qgis_plugin.py \
 	metadata.txt \
 	qgeologis/__init__.py \
@@ -26,7 +33,6 @@ SOURCES=__init__.py \
 
 ZIP_FILE=$(PLUGIN_NAME)-$(VERSION).zip
 
-QGIS2_PATH=~/.qgis2/python/plugins/$(PLUGIN_NAME)
 QGIS3_PATH=~/.local/share/QGIS/QGIS3/profiles/$(QGIS3_PROFILE)/python/plugins/$(PLUGIN_NAME)
 
 .PHONY = zip
@@ -36,8 +42,6 @@ $(ZIP_FILE): $(SOURCES)
 	zip $(ZIP_FILE) $(SOURCES)
 
 deploy: $(ZIP_FILE)
-	mkdir -p $(QGIS2_PATH)
-	unzip -o $(ZIP_FILE) -d $(QGIS2_PATH)
 	mkdir -p $(QGIS3_PATH)
 	unzip -o $(ZIP_FILE) -d $(QGIS3_PATH)
 

@@ -24,7 +24,7 @@ from qgis.core import QgsProject
 class PlotConfig:
 
     def __init__(self, config):
-        self.__config = config
+        self.__config = dict(config)
         self.__filter_value = None
         self.__filter_unique_values = []
 
@@ -73,18 +73,9 @@ class LayerConfig:
         self.__global_config = config
         self.__config = config.get(layer_id)
 
-        self.__stratigraphy_plots = []
-        self.__log_plots = []
-        self.__timeseries = []
-
-        for plot in self.__config.get("stratigraphy_config", []):
-            self.__stratigraphy_plots.append(PlotConfig(plot))
-
-        for plot in self.__config.get("log_measures", []):
-            self.__log_plots.append(PlotConfig(plot))
-
-        for timeserie in self.__config.get("timeseries", []):
-            self.__timeseries.append(PlotConfig(timeserie))
+        self.__stratigraphy_plots = [p for p in self.__config.get("stratigraphy_config", [])]
+        self.__log_plots = [p for p in self.__config.get("log_measures", [])]
+        self.__timeseries = [p for p in self.__config.get("timeseries", [])]
 
     def get(self, key, default=None):
         return self.__config.get(key, default)

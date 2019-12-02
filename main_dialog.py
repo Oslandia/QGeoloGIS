@@ -27,7 +27,7 @@ from .qgeologis.log_view import WellLogView
 from .qgeologis.timeseries_view import TimeSeriesView
 from .qgeologis.data_interface import LayerData, FeatureData
 from .data_selector import DataSelector
-from .config import LayerConfig
+from .config import LayerConfig, PlotConfig
 
 
 def load_plots(feature, config, add_function, config_list):
@@ -35,7 +35,8 @@ def load_plots(feature, config, add_function, config_list):
     feature_id = feature[config["id_column"]]
     feature_name = feature[config["name_column"]]
 
-    for cfg in config_list:
+    for c in config_list:
+        cfg = PlotConfig(c)
 
         if cfg.get("feature_filter_type") == "unique_data_from_values":
             # don't load it now, we need to filter
@@ -103,7 +104,8 @@ class WellLogViewWrapper(WellLogView):
     def __load_feature(self, feature):
 
         # load stratigraphy
-        for cfg in self.__config.get_stratigraphy_plots():
+        for c in self.__config.get_stratigraphy_plots():
+            cfg = PlotConfig(c)
 
             layer = QgsProject.instance().mapLayers()[cfg.get_layerid()]
             f = "{}='{}'".format(cfg["feature_ref_column"],

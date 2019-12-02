@@ -78,6 +78,7 @@ class DataSelector(QDialog):
     def _populate_list(self):
         self.__list.clear()
         for cfg in self.__config_list:
+            plot_config = PlotConfig(cfg)
             if cfg["type"] in ("continuous", "instantaneous"):
                 # check number of features for this station
 
@@ -95,10 +96,10 @@ class DataSelector(QDialog):
                         values.update([f[cfg["feature_filter_column"]]
                                        for f in data_l.getFeatures(req)])
 
-                        cfg.set_filter_unique_values(sorted(list(values)))
+                        plot_config.set_filter_unique_values(sorted(list(values)))
 
             item = QListWidgetItem(cfg["name"])
-            item.setData(Qt.UserRole, PlotConfig(cfg))
+            item.setData(Qt.UserRole, plot_config)
             self.__list.addItem(item)
 
     def accept(self):

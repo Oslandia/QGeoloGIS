@@ -171,12 +171,20 @@ class PlotItem(LogItem):
         if self.__data_rect is None:
             return
 
+        # Look for the first and last X values that fit our rendering rect
         imin_x = bisect.bisect_left(self.__x_values, self.__data_rect.x())
-        if imin_x > 0:
-            imin_x -= 1
         imax_x = bisect.bisect_right(self.__x_values, self.__data_rect.right())
-        if imax_x < len(self.__x_values) - 1:
+
+        # For lines and polygons, retain also one value before the min and one after the max
+        # so that lines do not appear truncated
+        # Do this only if we have at least one point to render within out rect
+        if imin_x > 0 and self.__x_values[imin_x] >= self.__data_rect.x():
+            # FIXME add a test to avoid adding a point too "far away" ?
+            imin_x -= 1
+        if imax_x < len(self.__x_values) - 1 and self.__x_values[imax_x] <= self.__data_rect.right():
+            # FIXME add a test to avoid adding a point too "far away" ?
             imax_x += 1
+
         x_values_slice = np.array(self.__x_values[imin_x:imax_x])
         y_values_slice = np.array(self.__y_values[imin_x:imax_x])
 
@@ -208,6 +216,7 @@ class PlotItem(LogItem):
                 rh = float(self.__item_size.width())
             xx = (y_values_slice - self.__data_rect.y()) * rh
             yy = self.__item_size.height() - (x_values_slice - self.__data_rect.x()) * rw
+
         if self.__render_type == LINE_RENDERER:
             # WKB structure of a linestring
             #
@@ -250,6 +259,7 @@ class PlotItem(LogItem):
             h_view = np.ndarray(buffer=wkb, dtype='uint8', offset=9, shape=(n_points,2), strides=(16+5,1))
             h_view[:,0] = 1 # endianness
             h_view[:,1] = 1 # point
+
         elif self.__render_type == POLYGON_RENDERER:
             # WKB structure of a polygon
             # 

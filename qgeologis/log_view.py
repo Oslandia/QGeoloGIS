@@ -7,7 +7,7 @@
 #   modify it under the terms of the GNU Library General Public
 #   License as published by the Free Software Foundation; either
 #   version 2 of the License, or (at your option) any later version.
-#   
+#
 #   This library is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -16,10 +16,13 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from qgis.PyQt.QtCore import Qt, QRectF, QSizeF, QPoint
+from qgis.PyQt.QtCore import Qt, QSizeF
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel, QVBoxLayout, QToolTip
+from qgis.PyQt.QtWidgets import (QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel,
+                                 QVBoxLayout)
 from qgis.PyQt.QtWidgets import QStatusBar
+
+from qgis.core import QgsFeatureRequest
 
 from .common import POLYGON_RENDERER, ORIENTATION_DOWNWARD, ORIENTATION_LEFT_TO_RIGHT
 
@@ -31,6 +34,7 @@ from .imagery_data import ImageryDataItem
 
 import os
 
+
 class LogGraphicsView(QGraphicsView):
     def __init__(self, scene, parent=None):
         QGraphicsView.__init__(self, scene, parent)
@@ -39,6 +43,7 @@ class LogGraphicsView(QGraphicsView):
         self.__translation_orig = None
         self.__translation_min_z = None
         self.__translation_max_z = None
+        self.__max_width = 500
 
         self.setMouseTracking(True)
 
@@ -46,10 +51,12 @@ class LogGraphicsView(QGraphicsView):
         QGraphicsView.resizeEvent(self, event)
         # by default, the rect is centered on 0,0,
         # we prefer to have 0,0 in the upper left corner
-        self.scene().setSceneRect(QRectF(0, 0, event.size().width(), event.size().height()))
+        rect = self.scene().sceneRect()
+        rect.setHeight(event.size().height())
+        self.scene().setSceneRect(rect)
 
     def wheelEvent(self, event):
-        delta = -event.delta() / 100.0
+        delta = -event.angleDelta().y() / 100.0
         if delta > 0:
             dt = delta
         else:
@@ -112,7 +119,7 @@ class WellLogView(QWidget):
     def __init__(self, title=None,image_dir=None, parent=None):
         QWidget.__init__(self, parent)
 
-        toolbar = QToolBar()
+        self.toolbar = QToolBar()
         self.__log_scene = MyScene(0, 0, 600, 600)
         self.__log_view = LogGraphicsView(self.__log_scene)
         self.__log_view.setAlignment(Qt.AlignLeft|Qt.AlignTop)
@@ -122,30 +129,30 @@ class WellLogView(QWidget):
         if image_dir is None:
             image_dir = os.path.join(os.path.dirname(__file__), "img")
 
-        self.__action_move_column_left = QAction(QIcon(os.path.join(image_dir, "left.svg")), "Move the column to the left", toolbar)
+        self.__action_move_column_left = QAction(QIcon(os.path.join(image_dir, "left.svg")), "Move the column to the left", self.toolbar)
         self.__action_move_column_left.triggered.connect(self.on_move_column_left)
-        self.__action_move_column_right = QAction(QIcon(os.path.join(image_dir, "right.svg")), "Move the column to the right", toolbar)
+        self.__action_move_column_right = QAction(QIcon(os.path.join(image_dir, "right.svg")), "Move the column to the right", self.toolbar)
         self.__action_move_column_right.triggered.connect(self.on_move_column_right)
 
-        self.__action_edit_style = QAction(QIcon(os.path.join(image_dir, "symbology.svg")), "Edit column style", toolbar)
+        self.__action_edit_style = QAction(QIcon(os.path.join(image_dir, "symbology.svg")), "Edit column style", self.toolbar)
         self.__action_edit_style.triggered.connect(self.on_edit_style)
 
-        self.__action_add_column = QAction(QIcon(os.path.join(image_dir, "add.svg")), "Add a data column", toolbar)
+        self.__action_add_column = QAction(QIcon(os.path.join(image_dir, "add.svg")), "Add a data column from configured ones", self.toolbar)
         self.__action_add_column.triggered.connect(self.on_add_column)
 
-        self.__action_remove_column = QAction(QIcon(os.path.join(image_dir, "remove.svg")), "Remove the column", toolbar)
+        self.__action_remove_column = QAction(QIcon(os.path.join(image_dir, "remove.svg")), "Remove the column", self.toolbar)
         self.__action_remove_column.triggered.connect(self.on_remove_column)
 
-        #self.__action_move_content_right = QAction("Move content right", toolbar)
-        #self.__action_move_content_left = QAction("Move content left", toolbar)
+        #self.__action_move_content_right = QAction("Move content right", self.toolbar)
+        #self.__action_move_content_left = QAction("Move content left", self.toolbar)
         #self.__action_move_content_left.triggered.connect(self.on_move_content_left)
         #self.__action_move_content_right.triggered.connect(self.on_move_content_right)
 
-        toolbar.addAction(self.__action_move_column_left)
-        toolbar.addAction(self.__action_move_column_right)
-        toolbar.addAction(self.__action_edit_style)
-        toolbar.addAction(self.__action_add_column)
-        toolbar.addAction(self.__action_remove_column)
+        self.toolbar.addAction(self.__action_move_column_left)
+        self.toolbar.addAction(self.__action_move_column_right)
+        self.toolbar.addAction(self.__action_edit_style)
+        self.toolbar.addAction(self.__action_add_column)
+        self.toolbar.addAction(self.__action_remove_column)
 
         #self.__toolbar.addAction(self.__action_move_content_left)
         #self.__toolbar.addAction(self.__action_move_content_right)
@@ -158,7 +165,7 @@ class WellLogView(QWidget):
 
         vbox = QVBoxLayout()
         vbox.addWidget(self.__title_label)
-        vbox.addWidget(toolbar)
+        vbox.addWidget(self.toolbar)
         vbox.addWidget(self.__log_view)
         vbox.addWidget(self.__status_bar)
         self.setLayout(vbox)
@@ -183,7 +190,7 @@ class WellLogView(QWidget):
 
         # by default we have a Z scale
         self.add_z_scale()
-
+        
     def on_rect_changed(self, rect):
         for item, _ in self.__columns:
             item.set_height(rect.height())
@@ -199,7 +206,10 @@ class WellLogView(QWidget):
             legend.setPos(x, 0)
             item.setPos(x, legend.boundingRect().height())
             x += width
-        self.__log_view.setMinimumSize(x, self.__log_view.minimumSize().height())
+
+        rect = self.__log_scene.sceneRect()
+        rect.setWidth(x)
+        self.__log_scene.setSceneRect(rect)
 
     def _add_column(self, log_item, legend_item):
         self.__log_scene.addItem(log_item)
@@ -270,6 +280,9 @@ class WellLogView(QWidget):
         self._place_items()
         self._update_button_visibility()
 
+        # still add z scale
+        self.add_z_scale()
+
     def on_plot_tooltip(self, txt, station_name = None):
         if station_name is not None:
             self.__status_bar.showMessage(u"Station: {} ".format(station_name) + txt)
@@ -309,23 +322,26 @@ class WellLogView(QWidget):
 #        plot_item.set_data_window(r)
 
         # legend
-        min_str = "{:.1f}".format(min(data.get_y_values()))
-        max_str = "{:.1f}".format(max(data.get_y_values()))
+        min_str = "{:.1f}".format(min(data.get_y_values()) if data.get_y_values() else 0)
+        max_str = "{:.1f}".format(max(data.get_y_values()) if data.get_y_values() else 0)
         legend_item.set_scale(min_str, max_str)
 
         self.__log_scene.update()
 
-    def add_stratigraphy(self, layer, column_mapping, title):
+    def add_stratigraphy(self, layer, filter_expression, column_mapping, title, style_file):
         item = StratigraphyItem(self.DEFAULT_COLUMN_WIDTH,
                                 self.__log_scene.height(),
-                                style_file=os.path.join(self.__style_dir, "stratigraphy_style.xml"))
+                                style_file=style_file)
         legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH, title)
 
         item.set_layer(layer)
         item.tooltipRequested.connect(self.on_plot_tooltip)
 
-        item.set_data([[f[c] if c is not None else None for c in column_mapping] for f in layer.getFeatures()])
-        
+        req = QgsFeatureRequest()
+        req.setFilterExpression(filter_expression)
+        item.set_data([[f[c] if c is not None else None for c in column_mapping]
+                       for f in layer.getFeatures(req)])
+
         self._add_column(item, legend_item)
 
     def add_imagery(self, image_filename, title, depth_from, depth_to):
@@ -368,7 +384,9 @@ class WellLogView(QWidget):
         idx = self.__selected_column
         self.__action_move_column_left.setEnabled(idx != -1 and idx > 0)
         self.__action_move_column_right.setEnabled(idx != -1 and idx < len(self.__columns) - 1)
-        self.__action_edit_style.setEnabled(idx != -1)
+
+        item = self.__columns[idx][0] if idx > 0 else None
+        self.__action_edit_style.setEnabled(bool(item and not isinstance(item, ImageryDataItem)))
         self.__action_remove_column.setEnabled(idx != -1)
 
     def on_move_column_left(self):
@@ -428,10 +446,10 @@ if __name__=='__main__':
     import sys
     import random
 
-    from qt_qgis_compat import qgsApplication, QgsVectorLayer, QgsFeature
+    from qgis.core import QgsApplication, QgsVectorLayer, QgsFeature
     from data_interface import LayerData, FeatureData
 
-    app = qgsApplication(sys.argv, True)
+    app = QgsApplication([bytes(x, "utf8") for x in sys.argv], True)
     app.initQgis()
 
     # layer example

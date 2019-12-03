@@ -7,7 +7,7 @@
 #   modify it under the terms of the GNU Library General Public
 #   License as published by the Free Software Foundation; either
 #   version 2 of the License, or (at your option) any later version.
-#   
+#
 #   This library is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -16,17 +16,18 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from qgis.PyQt.QtCore import Qt, QRectF, QSizeF
+import os
+
+from qgis.PyQt.QtCore import Qt, QRectF, QSizeF, QSize
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel, QVBoxLayout
-from qgis.PyQt.QtWidgets import QStatusBar
+from qgis.PyQt.QtWidgets import (QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel,
+                                 QStatusBar, QVBoxLayout)
 
 from .common import POINT_RENDERER, ORIENTATION_UPWARD, ORIENTATION_LEFT_TO_RIGHT
 from .log_plot import PlotItem
 from .time_scale import TimeScaleItem
 from .legend_item import LegendItem
 
-import os
 
 class TimeSeriesGraphicsView(QGraphicsView):
     def __init__(self, scene, parent=None):
@@ -43,11 +44,13 @@ class TimeSeriesGraphicsView(QGraphicsView):
         QGraphicsView.resizeEvent(self, event)
         # by default, the rect is centered on 0,0,
         # we prefer to have 0,0 in the upper left corner
-        self.scene().setSceneRect(QRectF(0, 0, event.size().width(), event.size().height()))
+        rect = self.scene().sceneRect()
+        rect.setWidth(event.size().width())
+        self.scene().setSceneRect(rect)
 
     def wheelEvent(self, event):
-        delta = -event.delta() / 100.0
-        if delta > 0:
+        delta = -event.angleDelta().y() / 100.0
+        if delta >= 0:
             dt = delta
         else:
             dt = 1.0/(-delta)
@@ -186,7 +189,10 @@ class TimeSeriesView(QWidget):
             legend.setPos(0, y)
             item.setPos(legend.boundingRect().width(), y)
             y += height
-        self.__view.setMinimumSize(self.__view.minimumSize().width(), y)
+
+        rect = self.__scene.sceneRect()
+        rect.setHeight(y)
+        self.__scene.setSceneRect(rect)
 
     def _add_row(self, log_item, legend_item):
         self.__scene.addItem(log_item)
@@ -199,15 +205,13 @@ class TimeSeriesView(QWidget):
 
         self._place_items()
 
-    def _fit_to_max_depth(self):
-        self._min_x = min([i.min_depth() for i, _ in self.__rows if i.min_depth() is not None])
-        self._max_x = max([i.max_depth() for i, _ in self.__rows if i.max_depth() is not None])
-        # if we have only one value, center it on a 2 minutes range
-        if self._min_x == self._max_x:
-            self._min_x -= 60
-            self._max_x += 60
+    def set_x_range(self, min_x, max_x):
+        self._min_x, self._max_x = min_x, max_x
+        self._update_row_depths()
 
     def _update_row_depths(self):
+        if self._min_x is None:
+            return
         for item, _ in self.__rows:
             item.set_min_depth(self._min_x)
             item.set_max_depth(self._max_x)
@@ -237,6 +241,23 @@ class TimeSeriesView(QWidget):
         # Rows not found
         assert False
 
+    def clear_data_rows(self):
+        # remove item from scenes
+        for (item, legend) in self.__rows:
+            self.__scene.removeItem(legend)
+            self.__scene.removeItem(item)
+
+        # remove from internal lists
+        self.__rows = []
+        self.__rows_widths = []
+        self.__data2logitems = {}
+
+        self.select_row(-1)
+        self._place_items()
+        self._update_button_visibility()
+
+        self.add_time_scale()
+        
     def on_plot_tooltip(self, station_name, txt):
         if station_name is not None:
             self.__status_bar.showMessage(u"Station: {} ".format(station_name) + txt)
@@ -255,13 +276,12 @@ class TimeSeriesView(QWidget):
         legend_item = LegendItem(self.DEFAULT_ROW_HEIGHT, title, unit_of_measure=uom, is_vertical=True)
         data.data_modified.connect(lambda data=data : self._update_data_row(data))
 
-        if self._min_x is None:
-            self._min_x, self._max_x = data.get_x_min(), data.get_x_max()
-            # if we have only one value, center it on a 2 minutes range
-            if self._min_x == self._max_x:
-                self._min_x -= 60
-                self._max_x += 60
-            self.add_time_scale()
+        # center on new data
+        self._min_x, self._max_x = data.get_x_min(), data.get_x_max()
+        # if we have only one value, center it on a 2 minutes range
+        if self._min_x and self._min_x == self._max_x:
+            self._min_x -= 60
+            self._max_x += 60
 
         self.__data2logitems[data] = (plot_item, legend_item)
         self._add_row(plot_item, legend_item)
@@ -378,10 +398,10 @@ if __name__=='__main__':
     import sys
     import random
 
-    from .qt_qgis_compat import qgsApplication, QgsVectorLayer, QgsFeature
+    from qgis.core import QgsApplication, QgsVectorLayer, QgsFeature
     from .data_interface import FeatureData
 
-    app = qgsApplication(sys.argv, True)
+    app = QgsApplication([bytes(x, "utf8") for x in sys.argv], True)
     app.initQgis()
 
     # feature example
@@ -395,7 +415,7 @@ if __name__=='__main__':
     x_values = [float(x) for x in range(1, 1001)]
 
     layer2 = QgsVectorLayer("None?field=y:double", "test_feature",
-                           "memory")
+                            "memory")
     feature = QgsFeature()
     y_values2 = ",".join([str(random.uniform(1., 100.)) for i in range(1000)])
     feature.setAttributes([y_values2])

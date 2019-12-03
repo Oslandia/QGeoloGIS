@@ -7,7 +7,7 @@
 #   modify it under the terms of the GNU Library General Public
 #   License as published by the Free Software Foundation; either
 #   version 2 of the License, or (at your option) any later version.
-#   
+#
 #   This library is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -16,14 +16,15 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from qgis.PyQt.QtCore import Qt, QSizeF, QRectF, QPoint
-from qgis.PyQt.QtGui import QBrush, QColor, QFontMetrics
-from qgis.PyQt.QtWidgets import QGraphicsItem, QComboBox, QDialog, QVBoxLayout, QDialogButtonBox
-from qgis.PyQt.QtWidgets import QStackedWidget, QToolTip
-from .qt_qgis_compat import QgsFeatureRendererV2, QgsGeometry, QgsFields, QgsFeature, QgsRectangle
+from qgis.PyQt.QtCore import QSizeF, QRectF
+from qgis.PyQt.QtWidgets import QComboBox, QDialog, QVBoxLayout, QDialogButtonBox
+from qgis.PyQt.QtWidgets import QStackedWidget
 
-from .common import POINT_RENDERER, LINE_RENDERER, POLYGON_RENDERER
-from .common import ORIENTATION_UPWARD, ORIENTATION_DOWNWARD, ORIENTATION_LEFT_TO_RIGHT, LogItem, qgis_render_context
+from qgis.core import QgsGeometry, QgsFields, QgsFeature, QgsRectangle
+from qgis.core import QgsFeatureRenderer
+
+from .common import POINT_RENDERER, LINE_RENDERER, POLYGON_RENDERER, qgis_render_context
+from .common import ORIENTATION_UPWARD, ORIENTATION_DOWNWARD, ORIENTATION_LEFT_TO_RIGHT, LogItem
 
 from .time_scale import UTC
 
@@ -32,10 +33,11 @@ import bisect
 import math
 from datetime import datetime
 
+
 class PlotItem(LogItem):
 
     def __init__(self,
-                 size=QSizeF(400,200),
+                 size=QSizeF(400, 200),
                  render_type=POINT_RENDERER,
                  x_orientation=ORIENTATION_LEFT_TO_RIGHT,
                  y_orientation=ORIENTATION_UPWARD,
@@ -61,15 +63,15 @@ class PlotItem(LogItem):
 
         self.__layer = None
 
-        self.__renderers = [QgsFeatureRendererV2.defaultRenderer(POINT_RENDERER),
-                            QgsFeatureRendererV2.defaultRenderer(LINE_RENDERER),
-                            QgsFeatureRendererV2.defaultRenderer(POLYGON_RENDERER)]
+        self.__renderers = [QgsFeatureRenderer.defaultRenderer(POINT_RENDERER),
+                            QgsFeatureRenderer.defaultRenderer(LINE_RENDERER),
+                            QgsFeatureRenderer.defaultRenderer(POLYGON_RENDERER)]
         symbol = self.__renderers[1].symbol()
         symbol.setWidth(1.0)
         symbol = self.__renderers[0].symbol()
         symbol.setSize(5.0)
         symbol = self.__renderers[2].symbol()
-        symbol.symbolLayers()[0].setBorderWidth(1.0)
+        symbol.symbolLayers()[0].setStrokeWidth(1.0)
         self.__renderer = self.__renderers[self.__render_type]
 
         # index of the current point to label
@@ -96,11 +98,11 @@ class PlotItem(LogItem):
     def min_depth(self):
         if self.__data_rect is None:
             return None
-        return self.__data_rect.x() * self.__delta
+        return self.__data_rect.x()
     def max_depth(self):
         if self.__data_rect is None:
             return None
-        return (self.__data_rect.x() + self.__data_rect.width()) * self.__delta
+        return (self.__data_rect.x() + self.__data_rect.width())
 
     def set_min_depth(self, min_depth):
         if self.__data_rect is not None:
@@ -135,6 +137,8 @@ class PlotItem(LogItem):
                 or math.isnan(self.__x_values[i])):
                 self.__y_values.pop(i)
                 self.__x_values.pop(i)
+        if not self.__x_values:
+            return
 
         # Initialize data rect to display all data
         # with a 20% buffer around Y values
@@ -169,12 +173,20 @@ class PlotItem(LogItem):
         if self.__data_rect is None:
             return
 
+        # Look for the first and last X values that fit our rendering rect
         imin_x = bisect.bisect_left(self.__x_values, self.__data_rect.x())
-        if imin_x > 0:
-            imin_x -= 1
         imax_x = bisect.bisect_right(self.__x_values, self.__data_rect.right())
-        if imax_x < len(self.__x_values) - 1:
+
+        # For lines and polygons, retain also one value before the min and one after the max
+        # so that lines do not appear truncated
+        # Do this only if we have at least one point to render within out rect
+        if imin_x > 0 and self.__x_values[imin_x] >= self.__data_rect.x():
+            # FIXME add a test to avoid adding a point too "far away" ?
+            imin_x -= 1
+        if imax_x < len(self.__x_values) - 1 and self.__x_values[imax_x] <= self.__data_rect.right():
+            # FIXME add a test to avoid adding a point too "far away" ?
             imax_x += 1
+
         x_values_slice = np.array(self.__x_values[imin_x:imax_x])
         y_values_slice = np.array(self.__y_values[imin_x:imax_x])
 
@@ -206,6 +218,7 @@ class PlotItem(LogItem):
                 rh = float(self.__item_size.width())
             xx = (y_values_slice - self.__data_rect.y()) * rh
             yy = self.__item_size.height() - (x_values_slice - self.__data_rect.x()) * rw
+
         if self.__render_type == LINE_RENDERER:
             # WKB structure of a linestring
             #
@@ -248,6 +261,7 @@ class PlotItem(LogItem):
             h_view = np.ndarray(buffer=wkb, dtype='uint8', offset=9, shape=(n_points,2), strides=(16+5,1))
             h_view[:,0] = 1 # endianness
             h_view[:,1] = 1 # point
+
         elif self.__render_type == POLYGON_RENDERER:
             # WKB structure of a polygon
             # 
@@ -286,7 +300,7 @@ class PlotItem(LogItem):
         # build a geometry from the WKB
         # since numpy arrays have buffer protocol, sip is able to read it
         geom = QgsGeometry()
-        geom.fromWkb(wkb)
+        geom.fromWkb(wkb.tobytes())
 
         painter.setClipRect(0, 0, self.__item_size.width(), self.__item_size.height())
 
@@ -315,6 +329,8 @@ class PlotItem(LogItem):
             painter.drawLine(px, py-5, px, py+5)
 
     def mouseMoveEvent(self, event):
+        if not self.__x_values:
+            return
         if self.__x_orientation == ORIENTATION_LEFT_TO_RIGHT and self.__y_orientation == ORIENTATION_UPWARD:
             xx = (event.scenePos().x() - self.pos().x()) / self.width() * self.__data_rect.width() + self.__data_rect.x()
         elif self.__x_orientation == ORIENTATION_DOWNWARD and self.__y_orientation == ORIENTATION_LEFT_TO_RIGHT:
@@ -333,24 +349,24 @@ class PlotItem(LogItem):
             x, y = self.__x_values[i], self.__y_values[i]
             if self.__x_orientation == ORIENTATION_LEFT_TO_RIGHT and self.__y_orientation == ORIENTATION_UPWARD:
                 dt = datetime.fromtimestamp(x, UTC())
-                txt = "Time: {} Value: {}".format(unicode(dt.strftime("%x %X"), "utf8"),y)
+                txt = "Time: {} Value: {}".format(dt.strftime("%x %X"), y)
             elif self.__x_orientation == ORIENTATION_DOWNWARD and self.__y_orientation == ORIENTATION_LEFT_TO_RIGHT:
-                txt = "Depth: {} Value: {}".format(x,y)
+                txt = "Depth: {} Value: {}".format(x, y)
             self.tooltipRequested.emit(txt)
 
         self.__old_point_to_label = self.__point_to_label
 
     def edit_style(self):
-        from qgis.gui import QgsSingleSymbolRendererV2Widget
-        from qgis.core import QgsStyleV2
+        from qgis.gui import QgsSingleSymbolRendererWidget
+        from qgis.core import QgsStyle
 
-        style = QgsStyleV2()
+        style = QgsStyle()
         sw = QStackedWidget()
         sw.addWidget
         for i in range(3):
-            w = QgsSingleSymbolRendererV2Widget(self.__layer, style, self.__renderers[i])
+            w = QgsSingleSymbolRendererWidget(self.__layer, style, self.__renderers[i])
             sw.addWidget(w)
-        
+
         combo = QComboBox()
         combo.addItem("Points")
         combo.addItem("Line")
@@ -358,7 +374,7 @@ class PlotItem(LogItem):
 
         combo.currentIndexChanged[int].connect(sw.setCurrentIndex)
         combo.setCurrentIndex(self.__render_type)
-        
+
         dlg = QDialog()
 
         vbox = QVBoxLayout()

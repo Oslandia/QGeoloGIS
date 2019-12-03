@@ -74,6 +74,8 @@ class TimeScaleItem(LogItem):
         pass
 
     def paint(self, painter, option, widget):
+        if self.__min_t is None or self.__max_t is None:
+            return
         import math
         self.draw_background(painter)
         painter.setClipRect(0, 0, self.__width, self.__height)
@@ -129,7 +131,8 @@ class TimeScaleItem(LogItem):
             if dt.year < 1900:
                 dt_str = "--"
             else:
-                dt_str = unicode(dt.strftime(hformat), "utf8")
+                dt_str = dt.strftime(hformat)
+
             r = fm.boundingRect(dt_str)
 
             # draw the text rotated

@@ -21,10 +21,7 @@ Install the plugin in the QGIS plugin directory and enable it. You can install i
 
 It requires a configuration that describes what is the base layer that displays measure points and how to access the different measure layers.
 
-You can find an [example configuration file](layer_config.py.sample) that you should copy to `layer_config.py` and edit to adapt to your environment.
-Once configured, copy it where the QGIS plugin is installed.
-
-The configuration file can also be changed once the plugin is launched, through the "Load configuration file" menu entry in the "Extension" menu of QGIS.
+You can find an [example project file](project.qgs). You should copy the content of the XML tag GeoloGIS` to your project edit to adapt to your environment.
 
 # How to use it in your own plugin
 

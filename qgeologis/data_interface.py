@@ -144,8 +144,8 @@ class LayerData(DataInterface):
         self.__x_values = [coord[0] for coord in xy_values]
         self.__y_values = [coord[1] for coord in xy_values]
 
-        self.__x_min, self.__x_max = (min(self.__x_values), max(self.__x_values))
-        self.__y_min, self.__y_max = (min(self.__y_values), max(self.__y_values))
+        self.__x_min, self.__x_max = (min(self.__x_values), max(self.__x_values)) if self.__x_values else (None, None)
+        self.__y_min, self.__y_max = (min(self.__y_values), max(self.__y_values)) if self.__y_values else (None, None)
 
         self.data_modified.emit()
 
@@ -272,7 +272,10 @@ class FeatureData(DataInterface):
                     self.__y_values = self.__y_values + y_values
                 current_data_range = (self.__x_values[0], self.__x_values[-1])
 
-        self.__x_min, self.__x_max = (min(self.__x_values), max(self.__x_values))
-        self.__y_min, self.__y_max = (min([y for y in self.__y_values if y is not None]), max(self.__y_values))
+        self.__x_min, self.__x_max = ((min(self.__x_values), max(self.__x_values))
+                                      if self.__x_values else (None, None))
+        self.__y_min, self.__y_max = ((min([y for y in self.__y_values if y is not None]),
+                                       max(self.__y_values))
+                                      if self.__y_values else (None, None))
 
         self.data_modified.emit()

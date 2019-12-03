@@ -1,0 +1,545 @@
+<renderer-v2 type="RuleRenderer" forceraster="0" enableorderby="0" symbollevels="0">
+ <rules key="{a7526f14-c4a9-49d6-a1b3-2f8f6b5ce097}">
+  <rule filter="lower(substr(formation_code,-1,1))='g'" symbol="0" key="{7f6fa075-af8a-42a2-8a85-3409005e057b}"/>
+  <rule filter="lower(substr(formation_code,-1,1))='f'" symbol="1" key="{7f6fa075-af8a-42a2-8a85-3409005e057b}"/>
+  <rule filter="lower(substr(formation_code,-1,1))='b'" symbol="2" key="{7f6fa075-af8a-42a2-8a85-3409005e057b}"/>
+  <rule filter="lower(substr(formation_code,-1,1))='c'" symbol="3" key="{7f6fa075-af8a-42a2-8a85-3409005e057b}"/>
+  <rule filter="lower(substr(formation_code,-1,1))='d'" symbol="4" key="{7f6fa075-af8a-42a2-8a85-3409005e057b}"/>
+  <rule filter="lower(substr(formation_code,-1,1))='e'" symbol="5" key="{f8d140ef-19da-4e8b-b07a-a242ee367d46}"/>
+  <rule filter="lower(substr(formation_code,-1,1))='a'" symbol="6" key="a6204ba0-012c-4239-9e14-67db7d5af83f"/>
+ </rules>
+ <symbols>
+  <symbol type="fill" clip_to_extent="1" force_rhr="0" name="0" alpha="1">
+   <layer pass="0" enabled="1" locked="0" class="SimpleFill">
+    <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="color" v="150,150,150,255"/>
+    <prop k="joinstyle" v="bevel"/>
+    <prop k="offset" v="0,0"/>
+    <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="offset_unit" v="MM"/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_style" v="solid"/>
+    <prop k="outline_width" v="0.26"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="style" v="solid"/>
+    <data_defined_properties>
+     <Option type="Map">
+      <Option type="QString" name="name" value=""/>
+      <Option name="properties"/>
+      <Option type="QString" name="type" value="collection"/>
+     </Option>
+    </data_defined_properties>
+   </layer>
+   <layer pass="0" enabled="1" locked="0" class="SVGFill">
+    <prop k="angle" v="0"/>
+    <prop k="color" v="150,150,150,255"/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_width" v="0.2"/>
+    <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="pattern_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="pattern_width_unit" v="MM"/>
+    <prop k="svgFile" v="non_empty"/>
+    <prop k="svg_outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="svg_outline_width_unit" v="MM"/>
+    <prop k="width" v="200"/>
+    <data_defined_properties>
+     <Option type="Map">
+      <Option type="QString" name="name" value=""/>
+      <Option type="Map" name="properties">
+       <Option type="Map" name="file">
+        <Option type="bool" name="active" value="true"/>
+        <Option type="QString" name="expression" value="'/home/julien/work/QGeoloGIS/qgeologis/styles/usgs' || rock_code || '.svg'"/>
+        <Option type="int" name="type" value="3"/>
+       </Option>
+      </Option>
+      <Option type="QString" name="type" value="collection"/>
+     </Option>
+    </data_defined_properties>
+    <symbol type="line" clip_to_extent="1" force_rhr="0" name="@0@1" alpha="1">
+     <layer pass="0" enabled="1" locked="0" class="SimpleLine">
+      <prop k="capstyle" v="square"/>
+      <prop k="customdash" v="5;2"/>
+      <prop k="customdash_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+      <prop k="customdash_unit" v="MM"/>
+      <prop k="draw_inside_polygon" v="0"/>
+      <prop k="joinstyle" v="bevel"/>
+      <prop k="line_color" v="0,0,0,255"/>
+      <prop k="line_style" v="solid"/>
+      <prop k="line_width" v="0.26"/>
+      <prop k="line_width_unit" v="MM"/>
+      <prop k="offset" v="0"/>
+      <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+      <prop k="offset_unit" v="MM"/>
+      <prop k="ring_filter" v="0"/>
+      <prop k="use_custom_dash" v="0"/>
+      <prop k="width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+      <data_defined_properties>
+       <Option type="Map">
+        <Option type="QString" name="name" value=""/>
+        <Option name="properties"/>
+        <Option type="QString" name="type" value="collection"/>
+       </Option>
+      </data_defined_properties>
+     </layer>
+    </symbol>
+   </layer>
+  </symbol>
+  <symbol type="fill" clip_to_extent="1" force_rhr="0" name="1" alpha="1">
+   <layer pass="0" enabled="1" locked="0" class="SimpleFill">
+    <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="color" v="150,50,50,255"/>
+    <prop k="joinstyle" v="bevel"/>
+    <prop k="offset" v="0,0"/>
+    <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="offset_unit" v="MM"/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_style" v="solid"/>
+    <prop k="outline_width" v="0.26"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="style" v="solid"/>
+    <data_defined_properties>
+     <Option type="Map">
+      <Option type="QString" name="name" value=""/>
+      <Option name="properties"/>
+      <Option type="QString" name="type" value="collection"/>
+     </Option>
+    </data_defined_properties>
+   </layer>
+   <layer pass="0" enabled="1" locked="0" class="SVGFill">
+    <prop k="angle" v="0"/>
+    <prop k="color" v="150,50,50,255"/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_width" v="0.2"/>
+    <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="pattern_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="pattern_width_unit" v="MM"/>
+    <prop k="svgFile" v="non_empty"/>
+    <prop k="svg_outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="svg_outline_width_unit" v="MM"/>
+    <prop k="width" v="200"/>
+    <data_defined_properties>
+     <Option type="Map">
+      <Option type="QString" name="name" value=""/>
+      <Option type="Map" name="properties">
+       <Option type="Map" name="file">
+        <Option type="bool" name="active" value="true"/>
+        <Option type="QString" name="expression" value="'/home/julien/work/QGeoloGIS/qgeologis/styles/usgs' || rock_code || '.svg'"/>
+        <Option type="int" name="type" value="3"/>
+       </Option>
+      </Option>
+      <Option type="QString" name="type" value="collection"/>
+     </Option>
+    </data_defined_properties>
+    <symbol type="line" clip_to_extent="1" force_rhr="0" name="@1@1" alpha="1">
+     <layer pass="0" enabled="1" locked="0" class="SimpleLine">
+      <prop k="capstyle" v="square"/>
+      <prop k="customdash" v="5;2"/>
+      <prop k="customdash_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+      <prop k="customdash_unit" v="MM"/>
+      <prop k="draw_inside_polygon" v="0"/>
+      <prop k="joinstyle" v="bevel"/>
+      <prop k="line_color" v="0,0,0,255"/>
+      <prop k="line_style" v="solid"/>
+      <prop k="line_width" v="0.26"/>
+      <prop k="line_width_unit" v="MM"/>
+      <prop k="offset" v="0"/>
+      <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+      <prop k="offset_unit" v="MM"/>
+      <prop k="ring_filter" v="0"/>
+      <prop k="use_custom_dash" v="0"/>
+      <prop k="width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+      <data_defined_properties>
+       <Option type="Map">
+        <Option type="QString" name="name" value=""/>
+        <Option name="properties"/>
+        <Option type="QString" name="type" value="collection"/>
+       </Option>
+      </data_defined_properties>
+     </layer>
+    </symbol>
+   </layer>
+  </symbol>
+  <symbol type="fill" clip_to_extent="1" force_rhr="0" name="2" alpha="1">
+   <layer pass="0" enabled="1" locked="0" class="SimpleFill">
+    <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="color" v="100,50,50,255"/>
+    <prop k="joinstyle" v="bevel"/>
+    <prop k="offset" v="0,0"/>
+    <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="offset_unit" v="MM"/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_style" v="solid"/>
+    <prop k="outline_width" v="0.26"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="style" v="solid"/>
+    <data_defined_properties>
+     <Option type="Map">
+      <Option type="QString" name="name" value=""/>
+      <Option name="properties"/>
+      <Option type="QString" name="type" value="collection"/>
+     </Option>
+    </data_defined_properties>
+   </layer>
+   <layer pass="0" enabled="1" locked="0" class="SVGFill">
+    <prop k="angle" v="0"/>
+    <prop k="color" v="100,50,50,255"/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_width" v="0.2"/>
+    <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="pattern_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="pattern_width_unit" v="MM"/>
+    <prop k="svgFile" v="non_empty"/>
+    <prop k="svg_outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="svg_outline_width_unit" v="MM"/>
+    <prop k="width" v="200"/>
+    <data_defined_properties>
+     <Option type="Map">
+      <Option type="QString" name="name" value=""/>
+      <Option type="Map" name="properties">
+       <Option type="Map" name="file">
+        <Option type="bool" name="active" value="true"/>
+        <Option type="QString" name="expression" value="'/home/julien/work/QGeoloGIS/qgeologis/styles/usgs' || rock_code || '.svg'"/>
+        <Option type="int" name="type" value="3"/>
+       </Option>
+      </Option>
+      <Option type="QString" name="type" value="collection"/>
+     </Option>
+    </data_defined_properties>
+    <symbol type="line" clip_to_extent="1" force_rhr="0" name="@2@1" alpha="1">
+     <layer pass="0" enabled="1" locked="0" class="SimpleLine">
+      <prop k="capstyle" v="square"/>
+      <prop k="customdash" v="5;2"/>
+      <prop k="customdash_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+      <prop k="customdash_unit" v="MM"/>
+      <prop k="draw_inside_polygon" v="0"/>
+      <prop k="joinstyle" v="bevel"/>
+      <prop k="line_color" v="0,0,0,255"/>
+      <prop k="line_style" v="solid"/>
+      <prop k="line_width" v="0.26"/>
+      <prop k="line_width_unit" v="MM"/>
+      <prop k="offset" v="0"/>
+      <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+      <prop k="offset_unit" v="MM"/>
+      <prop k="ring_filter" v="0"/>
+      <prop k="use_custom_dash" v="0"/>
+      <prop k="width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+      <data_defined_properties>
+       <Option type="Map">
+        <Option type="QString" name="name" value=""/>
+        <Option name="properties"/>
+        <Option type="QString" name="type" value="collection"/>
+       </Option>
+      </data_defined_properties>
+     </layer>
+    </symbol>
+   </layer>
+  </symbol>
+  <symbol type="fill" clip_to_extent="1" force_rhr="0" name="3" alpha="1">
+   <layer pass="0" enabled="1" locked="0" class="SimpleFill">
+    <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="color" v="150,50,50,255"/>
+    <prop k="joinstyle" v="bevel"/>
+    <prop k="offset" v="0,0"/>
+    <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="offset_unit" v="MM"/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_style" v="solid"/>
+    <prop k="outline_width" v="0.26"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="style" v="solid"/>
+    <data_defined_properties>
+     <Option type="Map">
+      <Option type="QString" name="name" value=""/>
+      <Option name="properties"/>
+      <Option type="QString" name="type" value="collection"/>
+     </Option>
+    </data_defined_properties>
+   </layer>
+   <layer pass="0" enabled="1" locked="0" class="SVGFill">
+    <prop k="angle" v="0"/>
+    <prop k="color" v="150,50,50,255"/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_width" v="0.2"/>
+    <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="pattern_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="pattern_width_unit" v="MM"/>
+    <prop k="svgFile" v="non_empty"/>
+    <prop k="svg_outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="svg_outline_width_unit" v="MM"/>
+    <prop k="width" v="200"/>
+    <data_defined_properties>
+     <Option type="Map">
+      <Option type="QString" name="name" value=""/>
+      <Option type="Map" name="properties">
+       <Option type="Map" name="file">
+        <Option type="bool" name="active" value="true"/>
+        <Option type="QString" name="expression" value="'/home/julien/work/QGeoloGIS/qgeologis/styles/usgs' || rock_code || '.svg'"/>
+        <Option type="int" name="type" value="3"/>
+       </Option>
+      </Option>
+      <Option type="QString" name="type" value="collection"/>
+     </Option>
+    </data_defined_properties>
+    <symbol type="line" clip_to_extent="1" force_rhr="0" name="@3@1" alpha="1">
+     <layer pass="0" enabled="1" locked="0" class="SimpleLine">
+      <prop k="capstyle" v="square"/>
+      <prop k="customdash" v="5;2"/>
+      <prop k="customdash_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+      <prop k="customdash_unit" v="MM"/>
+      <prop k="draw_inside_polygon" v="0"/>
+      <prop k="joinstyle" v="bevel"/>
+      <prop k="line_color" v="0,0,0,255"/>
+      <prop k="line_style" v="solid"/>
+      <prop k="line_width" v="0.26"/>
+      <prop k="line_width_unit" v="MM"/>
+      <prop k="offset" v="0"/>
+      <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+      <prop k="offset_unit" v="MM"/>
+      <prop k="ring_filter" v="0"/>
+      <prop k="use_custom_dash" v="0"/>
+      <prop k="width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+      <data_defined_properties>
+       <Option type="Map">
+        <Option type="QString" name="name" value=""/>
+        <Option name="properties"/>
+        <Option type="QString" name="type" value="collection"/>
+       </Option>
+      </data_defined_properties>
+     </layer>
+    </symbol>
+   </layer>
+  </symbol>
+  <symbol type="fill" clip_to_extent="1" force_rhr="0" name="4" alpha="1">
+   <layer pass="0" enabled="1" locked="0" class="SimpleFill">
+    <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="color" v="150,150,150,255"/>
+    <prop k="joinstyle" v="bevel"/>
+    <prop k="offset" v="0,0"/>
+    <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="offset_unit" v="MM"/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_style" v="solid"/>
+    <prop k="outline_width" v="0.26"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="style" v="solid"/>
+    <data_defined_properties>
+     <Option type="Map">
+      <Option type="QString" name="name" value=""/>
+      <Option name="properties"/>
+      <Option type="QString" name="type" value="collection"/>
+     </Option>
+    </data_defined_properties>
+   </layer>
+   <layer pass="0" enabled="1" locked="0" class="SVGFill">
+    <prop k="angle" v="0"/>
+    <prop k="color" v="150,150,150,255"/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_width" v="0.2"/>
+    <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="pattern_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="pattern_width_unit" v="MM"/>
+    <prop k="svgFile" v="non_empty"/>
+    <prop k="svg_outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="svg_outline_width_unit" v="MM"/>
+    <prop k="width" v="200"/>
+    <data_defined_properties>
+     <Option type="Map">
+      <Option type="QString" name="name" value=""/>
+      <Option type="Map" name="properties">
+       <Option type="Map" name="file">
+        <Option type="bool" name="active" value="true"/>
+        <Option type="QString" name="expression" value="'/home/julien/work/QGeoloGIS/qgeologis/styles/usgs' || rock_code || '.svg'"/>
+        <Option type="int" name="type" value="3"/>
+       </Option>
+      </Option>
+      <Option type="QString" name="type" value="collection"/>
+     </Option>
+    </data_defined_properties>
+    <symbol type="line" clip_to_extent="1" force_rhr="0" name="@4@1" alpha="1">
+     <layer pass="0" enabled="1" locked="0" class="SimpleLine">
+      <prop k="capstyle" v="square"/>
+      <prop k="customdash" v="5;2"/>
+      <prop k="customdash_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+      <prop k="customdash_unit" v="MM"/>
+      <prop k="draw_inside_polygon" v="0"/>
+      <prop k="joinstyle" v="bevel"/>
+      <prop k="line_color" v="0,0,0,255"/>
+      <prop k="line_style" v="solid"/>
+      <prop k="line_width" v="0.26"/>
+      <prop k="line_width_unit" v="MM"/>
+      <prop k="offset" v="0"/>
+      <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+      <prop k="offset_unit" v="MM"/>
+      <prop k="ring_filter" v="0"/>
+      <prop k="use_custom_dash" v="0"/>
+      <prop k="width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+      <data_defined_properties>
+       <Option type="Map">
+        <Option type="QString" name="name" value=""/>
+        <Option name="properties"/>
+        <Option type="QString" name="type" value="collection"/>
+       </Option>
+      </data_defined_properties>
+     </layer>
+    </symbol>
+   </layer>
+  </symbol>
+  <symbol type="fill" clip_to_extent="1" force_rhr="0" name="5" alpha="1">
+   <layer pass="0" enabled="1" locked="0" class="SimpleFill">
+    <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="color" v="200,50,50,255"/>
+    <prop k="joinstyle" v="bevel"/>
+    <prop k="offset" v="0,0"/>
+    <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="offset_unit" v="MM"/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_style" v="solid"/>
+    <prop k="outline_width" v="0.26"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="style" v="solid"/>
+    <data_defined_properties>
+     <Option type="Map">
+      <Option type="QString" name="name" value=""/>
+      <Option name="properties"/>
+      <Option type="QString" name="type" value="collection"/>
+     </Option>
+    </data_defined_properties>
+   </layer>
+   <layer pass="0" enabled="1" locked="0" class="SVGFill">
+    <prop k="angle" v="0"/>
+    <prop k="color" v="200,50,50,255"/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_width" v="0.2"/>
+    <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="pattern_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="pattern_width_unit" v="MM"/>
+    <prop k="svgFile" v="non_empty"/>
+    <prop k="svg_outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="svg_outline_width_unit" v="MM"/>
+    <prop k="width" v="200"/>
+    <data_defined_properties>
+     <Option type="Map">
+      <Option type="QString" name="name" value=""/>
+      <Option type="Map" name="properties">
+       <Option type="Map" name="file">
+        <Option type="bool" name="active" value="true"/>
+        <Option type="QString" name="expression" value="'/home/julien/work/QGeoloGIS/qgeologis/styles/usgs' || rock_code || '.svg'"/>
+        <Option type="int" name="type" value="3"/>
+       </Option>
+      </Option>
+      <Option type="QString" name="type" value="collection"/>
+     </Option>
+    </data_defined_properties>
+    <symbol type="line" clip_to_extent="1" force_rhr="0" name="@5@1" alpha="1">
+     <layer pass="0" enabled="1" locked="0" class="SimpleLine">
+      <prop k="capstyle" v="square"/>
+      <prop k="customdash" v="5;2"/>
+      <prop k="customdash_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+      <prop k="customdash_unit" v="MM"/>
+      <prop k="draw_inside_polygon" v="0"/>
+      <prop k="joinstyle" v="bevel"/>
+      <prop k="line_color" v="0,0,0,255"/>
+      <prop k="line_style" v="solid"/>
+      <prop k="line_width" v="0.26"/>
+      <prop k="line_width_unit" v="MM"/>
+      <prop k="offset" v="0"/>
+      <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+      <prop k="offset_unit" v="MM"/>
+      <prop k="ring_filter" v="0"/>
+      <prop k="use_custom_dash" v="0"/>
+      <prop k="width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+      <data_defined_properties>
+       <Option type="Map">
+        <Option type="QString" name="name" value=""/>
+        <Option name="properties"/>
+        <Option type="QString" name="type" value="collection"/>
+       </Option>
+      </data_defined_properties>
+     </layer>
+    </symbol>
+   </layer>
+  </symbol>
+  <symbol type="fill" clip_to_extent="1" force_rhr="0" name="6" alpha="1">
+   <layer pass="0" enabled="1" locked="0" class="SimpleFill">
+    <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="color" v="150,100,50,255"/>
+    <prop k="joinstyle" v="bevel"/>
+    <prop k="offset" v="0,0"/>
+    <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="offset_unit" v="MM"/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_style" v="solid"/>
+    <prop k="outline_width" v="0.26"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="style" v="solid"/>
+    <data_defined_properties>
+     <Option type="Map">
+      <Option type="QString" name="name" value=""/>
+      <Option name="properties"/>
+      <Option type="QString" name="type" value="collection"/>
+     </Option>
+    </data_defined_properties>
+   </layer>
+   <layer pass="0" enabled="1" locked="0" class="SVGFill">
+    <prop k="angle" v="0"/>
+    <prop k="color" v="150,100,50,255"/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_width" v="0.2"/>
+    <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="pattern_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="pattern_width_unit" v="MM"/>
+    <prop k="svgFile" v="non_empty"/>
+    <prop k="svg_outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+    <prop k="svg_outline_width_unit" v="MM"/>
+    <prop k="width" v="200"/>
+    <data_defined_properties>
+     <Option type="Map">
+      <Option type="QString" name="name" value=""/>
+      <Option type="Map" name="properties">
+       <Option type="Map" name="file">
+        <Option type="bool" name="active" value="true"/>
+        <Option type="QString" name="expression" value="'/home/julien/work/QGeoloGIS/qgeologis/styles/usgs' || rock_code || '.svg'"/>
+        <Option type="int" name="type" value="3"/>
+       </Option>
+      </Option>
+      <Option type="QString" name="type" value="collection"/>
+     </Option>
+    </data_defined_properties>
+    <symbol type="line" clip_to_extent="1" force_rhr="0" name="@6@1" alpha="1">
+     <layer pass="0" enabled="1" locked="0" class="SimpleLine">
+      <prop k="capstyle" v="square"/>
+      <prop k="customdash" v="5;2"/>
+      <prop k="customdash_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+      <prop k="customdash_unit" v="MM"/>
+      <prop k="draw_inside_polygon" v="0"/>
+      <prop k="joinstyle" v="bevel"/>
+      <prop k="line_color" v="0,0,0,255"/>
+      <prop k="line_style" v="solid"/>
+      <prop k="line_width" v="0.26"/>
+      <prop k="line_width_unit" v="MM"/>
+      <prop k="offset" v="0"/>
+      <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+      <prop k="offset_unit" v="MM"/>
+      <prop k="ring_filter" v="0"/>
+      <prop k="use_custom_dash" v="0"/>
+      <prop k="width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+      <data_defined_properties>
+       <Option type="Map">
+        <Option type="QString" name="name" value=""/>
+        <Option name="properties"/>
+        <Option type="QString" name="type" value="collection"/>
+       </Option>
+      </data_defined_properties>
+     </layer>
+    </symbol>
+   </layer>
+  </symbol>
+ </symbols>
+</renderer-v2>

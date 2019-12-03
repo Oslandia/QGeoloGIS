@@ -7,7 +7,7 @@
 #   modify it under the terms of the GNU Library General Public
 #   License as published by the Free Software Foundation; either
 #   version 2 of the License, or (at your option) any later version.
-#   
+#
 #   This library is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -16,18 +16,19 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
+import os
+
 from qgis.PyQt.QtCore import QRectF, QVariant
 from qgis.PyQt.QtGui import QPen, QBrush, QPolygonF
 from qgis.PyQt.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QComboBox
 from qgis.PyQt.QtWidgets import QPushButton, QStackedWidget, QDialogButtonBox, QFileDialog
 from qgis.PyQt.QtXml import QDomDocument
 
-from .qt_qgis_compat import QgsFeatureRendererV2, QgsRectangle, QgsField, QgsFields, QgsGeometry
-from .qt_qgis_compat import QgsFeature
+from qgis.core import (QgsFeatureRenderer, QgsRectangle, QgsField, QgsFields, QgsGeometry,
+                       QgsReadWriteContext, QgsFeature)
 
 from .common import LogItem, POLYGON_RENDERER, qgis_render_context
 
-import os
 
 class StratigraphyItem(LogItem):
     def __init__(self, width, height, style_file=None, parent=None):
@@ -47,9 +48,9 @@ class StratigraphyItem(LogItem):
         if style_file:
             doc = QDomDocument()
             doc.setContent(open(style_file, "r").read())
-            self.__renderer = QgsFeatureRendererV2._load(doc.documentElement())
+            self.__renderer = QgsFeatureRenderer.load(doc.documentElement(), QgsReadWriteContext())
         else:
-            self.__renderer = QgsFeatureRendererV2.defaultRenderer(POLYGON_RENDERER)
+            self.__renderer = QgsFeatureRenderer.defaultRenderer(POLYGON_RENDERER)
 
     def boundingRect(self):
         return QRectF(0, 0, self.__width, self.__height)
@@ -87,6 +88,13 @@ class StratigraphyItem(LogItem):
         fields = QgsFields()
         fields.append(QgsField("formation_code", QVariant.String))
         fields.append(QgsField("rock_code", QVariant.String))
+
+        # need to set fields in context so they can be evaluated in expression.
+        # if not QgsExpressionNodeColumnRef prepareNode methods will fail when
+        # checking that variable EXPR_FIELDS is defined (this variable is set
+        # by setFields method
+        context.expressionContext().setFields(fields)
+
         self.__renderer.startRender(context, fields)
 
         for i, d in enumerate(self.__data):
@@ -109,11 +117,11 @@ class StratigraphyItem(LogItem):
                 y = (y1+y2)/2
                 if y - fm.ascent() > y1 and y + fm.descent() < y2:
                     painter.drawText(x, y, formation_code)
-            #'~/.qgis2/python/plugins/thyrsis/styles/usgs' || rock_code || '.svg'
-            # polygon
+
             geom = QgsGeometry.fromQPolygonF(QPolygonF(QRectF(0, self.__height-y1, self.__width/2, y1-y2)))
 
             feature = QgsFeature(fields, 1)
+
             feature["formation_code"] = formation_code
             feature["rock_code"] = rock_code
             feature.setGeometry(geom)
@@ -143,9 +151,9 @@ class StratigraphyStyleDialog(QDialog):
         self.__layer = layer
         self.__renderer = renderer
 
-        from qgis.gui import QgsSingleSymbolRendererV2Widget, QgsRuleBasedRendererV2Widget, QgsCategorizedSymbolRendererV2Widget, QgsGraduatedSymbolRendererV2Widget
-        from qgis.core import QgsSingleSymbolRendererV2, QgsRuleBasedRendererV2, QgsCategorizedSymbolRendererV2, QgsGraduatedSymbolRendererV2
-        from qgis.core import QgsStyleV2
+        from qgis.gui import QgsSingleSymbolRendererWidget, QgsRuleBasedRendererWidget, QgsCategorizedSymbolRendererWidget, QgsGraduatedSymbolRendererWidget
+        from qgis.core import QgsSingleSymbolRenderer, QgsRuleBasedRenderer, QgsCategorizedSymbolRenderer, QgsGraduatedSymbolRenderer
+        from qgis.core import QgsStyle
 
         vbox = QVBoxLayout()
         hbox = QHBoxLayout()
@@ -161,11 +169,11 @@ class StratigraphyStyleDialog(QDialog):
         hbox.addWidget(self.__save_btn)
 
         self.__sw = QStackedWidget()
-        self.__classes = [(u"Symbole unique", QgsSingleSymbolRendererV2, QgsSingleSymbolRendererV2Widget),
-                          (u"Ensemble de règles", QgsRuleBasedRendererV2, QgsRuleBasedRendererV2Widget),
-                          (u"Catégorisé", QgsCategorizedSymbolRendererV2, QgsCategorizedSymbolRendererV2Widget),
-                          (u"Gradué", QgsGraduatedSymbolRendererV2, QgsGraduatedSymbolRendererV2Widget)]
-        self.__styles = [QgsStyleV2(), QgsStyleV2(), QgsStyleV2(), QgsStyleV2()]
+        self.__classes = [(u"Symbole unique", QgsSingleSymbolRenderer, QgsSingleSymbolRendererWidget),
+                          (u"Ensemble de règles", QgsRuleBasedRenderer, QgsRuleBasedRendererWidget),
+                          (u"Catégorisé", QgsCategorizedSymbolRenderer, QgsCategorizedSymbolRendererWidget),
+                          (u"Gradué", QgsGraduatedSymbolRenderer, QgsGraduatedSymbolRendererWidget)]
+        self.__styles = [QgsStyle(), QgsStyle(), QgsStyle(), QgsStyle()]
         for i, c in enumerate(self.__classes):
             name, cls, wcls = c
             w = wcls.create(self.__layer, self.__styles[i], self.__renderer)
@@ -195,21 +203,21 @@ class StratigraphyStyleDialog(QDialog):
         return self.__renderer
 
     def on_save_style(self):
-        fn = QFileDialog.getSaveFileName(self, "Fichier style à sauvegarder", filter = "*.xml")
+        fn, _ = QFileDialog.getSaveFileName(self, "Fichier style à sauvegarder", filter = "*.xml")
         if fn:
             doc = QDomDocument()
-            elt = self.__sw.currentWidget().renderer().save(doc)
+            elt = self.__sw.currentWidget().renderer().save(doc, QgsReadWriteContext())
             doc.appendChild(elt)
             fo = open(fn, "w")
             fo.write(doc.toString())
             fo.close()
 
     def on_load_style(self):
-        fn = QFileDialog.getOpenFileName(self, "Fichier style à charger", filter = "*.xml")
+        fn, _ = QFileDialog.getOpenFileName(self, "Fichier style à charger", filter = "*.xml")
         if fn:
             doc = QDomDocument()
             doc.setContent(open(fn, "r").read())
-            self.__renderer = QgsFeatureRendererV2._load(doc.documentElement())
+            self.__renderer = QgsFeatureRenderer._load(doc.documentElement())
             for i, c in enumerate(self.__classes):
                 _, cls, wcls = c
                 if self.__renderer.__class__ == cls:

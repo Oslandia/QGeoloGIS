@@ -1,5 +1,5 @@
 [general]
-name=qgeologis
+name=QGeoloGIS
 description=Visualization of well logs in QGIS
 version=1.1.0
 qgisMinimumVersion=2.18

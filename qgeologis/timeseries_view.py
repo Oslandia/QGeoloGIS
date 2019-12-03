@@ -257,8 +257,8 @@ class TimeSeriesView(QWidget):
         self.select_row(-1)
         self._place_items()
         self._update_button_visibility()
-        self._min_x = None
 
+        self.add_time_scale()
         
     def on_plot_tooltip(self, station_name, txt):
         if station_name is not None:
@@ -278,13 +278,12 @@ class TimeSeriesView(QWidget):
         legend_item = LegendItem(self.DEFAULT_ROW_HEIGHT, title, unit_of_measure=uom, is_vertical=True)
         data.data_modified.connect(lambda data=data : self._update_data_row(data))
 
-        if self._min_x is None:
-            self._min_x, self._max_x = data.get_x_min(), data.get_x_max()
-            # if we have only one value, center it on a 2 minutes range
-            if self._min_x == self._max_x:
-                self._min_x -= 60
-                self._max_x += 60
-            self.add_time_scale()
+        # center on new data
+        self._min_x, self._max_x = data.get_x_min(), data.get_x_max()
+        # if we have only one value, center it on a 2 minutes range
+        if self._min_x == self._max_x:
+            self._min_x -= 60
+            self._max_x += 60
 
         self.__data2logitems[data] = (plot_item, legend_item)
         self._add_row(plot_item, legend_item)

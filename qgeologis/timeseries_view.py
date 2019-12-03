@@ -205,15 +205,13 @@ class TimeSeriesView(QWidget):
 
         self._place_items()
 
-    def _fit_to_max_depth(self):
-        self._min_x = min([i.min_depth() for i, _ in self.__rows if i.min_depth() is not None])
-        self._max_x = max([i.max_depth() for i, _ in self.__rows if i.max_depth() is not None])
-        # if we have only one value, center it on a 2 minutes range
-        if self._min_x == self._max_x:
-            self._min_x -= 60
-            self._max_x += 60
+    def set_x_range(self, min_x, max_x):
+        self._min_x, self._max_x = min_x, max_x
+        self._update_row_depths()
 
     def _update_row_depths(self):
+        if self._min_x is None:
+            return
         for item, _ in self.__rows:
             item.set_min_depth(self._min_x)
             item.set_max_depth(self._max_x)
@@ -281,7 +279,7 @@ class TimeSeriesView(QWidget):
         # center on new data
         self._min_x, self._max_x = data.get_x_min(), data.get_x_max()
         # if we have only one value, center it on a 2 minutes range
-        if self._min_x == self._max_x:
+        if self._min_x and self._min_x == self._max_x:
             self._min_x -= 60
             self._max_x += 60
 

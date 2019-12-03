@@ -35,6 +35,8 @@ def load_plots(feature, config, add_function, config_list):
     feature_id = feature[config["id_column"]]
     feature_name = feature[config["name_column"]]
 
+    min_x = []
+    max_x = []
     for c in config_list:
         cfg = PlotConfig(c)
 
@@ -66,7 +68,14 @@ def load_plots(feature, config, add_function, config_list):
                                    x_start_fieldname=cfg["start_measure_column"],
                                    x_delta_fieldname=cfg["interval_column"])
 
-            add_function(data, title, uom, station_name=feature_name)
+            if data.get_x_min() is not None:
+                min_x.append(data.get_x_min())
+                max_x.append(data.get_x_max())
+                add_function(data, title, uom, station_name=feature_name)
+    if not min_x:
+        return None, None
+    else:
+        return (min(min_x), max(max_x))
 
 
 class WellLogViewWrapper(WellLogView):
@@ -190,9 +199,17 @@ class TimeSeriesWrapper(TimeSeriesView):
 
         self.clear_data_rows()
 
+        min_x = []
+        max_x = []
         for feature in self.__features:
-            load_plots(feature, self.__config, self.add_data_row,
-                       self.__config.get_timeseries())
+            fmin_x, fmax_x = load_plots(feature, self.__config, self.add_data_row,
+                                        self.__config.get_timeseries())
+            if fmin_x:
+                min_x.append(fmin_x)
+                max_x.append(fmax_x)
+
+        if min_x:
+            self.set_x_range(min(min_x), max(max_x))
 
     def on_add_row(self):
         s = DataSelector(self, self.__features,  self.__config.get_timeseries(),  self.__config)

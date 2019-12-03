@@ -98,11 +98,11 @@ class PlotItem(LogItem):
     def min_depth(self):
         if self.__data_rect is None:
             return None
-        return self.__data_rect.x() * self.__delta
+        return self.__data_rect.x()
     def max_depth(self):
         if self.__data_rect is None:
             return None
-        return (self.__data_rect.x() + self.__data_rect.width()) * self.__delta
+        return (self.__data_rect.x() + self.__data_rect.width())
 
     def set_min_depth(self, min_depth):
         if self.__data_rect is not None:
@@ -137,13 +137,15 @@ class PlotItem(LogItem):
                 or math.isnan(self.__x_values[i])):
                 self.__y_values.pop(i)
                 self.__x_values.pop(i)
+        if not self.__x_values:
+            return
 
         # Initialize data rect to display all data
         # with a 20% buffer around Y values
-        min_x = min(self.__x_values) if self.__x_values else 0
-        max_x = max(self.__x_values) if self.__x_values else 0
-        min_y = min(self.__y_values) if self.__y_values else 0
-        max_y = max(self.__y_values) if self.__y_values else 0
+        min_x = min(self.__x_values)
+        max_x = max(self.__x_values)
+        min_y = min(self.__y_values)
+        max_y = max(self.__y_values)
         if max_y == 0.0:
             max_y = 1.0
         h = max_y - min_y
@@ -327,6 +329,8 @@ class PlotItem(LogItem):
             painter.drawLine(px, py-5, px, py+5)
 
     def mouseMoveEvent(self, event):
+        if not self.__x_values:
+            return
         if self.__x_orientation == ORIENTATION_LEFT_TO_RIGHT and self.__y_orientation == ORIENTATION_UPWARD:
             xx = (event.scenePos().x() - self.pos().x()) / self.width() * self.__data_rect.width() + self.__data_rect.x()
         elif self.__x_orientation == ORIENTATION_DOWNWARD and self.__y_orientation == ORIENTATION_LEFT_TO_RIGHT:

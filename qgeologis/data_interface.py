@@ -16,7 +16,7 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from qgis.PyQt.QtCore import pyqtSignal, QObject
+from qgis.PyQt.QtCore import pyqtSignal, QObject, QVariant
 from qgis.core import QgsFeatureRequest
 
 import numpy as np
@@ -244,10 +244,15 @@ class FeatureData(DataInterface):
 
             if isinstance(raw_data, list):
                 # QGIS 3 natively reads array values
-                y_values = raw_data
-            else:
+                # Null values still have to be filtered out
+                # WARNING: extracting list from PostgreSQL's arrays seem very sloowww
+                y_values = [None if isinstance(x, QVariant) else x for x in raw_data]
+            elif isinstance(raw_data, str):
+                # We assume values are separated by a ','
                 y_values = [None if value == 'NULL' else float(value)
-                                   for value in raw_data[1:-1].split(",")]
+                                   for value in raw_data.split(",")]
+            else:
+                print("Unsupported data format: {}".format(raw_data.__class__))
 
             x_values = np.linspace(x_start, x_start + x_delta * len(y_values), len(y_values)).tolist()
             
@@ -274,8 +279,8 @@ class FeatureData(DataInterface):
 
         self.__x_min, self.__x_max = ((min(self.__x_values), max(self.__x_values))
                                       if self.__x_values else (None, None))
-        self.__y_min, self.__y_max = ((min([y for y in self.__y_values if y is not None]),
-                                       max(self.__y_values))
+        self.__y_min, self.__y_max = ((min(y for y in self.__y_values if y is not None),
+                                       max(y for y in self.__y_values if y is not None))
                                       if self.__y_values else (None, None))
 
         self.data_modified.emit()

@@ -180,7 +180,7 @@ class PlotItem(LogItem):
         # For lines and polygons, retain also one value before the min and one after the max
         # so that lines do not appear truncated
         # Do this only if we have at least one point to render within out rect
-        if imin_x > 0 and self.__x_values[imin_x] >= self.__data_rect.x():
+        if imin_x > 0 and imin_x < len(self.__x_values) and self.__x_values[imin_x] >= self.__data_rect.x():
             # FIXME add a test to avoid adding a point too "far away" ?
             imin_x -= 1
         if imax_x < len(self.__x_values) - 1 and self.__x_values[imax_x] <= self.__data_rect.right():

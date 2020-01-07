@@ -20,7 +20,7 @@ import os
 
 from qgis.PyQt.QtCore import Qt, pyqtSignal
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction
+from qgis.PyQt.QtWidgets import QAction, QWidget
 
 from qgis.core import (QgsPoint, QgsCoordinateTransform, QgsRectangle,
                        QgsGeometry, QgsFeatureRequest, QgsProject)
@@ -83,7 +83,6 @@ class QGeoloGISPlugin:
     def __init__(self, iface):
         self.iface = iface
         self.__config = None
-        self.__dialogs = []
 
         self.update_layer_config()
         QgsProject.instance().readProject.connect(self.update_layer_config)
@@ -92,13 +91,21 @@ class QGeoloGISPlugin:
         # current map tool
         self.__tool = None
 
+        # Root widget, to attach children to
+        self.__widget = QWidget()
+
     def initGui(self):
 
         icon = QIcon(os.path.join(os.path.dirname(__file__), "qgeologis/img/plot.svg"))
-        self.view_plot = QAction(icon, u'View plot', self.iface.mainWindow())
-        self.view_plot.triggered.connect(self.on_view_plot)
-        self.iface.addToolBarIcon(self.view_plot)
+        self.view_logs = QAction(icon, u'View log plots', self.iface.mainWindow())
+        self.view_logs.triggered.connect(lambda: self.on_view_plots("logs"))
+        self.iface.addToolBarIcon(self.view_logs)
         
+        icon = QIcon(os.path.join(os.path.dirname(__file__), "qgeologis/img/timeseries.svg"))
+        self.view_timeseries = QAction(icon, u'View timeseries', self.iface.mainWindow())
+        self.view_timeseries.triggered.connect(lambda: self.on_view_plots("timeseries"))
+        self.iface.addToolBarIcon(self.view_timeseries)
+
         # self.view_timeseries_action = QAction(u'View timeseries', self.iface.mainWindow())
         # self.load_base_layer_action = QAction(u'Load base layer', self.iface.mainWindow())
         # self.view_log_action.triggered.connect(lambda : self.on_view_graph(WellLogViewWrapper))
@@ -112,7 +119,7 @@ class QGeoloGISPlugin:
         # self.load_config_action.triggered.connect(self.on_load_config)
         # self.iface.addPluginToMenu(u"QGeoloGIS", self.load_config_action)
 
-    def on_view_plot(self):
+    def on_view_plots(self, plot_type):
 
         layer = self.iface.activeLayer()
         if not layer:
@@ -130,25 +137,23 @@ class QGeoloGISPlugin:
             else:
                 return
 
-        dialog = MainDialog(self.__config, layer, self.iface)
+        dialog = MainDialog(self.__widget, plot_type, self.__config, layer, self.iface)
         dialog.show()
-        self.__dialogs.append(dialog)
 
     def unload(self):
 
         QgsProject.instance().readProject.disconnect(self.update_layer_config)
         QgsProject.instance().cleared.disconnect(self.update_layer_config)
 
-        # TODO windows are never destroyed until the plugin is unload
-        self.__dialogs = None
-    
         self.__tool = None
         self.__config = None
+        self.__widget = None
         
-        self.iface.removeToolBarIcon(self.view_plot)
-        # self.iface.removeToolBarIcon(self.view_timeseries_action)
+        self.iface.removeToolBarIcon(self.view_logs)
+        self.iface.removeToolBarIcon(self.view_timeseries)
         # self.iface.removeToolBarIcon(self.load_base_layer_action)
-        self.view_plot.setParent(None)
+        self.view_logs.setParent(None)
+        self.view_timeseries.setParent(None)
         # self.view_timeseries_action.setParent(None)
         # self.load_base_layer_action.setParent(None)
         

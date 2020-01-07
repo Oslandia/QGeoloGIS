@@ -17,9 +17,9 @@
 
 import os
 
-from qgis.PyQt.QtWidgets import QSplitter, QAction
+from qgis.PyQt.QtWidgets import QDialog, QAction, QVBoxLayout
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtCore import Qt, QSize
+from qgis.PyQt.QtCore import QSize
 from qgis.core import QgsProject, QgsFeatureRequest
 
 from .config_create_dialog import ConfigCreateDialog
@@ -216,23 +216,44 @@ class TimeSeriesWrapper(TimeSeriesView):
         s.exec_()
 
 
-class MainDialog(QSplitter):
+class MainDialog(QDialog):
 
-    def __init__(self, config, layer, iface):
+    def __init__(self, parent, plot_type, config, layer, iface):
+        """Create a plot dialog that updates when a layer selection updates.
 
-        super().__init__(Qt.Vertical)
-        self.setWindowTitle("{} plot viewer".format(layer.name()))
+        Parameters
+        ----------
+        parent: QObject
+          Qt parent object
+        plot_type: str
+          Type of plot, either "logs" or "timeseries"
+        config: dict
+          Layer configuration
+        layer: QgsVectorLayer
+          Main layer
+        iface: QgisInterface
+          QGIS interface class
+        """
+
+        super().__init__(parent)
+        self.setWindowTitle("{} {}".format(layer.name(), plot_type))
         self.setMinimumSize(QSize(600, 400))
 
         self.__layer = layer
         self.__config = LayerConfig(config, layer.id())
         self.__iface = iface
 
-        self.__well_log_view = WellLogViewWrapper(self.__config, self.__iface)
-        self.__time_series_view = TimeSeriesWrapper(self.__config)
+        if plot_type == "logs":
+            self.__view = WellLogViewWrapper(self.__config, self.__iface)
+        elif plot_type == "timeseries":
+            self.__view = TimeSeriesWrapper(self.__config)
+        else:
+            raise RuntimeError("Invalid plot_type {}".format(plot_type))
 
-        self.addWidget(self.__well_log_view)
-        self.addWidget(self.__time_series_view)
+        layout = QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.addWidget(self.__view)
+        self.setLayout(layout)
 
         self.__layer.selectionChanged.connect(self.__update_selected_features)
 
@@ -240,15 +261,7 @@ class MainDialog(QSplitter):
 
     def __update_selected_features(self):
 
-        self.__well_log_view.setVisible(
-            self.__config.get("stratigraphy_config") is not None
-            or self.__config.get("log_measures") is not None)
-
-        self.__time_series_view.setVisible(
-            self.__config.get("timeseries") is not None)
-
         if not self.__layer.selectedFeatureCount():
             return
 
-        self.__well_log_view.set_features(self.__layer.selectedFeatures())
-        self.__time_series_view.set_features(self.__layer.selectedFeatures())
+        self.__view.set_features(self.__layer.selectedFeatures())

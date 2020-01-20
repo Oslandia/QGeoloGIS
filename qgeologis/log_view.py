@@ -73,11 +73,12 @@ class LogGraphicsView(QGraphicsView):
         self.parentWidget()._update_column_depths()
 
     def mouseMoveEvent(self, event):
+        pos = self.mapToScene(event.pos())
         if not self.__allow_mouse_translation:
             return QGraphicsView.mouseMoveEvent(self, event)
 
         if self.__translation_orig is not None:
-            delta = self.__translation_orig - event.pos()
+            delta = self.__translation_orig - pos
             delta_y = delta.y() / self.scene().sceneRect().height() * (self.parentWidget()._max_z - self.parentWidget()._min_z)
             min_z = self.__translation_min_z + delta_y
             self.parentWidget()._min_z = min_z
@@ -86,16 +87,18 @@ class LogGraphicsView(QGraphicsView):
         return QGraphicsView.mouseMoveEvent(self, event)
 
     def mousePressEvent(self, event):
+        pos = self.mapToScene(event.pos())
         self.__translation_orig = None
         if event.buttons() == Qt.LeftButton:
-            self.__translation_orig = event.pos()
+            self.__translation_orig = pos
             self.__translation_min_z = self.parentWidget()._min_z
             self.__translation_max_z = self.parentWidget()._max_z
         return QGraphicsView.mousePressEvent(self, event)
 
     def mouseReleaseEvent(self, event):
-        if event.pos() == self.__translation_orig:
-            self.parentWidget().select_column_at(event.pos())
+        pos = self.mapToScene(event.pos())
+        if pos == self.__translation_orig:
+            self.parentWidget().select_column_at(pos)
         self.__translation_orig = None
 
         return QGraphicsView.mouseReleaseEvent(self, event)

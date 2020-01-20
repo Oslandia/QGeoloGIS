@@ -100,33 +100,34 @@ class StratigraphyItem(LogItem):
         for i, d in enumerate(self.__data):
             depth_from, depth_to, formation_code, rock_code, _, _ = d
 
-            y1 = (depth_from - self.__min_z) / (self.__max_z - self.__min_z) * self.__height
-            y2 = (depth_to - self.__min_z) / (self.__max_z - self.__min_z) * self.__height
+            if abs((self.__max_z - self.__min_z) * self.__height) > 0:
+                y1 = (depth_from - self.__min_z) / (self.__max_z - self.__min_z) * self.__height
+                y2 = (depth_to - self.__min_z) / (self.__max_z - self.__min_z) * self.__height
 
-            painter.setPen(QPen())
-            painter.setBrush(QBrush())
-            if i == 0:
-                painter.drawLine(0, y1, self.__width-1, y1)
-            painter.drawLine(0, y2, self.__width-1, y2)
+                painter.setPen(QPen())
+                painter.setBrush(QBrush())
+                if i == 0:
+                    painter.drawLine(0, y1, self.__width-1, y1)
+                painter.drawLine(0, y2, self.__width-1, y2)
 
-            # legend text
-            if formation_code:
-                fm = painter.fontMetrics()
-                w = fm.width(formation_code)
-                x = (self.__width/2 - w) / 2 + self.__width/2
-                y = (y1+y2)/2
-                if y - fm.ascent() > y1 and y + fm.descent() < y2:
-                    painter.drawText(x, y, formation_code)
+                # legend text
+                if formation_code:
+                    fm = painter.fontMetrics()
+                    w = fm.width(formation_code)
+                    x = (self.__width/2 - w) / 2 + self.__width/2
+                    y = (y1+y2)/2
+                    if y - fm.ascent() > y1 and y + fm.descent() < y2:
+                        painter.drawText(x, y, formation_code)
 
-            geom = QgsGeometry.fromQPolygonF(QPolygonF(QRectF(0, self.__height-y1, self.__width/2, y1-y2)))
+                geom = QgsGeometry.fromQPolygonF(QPolygonF(QRectF(0, self.__height-y1, self.__width/2, y1-y2)))
 
-            feature = QgsFeature(fields, 1)
+                feature = QgsFeature(fields, 1)
 
-            feature["formation_code"] = formation_code
-            feature["rock_code"] = rock_code
-            feature.setGeometry(geom)
+                feature["formation_code"] = formation_code
+                feature["rock_code"] = rock_code
+                feature.setGeometry(geom)
 
-            self.__renderer.renderFeature(feature, context)
+                self.__renderer.renderFeature(feature, context)
 
         self.__renderer.stopRender(context)
 

@@ -56,6 +56,7 @@ class LogGraphicsView(QGraphicsView):
         self.scene().setSceneRect(rect)
 
     def wheelEvent(self, event):
+        print(self.source())
         delta = -event.angleDelta().y() / 100.0
         if delta > 0:
             dt = delta

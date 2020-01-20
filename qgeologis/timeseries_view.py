@@ -65,11 +65,12 @@ class TimeSeriesGraphicsView(QGraphicsView):
         self.parentWidget()._update_row_depths()
 
     def mouseMoveEvent(self, event):
+        pos = self.mapToScene(event.pos())
         if not self.__allow_mouse_translation:
             return QGraphicsView.mouseMoveEvent(self, event)
 
         if self.__translation_orig is not None:
-            delta = self.__translation_orig - event.pos()
+            delta = self.__translation_orig - pos
             delta_x = delta.x() / self.scene().sceneRect().width() * (self.parentWidget()._max_x - self.parentWidget()._min_x)
             self.parentWidget()._min_x = self.__translation_min_x + delta_x
             self.parentWidget()._max_x = self.__translation_max_x + delta_x
@@ -77,16 +78,18 @@ class TimeSeriesGraphicsView(QGraphicsView):
         return QGraphicsView.mouseMoveEvent(self, event)
 
     def mousePressEvent(self, event):
+        pos = self.mapToScene(event.pos())
         self.__translation_orig = None
         if event.buttons() == Qt.LeftButton:
-            self.__translation_orig = event.pos()
+            self.__translation_orig = pos
             self.__translation_min_x = self.parentWidget()._min_x
             self.__translation_max_x = self.parentWidget()._max_x
         return QGraphicsView.mousePressEvent(self, event)
 
     def mouseReleaseEvent(self, event):
-        if event.pos() == self.__translation_orig:
-            self.parentWidget().select_row_at(event.pos())
+        pos = self.mapToScene(event.pos())        
+        if pos == self.__translation_orig:
+            self.parentWidget().select_row_at(pos)
         self.__translation_orig = None
 
         return QGraphicsView.mouseReleaseEvent(self, event)

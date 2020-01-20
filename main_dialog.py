@@ -17,7 +17,7 @@
 
 import os
 
-from qgis.PyQt.QtWidgets import QDialog, QAction, QVBoxLayout
+from qgis.PyQt.QtWidgets import QDialog, QAction, QVBoxLayout, QWidget
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtCore import QSize
 from qgis.core import QgsProject, QgsFeatureRequest
@@ -216,7 +216,7 @@ class TimeSeriesWrapper(TimeSeriesView):
         s.exec_()
 
 
-class MainDialog(QDialog):
+class MainDialog(QWidget):
 
     def __init__(self, parent, plot_type, config, layer, iface):
         """Create a plot dialog that updates when a layer selection updates.

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>561</width>
-    <height>375</height>
+    <width>643</width>
+    <height>539</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -240,6 +240,38 @@
     </widget>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QCheckBox" name="minCheckBox">
+       <property name="text">
+        <string>Min value</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="minEdit">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="maxCheckBox">
+       <property name="text">
+        <string>Max value</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="maxEdit">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -282,6 +314,38 @@
     <hint type="destinationlabel">
      <x>286</x>
      <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>minCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>minEdit</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>51</x>
+     <y>481</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>208</x>
+     <y>482</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>maxCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>maxEdit</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>366</x>
+     <y>481</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>524</x>
+     <y>482</y>
     </hint>
    </hints>
   </connection>

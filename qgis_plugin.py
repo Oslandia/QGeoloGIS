@@ -20,7 +20,7 @@ import os
 
 from qgis.PyQt.QtCore import Qt, pyqtSignal
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction, QWidget
+from qgis.PyQt.QtWidgets import QAction, QWidget, QDockWidget
 
 from qgis.core import (QgsPoint, QgsCoordinateTransform, QgsRectangle,
                        QgsGeometry, QgsFeatureRequest, QgsProject)
@@ -92,7 +92,7 @@ class QGeoloGISPlugin:
         self.__tool = None
 
         # Root widget, to attach children to
-        self.__widget = QWidget()
+        self.__dock = None
 
     def initGui(self):
 
@@ -137,8 +137,10 @@ class QGeoloGISPlugin:
             else:
                 return
 
-        dialog = MainDialog(self.__widget, plot_type, self.__config, layer, self.iface)
-        dialog.show()
+        self.__dock = QDockWidget("Well Log")
+        dialog = MainDialog(self.__dock, plot_type, self.__config, layer, self.iface)
+        self.__dock.setWidget(dialog)
+        self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.__dock)
 
     def unload(self):
 
@@ -147,7 +149,9 @@ class QGeoloGISPlugin:
 
         self.__tool = None
         self.__config = None
-        self.__widget = None
+        if self.__dock:
+            self.iface.removeDockWidget(self.__dock)
+            self.__dock.setParent(None)
         
         self.iface.removeToolBarIcon(self.view_logs)
         self.iface.removeToolBarIcon(self.view_timeseries)

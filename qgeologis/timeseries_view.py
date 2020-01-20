@@ -307,12 +307,14 @@ class TimeSeriesView(QWidget):
             return
 
         plot_item.set_data(data.get_x_values(), data.get_y_values())
+        win = plot_item.data_window()
+        min_x, min_y, max_x, max_y = win.left(), win.top(), win.right(), win.bottom()
 
-        #r = QRectF(0, min_y, (max_x-min_x)/delta, max_y)
-        #plot_item.set_data_window(r)
+        # TODO configured min_y max_y here
 
         # legend
-        legend_item.set_scale(data.get_y_min(), data.get_y_max())
+        legend_item.set_scale(min_y, max_y)
+        plot_item.set_data_window(QRectF(min_x, min_y, max_x-min_x, max_y-min_y))
 
         self.__scene.update()
 

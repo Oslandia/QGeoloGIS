@@ -16,7 +16,7 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from qgis.PyQt.QtCore import Qt, QSizeF
+from qgis.PyQt.QtCore import Qt, QSizeF, QRectF
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import (QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel,
                                  QVBoxLayout)
@@ -321,14 +321,14 @@ class WellLogView(QWidget):
             return
 
         plot_item.set_data(data.get_x_values(), data.get_y_values())
+        win = plot_item.data_window()
+        min_x, min_y, max_x, max_y = win.left(), win.top(), win.right(), win.bottom()
 
-#        r = QRectF(0, min_y, (max_x-min_x)/delta, max_y)
-#        plot_item.set_data_window(r)
+        # TODO configured min_y max_y here
 
         # legend
-        min_str = "{:.1f}".format(min(data.get_y_values()) if data.get_y_values() else 0)
-        max_str = "{:.1f}".format(max(data.get_y_values()) if data.get_y_values() else 0)
-        legend_item.set_scale(min_str, max_str)
+        legend_item.set_scale(min_y, max_y)
+        plot_item.set_data_window(QRectF(min_x, min_y, max_x-min_x, max_y-min_y))
 
         self.__log_scene.update()
 

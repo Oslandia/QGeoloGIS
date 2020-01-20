@@ -35,6 +35,10 @@ class UTC(tzinfo):
     def dst(self, dt):
         return timedelta(0)
 
+# min: year 0, max: year 10000
+MIN_TIMESTAMP = 0
+MAX_TIMESTAMP = 3600*24*365*(10000-1970)
+
 class TimeScaleItem(LogItem):
     # duration in seconds, next duration in seconds, datetime format
     DURATION_FORMATS = [(1, "%H:%M:%S"),
@@ -96,11 +100,12 @@ class TimeScaleItem(LogItem):
         if duration_s == 0:
             duration_s = 1.0
         # get the widest and narrowest scale
-        min_slot_idx = None
+        min_slot_idx = len(self.DURATION_FORMATS) - 1
         for slot_idx, (slot_duration, _) in enumerate(self.DURATION_FORMATS):
             slot_width = float(slot_duration) / duration_s * self.__width
-            if min_slot_idx is None and slot_width > min_tick_distance:
+            if slot_width > min_tick_distance:
                 min_slot_idx = slot_idx
+                break
 
         # iterate from the narrowest to the widest scale
         slot_duration, format = self.DURATION_FORMATS[min_slot_idx]
@@ -109,6 +114,8 @@ class TimeScaleItem(LogItem):
         old_x = 0
         for k in range(min_tick_idx,max_tick_idx):
             t = k * slot_duration
+            if t < MIN_TIMESTAMP or t > MAX_TIMESTAMP:
+                continue
             x = int((t - self.__min_t) / float(duration_s) * self.__width)
 
             painter.drawLine(x, 0, x, tick_size)

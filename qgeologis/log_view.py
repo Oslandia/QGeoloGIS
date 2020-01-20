@@ -56,12 +56,12 @@ class LogGraphicsView(QGraphicsView):
         self.scene().setSceneRect(rect)
 
     def wheelEvent(self, event):
-        print(self.source())
+        print(event.angleDelta().y())
         delta = -event.angleDelta().y() / 100.0
         if delta > 0:
-            dt = delta
+            dt = 1.1
         else:
-            dt = 1.0/(-delta)
+            dt = 0.9
 
         min_z = self.parentWidget()._min_z
         max_z = self.parentWidget()._max_z

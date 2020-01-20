@@ -267,7 +267,7 @@ class TimeSeriesView(QWidget):
         else:
             self.__status_bar.showMessage(txt)
 
-    def add_data_row(self, data, title, uom, station_name = None):
+    def add_data_row(self, data, title, uom, station_name = None, config=None):
         plot_item = PlotItem(size=QSizeF(self.__scene.width(), self.DEFAULT_ROW_HEIGHT),
                              render_type = POINT_RENDERER,
                              x_orientation = ORIENTATION_LEFT_TO_RIGHT,
@@ -277,7 +277,7 @@ class TimeSeriesView(QWidget):
         plot_item.tooltipRequested.connect(lambda txt:self.on_plot_tooltip(station_name, txt))
 
         legend_item = LegendItem(self.DEFAULT_ROW_HEIGHT, title, unit_of_measure=uom, is_vertical=True)
-        data.data_modified.connect(lambda data=data : self._update_data_row(data))
+        data.data_modified.connect(lambda data=data : self._update_data_row(data, config))
 
         # center on new data
         self._min_x, self._max_x = data.get_x_min(), data.get_x_max()
@@ -288,7 +288,7 @@ class TimeSeriesView(QWidget):
 
         self.__data2logitems[data] = (plot_item, legend_item)
         self._add_row(plot_item, legend_item)
-        self._update_data_row(data)
+        self._update_data_row(data, config)
         self._update_row_depths()
 
     def add_time_scale(self, title="Time"):
@@ -296,7 +296,7 @@ class TimeSeriesView(QWidget):
         legend_item = LegendItem(self.DEFAULT_ROW_HEIGHT * 3 / 4, title, is_vertical = True)
         self._add_row(scale_item, legend_item)
 
-    def _update_data_row(self, data):
+    def _update_data_row(self, data, config):
 
         plot_item, legend_item = self.__data2logitems[data]
 
@@ -310,7 +310,10 @@ class TimeSeriesView(QWidget):
         win = plot_item.data_window()
         min_x, min_y, max_x, max_y = win.left(), win.top(), win.right(), win.bottom()
 
-        # TODO configured min_y max_y here
+        if config and 'min' in config.get_dict() and config['min'] is not None:
+            min_y = float(config['min'])
+        if config and 'max' in config.get_dict() and config['max'] is not None:
+            max_y = float(config['max'])
 
         # legend
         legend_item.set_scale(min_y, max_y)

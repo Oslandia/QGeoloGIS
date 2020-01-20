@@ -100,7 +100,7 @@ class LayerConfig:
                  self.__log_plots if config_type == "log_measures" else
                  self.__timeseries if config_type == "timeseries" else None)
 
-        plots.append(plot_config)
+        plots.append(plot_config.get_dict())
 
         if config_type not in self.__config:
             self.__config[config_type] = []

@@ -153,7 +153,7 @@ class DataSelector(QDialog):
                     self.__viewer.add_data_column(data, title, uom,
                                                   station_name=feature_name)
                 if hasattr(self.__viewer, "add_data_row"):
-                    self.__viewer.add_data_row(data, title, uom, station_name=feature_name)
+                    self.__viewer.add_data_row(data, title, uom, station_name=feature_name, config=cfg)
             elif cfg["type"] == "image":
                 self.__viewer.add_imagery_from_db(cfg, feature_id)
 

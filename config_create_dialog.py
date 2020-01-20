@@ -63,7 +63,9 @@ class ConfigCreateDialog(QDialog):
                 "interval_column": self._interval_column.currentText(),
                 "values_column": self._value_continuous_column.currentText(),
                 "uom":  self._uom_continuous.text(),
-                "type": "continuous"
+                "type": "continuous",
+                "min": self._continuous_min.text() if self._continuous_min.isEnabled() else None,
+                "max": self._continuous_max.text() if self._continuous_max.isEnabled() else None
                 }
 
         # log measure instantaneous
@@ -73,7 +75,9 @@ class ConfigCreateDialog(QDialog):
                 "event_column": self._event_column.currentText(),
                 "value_column": self._value_instantaneous_column.currentText(),
                 "uom":  self._uom_instantaneous.text(),
-                "type": "instantaneous"
+                "type": "instantaneous",
+                "min": self._instantaneous_min.text() if self._instantaneous_min.isEnabled() else None,
+                "max": self._instantaneous_max.text() if self._instantaneous_max.isEnabled() else None
                 }
 
         config["source"] = self._source.itemData(self._source.currentIndex()).id()

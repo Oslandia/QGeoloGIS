@@ -71,7 +71,7 @@ def load_plots(feature, config, add_function, config_list):
             if data.get_x_min() is not None:
                 min_x.append(data.get_x_min())
                 max_x.append(data.get_x_max())
-                add_function(data, title, uom, station_name=feature_name)
+                add_function(data, title, uom, station_name=feature_name, config=cfg)
     if not min_x:
         return None, None
     else:
@@ -81,9 +81,9 @@ def load_plots(feature, config, add_function, config_list):
 class WellLogViewWrapper(WellLogView):
     def __init__(self, config, iface):
         WellLogView.__init__(self)
-        self.__config = config
         self.__iface = iface
         self.__features = []
+        self.__config = config
 
         image_dir = os.path.join(os.path.dirname(__file__), "qgeologis", "img")
         self.__action_add_configuration = QAction(QIcon(os.path.join(image_dir, "new_plot.svg")),
@@ -141,7 +141,7 @@ class WellLogViewWrapper(WellLogView):
 
     def on_add_column(self):
 
-        if not self.__features:
+        if not self.__features and self.__iface:
             self.__iface.messageBar().pushWarning(
                 "QGeoloGIS",
                 u"Impossible to add plot without selecting a feature")

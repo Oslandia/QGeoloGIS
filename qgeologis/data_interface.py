@@ -254,9 +254,9 @@ class FeatureData(DataInterface):
             else:
                 print("Unsupported data format: {}".format(raw_data.__class__))
 
-            x_values = np.linspace(x_start, x_start + x_delta * len(y_values), len(y_values)).tolist()
+            x_values = np.linspace(x_start, x_start + x_delta * (len(y_values) - 1), len(y_values)).tolist()
             
-            data_range = (x_start, x_start + x_delta * len(y_values))
+            data_range = (x_start, x_start + x_delta * (len(y_values) - 1))
             if current_data_range is None:
                 current_data_range = data_range
                 self.__x_values = x_values

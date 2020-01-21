@@ -195,6 +195,38 @@
          <item row="3" column="1">
           <widget class="QComboBox" name="_value_continuous_column"/>
          </item>
+         <item row="4" column="0" colspan="2">
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QCheckBox" name="_continuous_min_chk">
+             <property name="text">
+              <string>Min value</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="_continuous_min">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="_continuous_max_chk">
+             <property name="text">
+              <string>Max value</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="_continuous_max">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
         </layout>
        </item>
       </layout>
@@ -233,43 +265,43 @@
          <item row="0" column="1">
           <widget class="QLineEdit" name="_uom_instantaneous"/>
          </item>
+         <item row="3" column="0" colspan="2">
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QCheckBox" name="_instantaneous_min_chk">
+             <property name="text">
+              <string>Min value</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="_instantaneous_min">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="_instantaneous_max_chk">
+             <property name="text">
+              <string>Max value</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="_instantaneous_max">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
         </layout>
        </item>
       </layout>
      </widget>
     </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QCheckBox" name="minCheckBox">
-       <property name="text">
-        <string>Min value</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="minEdit">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="maxCheckBox">
-       <property name="text">
-        <string>Max value</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="maxEdit">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -318,9 +350,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>minCheckBox</sender>
+   <sender>_continuous_min_chk</sender>
    <signal>toggled(bool)</signal>
-   <receiver>minEdit</receiver>
+   <receiver>_continuous_min</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -334,9 +366,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>maxCheckBox</sender>
+   <sender>_continuous_max_chk</sender>
    <signal>toggled(bool)</signal>
-   <receiver>maxEdit</receiver>
+   <receiver>_continuous_max</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -346,6 +378,38 @@
     <hint type="destinationlabel">
      <x>524</x>
      <y>482</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>_instantaneous_min_chk</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>_instantaneous_min</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>61</x>
+     <y>265</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>213</x>
+     <y>266</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>_instantaneous_max_chk</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>_instantaneous_max</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>366</x>
+     <y>265</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>519</x>
+     <y>266</y>
     </hint>
    </hints>
   </connection>

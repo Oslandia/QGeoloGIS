@@ -106,15 +106,6 @@ class QGeoloGISPlugin:
         self.view_timeseries.triggered.connect(lambda: self.on_view_plots("timeseries"))
         self.iface.addToolBarIcon(self.view_timeseries)
 
-        # self.view_timeseries_action = QAction(u'View timeseries', self.iface.mainWindow())
-        # self.load_base_layer_action = QAction(u'Load base layer', self.iface.mainWindow())
-        # self.view_log_action.triggered.connect(lambda : self.on_view_graph(WellLogViewWrapper))
-        # self.view_timeseries_action.triggered.connect(lambda: self.on_view_graph(TimeSeriesWrapper))
-        # self.load_base_layer_action.triggered.connect(self.on_load_base_layer)
-        # self.iface.addToolBarIcon(self.view_log_action)
-        # self.iface.addToolBarIcon(self.view_timeseries_action)
-        # self.iface.addToolBarIcon(self.load_base_layer_action)
-
         self.import_config_action = QAction("Import configuration", self.iface.mainWindow())
         self.export_config_action = QAction("Export configuration to ...", self.iface.mainWindow())
         self.import_config_action.triggered.connect(self.on_import_config)
@@ -158,68 +149,15 @@ class QGeoloGISPlugin:
         
         self.iface.removeToolBarIcon(self.view_logs)
         self.iface.removeToolBarIcon(self.view_timeseries)
-        # self.iface.removeToolBarIcon(self.load_base_layer_action)
+
         self.view_logs.setParent(None)
         self.view_timeseries.setParent(None)
-        # self.view_timeseries_action.setParent(None)
-        # self.load_base_layer_action.setParent(None)
         
         self.iface.removePluginMenu(u"QGeoloGIS", self.import_config_action)
         self.iface.removePluginMenu(u"QGeoloGIS", self.export_config_action)
         self.import_config_action.setParent(None)
         self.export_config_action.setParent(None)
         
-
-    # def on_view_graph(self, graph_class):
-    #     if self.iface.activeLayer() is None:
-    #         self.iface.messageBar().pushMessage(u"Please select an active layer", QgsMessageBar.CRITICAL)
-    #         return
-
-    #     layerid = self.iface.activeLayer().id()
-    #     if layerid not in self.__layer_config:
-    #         self.iface.messageBar().pushMessage(u"Unconfigured layer", QgsMessageBar.CRITICAL)
-    #         return
-
-    #     config = self.__layer_config[layerid]
-    #     self.iface.messageBar().pushMessage(u"Please select a feature on the active layer")
-    #     self.__tool = FeatureSelectionTool(self.iface.mapCanvas(), self.iface.activeLayer())
-    #     self.iface.mapCanvas().setMapTool(self.__tool)
-
-    #     def on_feature_selected(features):
-    #         w = graph_class(config, features[0])
-    #         w.show()
-    #         self.__windows.append(w)
-    #     self.__tool.featureSelected.connect(on_feature_selected)
-
-    # def on_load_base_layer(self):
-    #     # look for base layers in the config
-    #     layer_config = get_layer_config()
-
-    #     dlg = QDialog()
-    #     vbox = QVBoxLayout()
-    #     list_widget = QListWidget()
-    #     button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
-    #     vbox.addWidget(list_widget)
-    #     vbox.addWidget(button_box)
-    #     dlg.setWindowTitle("Select a base layer to load")
-    #     dlg.setLayout(vbox)
-
-    #     # populate the list widget
-    #     for (uri, provider), cfg in layer_config.items():
-    #         layer_name = cfg.get("layer_name", "Unnamed layer ({}, {})".format(uri, provider))
-    #         list_item = QListWidgetItem()
-    #         list_item.setText(layer_name)
-    #         list_item.setData(Qt.UserRole, (uri, provider))
-    #         list_widget.addItem(list_item)
-
-    #     button_box.rejected.connect(dlg.reject)
-    #     button_box.accepted.connect(dlg.accept)
-
-    #     if dlg.exec_():
-    #         item = list_widget.currentItem()
-    #         if item:
-    #             uri, provider = item.data(Qt.UserRole)
-    #             self.iface.addVectorLayer(uri, item.text(), provider)
 
     def on_import_config(self):
         s = QSettings("Oslandia", "QGeoloGIS")

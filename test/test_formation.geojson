@@ -1,0 +1,21 @@
+{
+"type": "FeatureCollection",
+"name": "test_formation",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::32632" } },
+"features": [
+{ "type": "Feature", "properties": { "id": "141660", "hole_id": "TMRI_0086_1", "from_": 0.0, "to_": 31.3, "code": 230, "comments": "Formation_G" }, "geometry": { "type": "Point", "coordinates": [ 31739308.5799999982, 33490944.88, 18.52 ] } },
+{ "type": "Feature", "properties": { "id": "141661", "hole_id": "TMRI_0086_1", "from_": 31.3, "to_": 34.87, "code": 300, "comments": "Formation_F" }, "geometry": { "type": "Point", "coordinates": [ 31739308.5799999982, 33490944.88, 18.52 ] } },
+{ "type": "Feature", "properties": { "id": "141662", "hole_id": "TMRI_0086_1", "from_": 34.87, "to_": 42.3, "code": 340, "comments": "Formation_E" }, "geometry": { "type": "Point", "coordinates": [ 31739308.5799999982, 33490944.88, 18.52 ] } },
+{ "type": "Feature", "properties": { "id": "141663", "hole_id": "TMRI_0086_1", "from_": 42.3, "to_": 62.32, "code": 330, "comments": "Formation_D" }, "geometry": { "type": "Point", "coordinates": [ 31739308.5799999982, 33490944.88, 18.52 ] } },
+{ "type": "Feature", "properties": { "id": "141664", "hole_id": "TMRI_0086_1", "from_": 62.32, "to_": 66.05, "code": 320, "comments": "Formation_C" }, "geometry": { "type": "Point", "coordinates": [ 31739308.5799999982, 33490944.88, 18.52 ] } },
+{ "type": "Feature", "properties": { "id": "141665", "hole_id": "TMRI_0086_1", "from_": 66.05, "to_": 72.15, "code": 310, "comments": "Formation_B" }, "geometry": { "type": "Point", "coordinates": [ 31739308.5799999982, 33490944.88, 18.52 ] } },
+{ "type": "Feature", "properties": { "id": "141666", "hole_id": "TMRI_0086_1", "from_": 72.15, "to_": 109.05, "code": 400, "comments": "Formation_A" }, "geometry": { "type": "Point", "coordinates": [ 31739308.5799999982, 33490944.88, 18.52 ] } },
+{ "type": "Feature", "properties": { "id": "142278", "hole_id": "TMRI_0767_1", "from_": 0.0, "to_": 29.85, "code": 230, "comments": "Formation_G" }, "geometry": { "type": "Point", "coordinates": [ 31739338.8299999982, 33490943.68, 18.45 ] } },
+{ "type": "Feature", "properties": { "id": "142279", "hole_id": "TMRI_0767_1", "from_": 29.85, "to_": 35.37, "code": 300, "comments": "Formation_F" }, "geometry": { "type": "Point", "coordinates": [ 31739338.8299999982, 33490943.68, 18.45 ] } },
+{ "type": "Feature", "properties": { "id": "142280", "hole_id": "TMRI_0767_1", "from_": 35.37, "to_": 41.93, "code": 340, "comments": "Formation_E" }, "geometry": { "type": "Point", "coordinates": [ 31739338.8299999982, 33490943.68, 18.45 ] } },
+{ "type": "Feature", "properties": { "id": "142281", "hole_id": "TMRI_0767_1", "from_": 41.93, "to_": 62.93, "code": 330, "comments": "Formation_D" }, "geometry": { "type": "Point", "coordinates": [ 31739338.8299999982, 33490943.68, 18.45 ] } },
+{ "type": "Feature", "properties": { "id": "142282", "hole_id": "TMRI_0767_1", "from_": 62.93, "to_": 66.6, "code": 320, "comments": "Formation_C" }, "geometry": { "type": "Point", "coordinates": [ 31739338.8299999982, 33490943.68, 18.45 ] } },
+{ "type": "Feature", "properties": { "id": "142283", "hole_id": "TMRI_0767_1", "from_": 66.6, "to_": 72.7, "code": 310, "comments": "Formation_B" }, "geometry": { "type": "Point", "coordinates": [ 31739338.8299999982, 33490943.68, 18.45 ] } },
+{ "type": "Feature", "properties": { "id": "142284", "hole_id": "TMRI_0767_1", "from_": 72.7, "to_": 77.05, "code": 400, "comments": "Formation_A" }, "geometry": { "type": "Point", "coordinates": [ 31739338.8299999982, 33490943.68, 18.45 ] } }
+]
+}

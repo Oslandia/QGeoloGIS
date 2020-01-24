@@ -1,0 +1,10 @@
+{
+"type": "FeatureCollection",
+"name": "tes_mienralization",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::32632" } },
+"features": [
+{ "type": "Feature", "properties": { "id": "278131", "hole_id": "TMRI_0086_1", "from_": 52.5, "to_": 55.3, "level_": 1000.0, "oc": 2.8, "accu": 90852.6, "grade": 32447.4, "comments": null }, "geometry": { "type": "Point", "coordinates": [ 31739308.5799999982, 33490944.88, 18.52 ] } },
+{ "type": "Feature", "properties": { "id": "278214", "hole_id": "TMRI_0767_1", "from_": 56.3, "to_": 58.1, "level_": 1000.0, "oc": 1.8, "accu": 29884.8, "grade": 16602.7, "comments": null }, "geometry": { "type": "Point", "coordinates": [ 31739338.8299999982, 33490943.68, 18.45 ] } },
+{ "type": "Feature", "properties": { "id": "278215", "hole_id": "TMRI_0767_1", "from_": 51.4, "to_": 54.4, "level_": 1000.0, "oc": 3.0, "accu": 101897.0, "grade": 33965.5, "comments": null }, "geometry": { "type": "Point", "coordinates": [ 31739338.8299999982, 33490943.68, 18.45 ] } }
+]
+}

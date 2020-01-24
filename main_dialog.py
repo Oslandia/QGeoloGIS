@@ -79,7 +79,7 @@ def load_plots(feature, config, add_function, config_list):
 
 
 class WellLogViewWrapper(WellLogView):
-    def __init__(self, config, iface):
+    def __init__(self, config, iface=None):
         WellLogView.__init__(self)
         self.__iface = iface
         self.__features = []
@@ -218,7 +218,7 @@ class TimeSeriesWrapper(TimeSeriesView):
 
 class MainDialog(QWidget):
 
-    def __init__(self, parent, plot_type, config, layer, iface):
+    def __init__(self, parent, plot_type, config, layer, iface=None):
         """Create a plot dialog that updates when a layer selection updates.
 
         Parameters

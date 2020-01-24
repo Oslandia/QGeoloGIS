@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"name": "test_collar",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::32632" } },
+"features": [
+{ "type": "Feature", "properties": { "id": "TMRI_0086_1", "date_": "29\/09\/2010", "comments": "RAS", "depth_": 109.05 }, "geometry": { "type": "Point", "coordinates": [ 31739308.5799999982, 33490944.88, 18.52 ] } },
+{ "type": "Feature", "properties": { "id": "TMRI_0767_1", "date_": "04\/02\/2014", "comments": "RAS", "depth_": 77.05 }, "geometry": { "type": "Point", "coordinates": [ 31739338.8299999982, 33490943.68, 18.45 ] } }
+]
+}

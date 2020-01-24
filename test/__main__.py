@@ -3,7 +3,7 @@ if __name__ == '__main__':
     from qgis.core import *
     import sys
     import os
-    from .main_dialog import MainDialog
+    from ..main_dialog import MainDialog
 
 
     QgsApplication.setPrefixPath("/usr/local", True)

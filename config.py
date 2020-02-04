@@ -207,3 +207,26 @@ def import_config(filename, overwrite_existing=False):
 
     return json.dumps(new_config)
 
+def remove_layer_from_config(config, layer_id):
+    """Remove a layer reference from a configuration object
+
+    Parameters
+    ----------
+    config: dict
+      The main plot configuration. It is modified in place.
+    layer_id: str
+      The layer whom references are to remove from the config
+    """
+    for root_layer_id, sub_config in config.items():
+        if layer_id == root_layer_id:
+            # remove the dictionary entry
+            del config
+            return
+        for subkey in ("stratigraphy_config", "log_measures", "timeseries"):
+            to_del = []
+            for idx, layer_cfg in enumerate(sub_config[subkey]):
+                sub_layer_id = layer_cfg["source"]
+                if layer_id == sub_layer_id:
+                    to_del.append(idx)
+            for idx in to_del:
+                sub_config[subkey].pop(idx)

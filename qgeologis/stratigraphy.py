@@ -98,7 +98,7 @@ class StratigraphyItem(LogItem):
         self.__renderer.startRender(context, fields)
 
         for i, d in enumerate(self.__data):
-            depth_from, depth_to, formation_code, rock_code, _, _ = d
+            depth_from, depth_to, formation_code, rock_code = float(d[0]), float(d[1]), str(d[2]), str(d[3])
 
             if abs((self.__max_z - self.__min_z) * self.__height) > 0:
                 y1 = (depth_from - self.__min_z) / (self.__max_z - self.__min_z) * self.__height

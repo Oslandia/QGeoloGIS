@@ -18,9 +18,9 @@
 import json
 import os
 
-from qgis.PyQt.QtCore import Qt, pyqtSignal
+from qgis.PyQt.QtCore import Qt, pyqtSignal, QSettings
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction, QWidget, QDockWidget
+from qgis.PyQt.QtWidgets import QAction, QDockWidget, QFileDialog, QCheckBox, QDialog, QVBoxLayout
 
 from qgis.core import (QgsPoint, QgsCoordinateTransform, QgsRectangle,
                        QgsGeometry, QgsFeatureRequest, QgsProject)
@@ -28,7 +28,7 @@ from qgis.gui import QgsMapTool
 
 from .configure_plot_dialog import ConfigurePlotDialog
 from .main_dialog import MainDialog
-
+from .config import import_config, export_config
 
 class FeatureSelectionTool(QgsMapTool):
     pointClicked = pyqtSignal(QgsPoint)
@@ -106,18 +106,12 @@ class QGeoloGISPlugin:
         self.view_timeseries.triggered.connect(lambda: self.on_view_plots("timeseries"))
         self.iface.addToolBarIcon(self.view_timeseries)
 
-        # self.view_timeseries_action = QAction(u'View timeseries', self.iface.mainWindow())
-        # self.load_base_layer_action = QAction(u'Load base layer', self.iface.mainWindow())
-        # self.view_log_action.triggered.connect(lambda : self.on_view_graph(WellLogViewWrapper))
-        # self.view_timeseries_action.triggered.connect(lambda: self.on_view_graph(TimeSeriesWrapper))
-        # self.load_base_layer_action.triggered.connect(self.on_load_base_layer)
-        # self.iface.addToolBarIcon(self.view_log_action)
-        # self.iface.addToolBarIcon(self.view_timeseries_action)
-        # self.iface.addToolBarIcon(self.load_base_layer_action)
-
-        # self.load_config_action = QAction("Load configuration file", self.iface.mainWindow())
-        # self.load_config_action.triggered.connect(self.on_load_config)
-        # self.iface.addPluginToMenu(u"QGeoloGIS", self.load_config_action)
+        self.import_config_action = QAction("Import configuration", self.iface.mainWindow())
+        self.export_config_action = QAction("Export configuration to ...", self.iface.mainWindow())
+        self.import_config_action.triggered.connect(self.on_import_config)
+        self.export_config_action.triggered.connect(self.on_export_config)
+        self.iface.addPluginToMenu(u"QGeoloGIS", self.import_config_action)
+        self.iface.addPluginToMenu(u"QGeoloGIS", self.export_config_action)
 
     def on_view_plots(self, plot_type):
 
@@ -155,77 +149,64 @@ class QGeoloGISPlugin:
         
         self.iface.removeToolBarIcon(self.view_logs)
         self.iface.removeToolBarIcon(self.view_timeseries)
-        # self.iface.removeToolBarIcon(self.load_base_layer_action)
+
         self.view_logs.setParent(None)
         self.view_timeseries.setParent(None)
-        # self.view_timeseries_action.setParent(None)
-        # self.load_base_layer_action.setParent(None)
         
-        # self.iface.removePluginMenu(u"QGeoloGIS", self.load_config_action)
-        # self.load_config_action.setParent(None)
+        self.iface.removePluginMenu(u"QGeoloGIS", self.import_config_action)
+        self.iface.removePluginMenu(u"QGeoloGIS", self.export_config_action)
+        self.import_config_action.setParent(None)
+        self.export_config_action.setParent(None)
         
 
-    # def on_view_graph(self, graph_class):
-    #     if self.iface.activeLayer() is None:
-    #         self.iface.messageBar().pushMessage(u"Please select an active layer", QgsMessageBar.CRITICAL)
-    #         return
+    def on_import_config(self):
+        s = QSettings("Oslandia", "QGeoloGIS")
+        last_dir = s.value("config_last_dir", None)
+        if not last_dir:
+            last_dir = os.path.dirname(__file__)
 
-    #     layerid = self.iface.activeLayer().id()
-    #     if layerid not in self.__layer_config:
-    #         self.iface.messageBar().pushMessage(u"Unconfigured layer", QgsMessageBar.CRITICAL)
-    #         return
+        dlg = QDialog(None)
+        file_dialog = QFileDialog(None,
+                                  "Choose a configuration file to import",
+                                  last_dir,
+                                  "JSON files (*.json)",
+                                  options=QFileDialog.DontUseNativeDialog # transform into an embeddable QWidget
+        )
+        # when file dialog is done, close the main dialog
+        file_dialog.finished.connect(dlg.done)
+        overwrite_checkbox = QCheckBox("Overwrite existing layers")
+        overwrite_checkbox.setChecked(True)
+        vbox = QVBoxLayout()
+        vbox.addWidget(file_dialog)
+        vbox.addWidget(overwrite_checkbox)
+        dlg.setLayout(vbox)
 
-    #     config = self.__layer_config[layerid]
-    #     self.iface.messageBar().pushMessage(u"Please select a feature on the active layer")
-    #     self.__tool = FeatureSelectionTool(self.iface.mapCanvas(), self.iface.activeLayer())
-    #     self.iface.mapCanvas().setMapTool(self.__tool)
+        r = dlg.exec_()
+        print(r)
+        if r == QDialog.Accepted:
+            filename = file_dialog.selectedFiles()[0]
+            print("Accepted", filename)
+            s.setValue("config_last_dir", os.path.dirname(filename))
+            json_config = import_config(filename, overwrite_existing=overwrite_checkbox.isChecked())
+            print(json_config)
+            QgsProject.instance().writeEntry("QGeoloGIS", "config", json_config)
+            self.__config = json_config
 
-    #     def on_feature_selected(features):
-    #         w = graph_class(config, features[0])
-    #         w.show()
-    #         self.__windows.append(w)
-    #     self.__tool.featureSelected.connect(on_feature_selected)
+    def on_export_config(self):
+        s = QSettings("Oslandia", "QGeoloGIS")
+        last_dir = s.value("config_last_dir", None)
+        if not last_dir:
+            last_dir = os.path.dirname(__file__)
 
-    # def on_load_base_layer(self):
-    #     # look for base layers in the config
-    #     layer_config = get_layer_config()
-
-    #     dlg = QDialog()
-    #     vbox = QVBoxLayout()
-    #     list_widget = QListWidget()
-    #     button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
-    #     vbox.addWidget(list_widget)
-    #     vbox.addWidget(button_box)
-    #     dlg.setWindowTitle("Select a base layer to load")
-    #     dlg.setLayout(vbox)
-
-    #     # populate the list widget
-    #     for (uri, provider), cfg in layer_config.items():
-    #         layer_name = cfg.get("layer_name", "Unnamed layer ({}, {})".format(uri, provider))
-    #         list_item = QListWidgetItem()
-    #         list_item.setText(layer_name)
-    #         list_item.setData(Qt.UserRole, (uri, provider))
-    #         list_widget.addItem(list_item)
-
-    #     button_box.rejected.connect(dlg.reject)
-    #     button_box.accepted.connect(dlg.accept)
-
-    #     if dlg.exec_():
-    #         item = list_widget.currentItem()
-    #         if item:
-    #             uri, provider = item.data(Qt.UserRole)
-    #             self.iface.addVectorLayer(uri, item.text(), provider)
-
-    # def on_load_config(self):
-    #     import os
-    #     file_name = QFileDialog.getOpenFileName(None, "Choose a configuration file to load", os.path.dirname(__file__))
-    #     if isinstance(file_name, tuple): #Qt5
-    #         file_name = file_name[0]
-
-    #     if file_name:
-    #         s = QSettings("Oslandia", "qgeologis")
-    #         s.setValue("config_file", file_name)
-    #         get_layer_config()
+        filename, _ = QFileDialog.getSaveFileName(None,
+                                                  "Export the configuration to ...",
+                                                  last_dir,
+                                                  "JSON files (*.json)")
+        if filename:
+            s.setValue("config_last_dir", os.path.dirname(filename))
+            raw_config, _ = QgsProject.instance().readEntry("QGeoloGIS", "config", "{}")
+            json_config = json.loads(raw_config)
+            export_config(json_config, filename)
 
 
     def update_layer_config(self):

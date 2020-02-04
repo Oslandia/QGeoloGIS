@@ -18,7 +18,7 @@
 
 import os
 import json
-from qgis.core import QgsProject
+from qgis.core import QgsProject, QgsVectorLayer
 
 
 class PlotConfig:
@@ -111,3 +111,99 @@ class LayerConfig:
     def config_modified(self):
         json_config = json.dumps(self.__global_config)
         QgsProject.instance().writeEntry("QGeoloGIS", "config", json_config)
+
+def export_config(config_json, filename):
+    """Exports the given project configuration to a filename.
+    Layer IDs stored in the configuration are converted into triple (source, url, provider)
+
+    Filters on layers or virtual fields  will then be lost during the translation
+
+    Parameters
+    ----------
+    config_json: dict
+      The configuration as a JSON object converted to a dict
+    filename: str
+      Name of the file where to export the configuration to
+    """
+
+    new_dict = {}
+
+    # root layers at the beginning of the dict
+    for root_layer_id, config in config_json.items():
+        root_layer = QgsProject.instance().mapLayer(root_layer_id)
+        if not root_layer:
+            continue
+
+        # replace "source" keys
+        for subkey in ("stratigraphy_config", "log_measures", "timeseries"):
+            for layer_cfg in config[subkey]:
+                source_id = layer_cfg["source"]
+                source = QgsProject.instance().mapLayer(source_id)
+                if not source:
+                    continue
+
+                layer_cfg["source"] = {
+                    "source": source.source(),
+                    "name": source.name(),
+                    "provider": source.providerType()
+                }
+
+        root_key = "{}#{}#{}".format(root_layer.source(), root_layer.name(), root_layer.providerType())
+        new_dict[root_key] = dict(config)
+
+    # write to the output file
+    with open(filename, "w", encoding="utf-8") as fo:
+        json.dump(new_dict, fo, ensure_ascii=False, indent=4)
+
+
+def import_config(filename, overwrite_existing=False):
+    """Import the configuration from a given filename
+    
+    Layers are created and added to the current project.
+
+    Parameters
+    ----------
+    filename: str
+      Name of the file where to import the configuration from
+    overwrite_existing: bool
+      Whether to try to overwrite existing layers that have
+      the same data source definition
+    """
+    with open(filename, "r", encoding="utf-8") as fi:
+        config_json = json.load(fi)
+
+    new_config = {}
+
+    def find_existing_layer_or_create(source, name, provider, do_overwrite):
+        if do_overwrite:
+            for layer_id, layer in QgsProject.instance().mapLayers().items():
+                if layer.source() == source and layer.providerType() == provider:
+                    layer.setName(name)
+                    return layer
+        # layer not found, create it then !
+        layer = QgsVectorLayer(source, name, provider)
+        QgsProject.instance().addMapLayer(layer)
+        return layer
+
+    # root layers at the beginning of the dict
+    for root_layer_source, config in config_json.items():
+        root_layer_source, root_layer_name, root_layer_provider = root_layer_source.split('#')
+        root_layer = find_existing_layer_or_create(root_layer_source,
+                                                   root_layer_name,
+                                                   root_layer_provider,
+                                                   overwrite_existing)
+
+        for subkey in ("stratigraphy_config", "log_measures", "timeseries"):
+            for layer_cfg in config[subkey]:
+                source = layer_cfg["source"]
+                layer = find_existing_layer_or_create(source["source"],
+                                                      source["name"],
+                                                      source["provider"],
+                                                      overwrite_existing)
+                layer_cfg["source"] = layer.id()
+
+        # change the main dict key
+        new_config[root_layer.id()] = dict(config)
+
+    return json.dumps(new_config)
+

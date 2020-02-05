@@ -16,12 +16,14 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from qgis.PyQt.QtCore import QSizeF, QRectF
+from qgis.PyQt.QtCore import QSizeF, QRectF, pyqtSignal
 from qgis.PyQt.QtWidgets import QComboBox, QDialog, QVBoxLayout, QDialogButtonBox
 from qgis.PyQt.QtWidgets import QStackedWidget
 
-from qgis.core import QgsGeometry, QgsFields, QgsFeature, QgsRectangle
-from qgis.core import QgsFeatureRenderer
+from qgis.core import (
+    QgsGeometry, QgsFields, QgsFeature, QgsRectangle,
+    QgsFeatureRenderer, QgsReadWriteContext
+)
 
 from .common import POINT_RENDERER, LINE_RENDERER, POLYGON_RENDERER, qgis_render_context
 from .common import ORIENTATION_UPWARD, ORIENTATION_DOWNWARD, ORIENTATION_LEFT_TO_RIGHT, LogItem
@@ -36,6 +38,9 @@ from datetime import datetime
 
 class PlotItem(LogItem):
 
+    # emitted when the style is updated
+    style_updated = pyqtSignal()
+
     def __init__(self,
                  size=QSizeF(400, 200),
                  render_type=POINT_RENDERER,
@@ -43,7 +48,26 @@ class PlotItem(LogItem):
                  y_orientation=ORIENTATION_UPWARD,
                  allow_mouse_translation=False,
                  allow_wheel_zoom=False,
+                 symbology=None,
                  parent=None):
+
+        """
+        Parameters
+        ----------
+        size: QSize
+          Size of the item
+        render_type: Literal[POINT_RENDERER, LINE_RENDERER, POLYGON_RENDERER]
+          Type of renderer
+        x_orientation: Literal[ORIENTATION_LEFT_TO_RIGHT, ORIENTATION_RIGHT_TO_LEFT]
+        y_orientation: Literal[ORIENTATION_UPWARD, ORIENTATION_DOWNWARD]
+        allow_mouse_translation: bool
+          Allow the user to translate the item with the mouse (??)
+        allow_wheel_zoom: bool
+          Allow the user to zoom with the mouse wheel
+        symbology: QDomDocument
+          QGIS symbology to use for the renderer
+        parent: QObject
+        """
         LogItem.__init__(self, parent)
 
         self.__item_size = size
@@ -56,23 +80,27 @@ class PlotItem(LogItem):
         # origin point of the graph translation, if any
         self.__translation_orig = None
 
-        self.__render_type = render_type
+        self.__render_type = render_type # type: Literal[POINT_RENDERER, LINE_RENDERER, POLYGON_RENDERER]
 
         self.__allow_mouse_translation = allow_mouse_translation
         self.__allow_wheel_zoom = allow_wheel_zoom
 
         self.__layer = None
 
-        self.__renderers = [QgsFeatureRenderer.defaultRenderer(POINT_RENDERER),
+        self.__default_renderers = [QgsFeatureRenderer.defaultRenderer(POINT_RENDERER),
                             QgsFeatureRenderer.defaultRenderer(LINE_RENDERER),
                             QgsFeatureRenderer.defaultRenderer(POLYGON_RENDERER)]
-        symbol = self.__renderers[1].symbol()
+        symbol = self.__default_renderers[1].symbol()
         symbol.setWidth(1.0)
-        symbol = self.__renderers[0].symbol()
+        symbol = self.__default_renderers[0].symbol()
         symbol.setSize(5.0)
-        symbol = self.__renderers[2].symbol()
+        symbol = self.__default_renderers[2].symbol()
         symbol.symbolLayers()[0].setStrokeWidth(1.0)
-        self.__renderer = self.__renderers[self.__render_type]
+
+        if not symbology:
+            self.__renderer = self.__default_renderers[self.__render_type]
+        else:
+            self.__renderer = QgsFeatureRenderer.load(symbology.documentElement(), QgsReadWriteContext())
 
         # index of the current point to label
         self.__old_point_to_label = None
@@ -157,16 +185,6 @@ class PlotItem(LogItem):
 
     def renderer(self):
         return self.__renderer
-
-    def set_renderer(self, renderer):
-        self.__renderer = renderer
-
-    def render_type(self):
-        return self.__render_type
-
-    def set_render_type(self, type):
-        self.__render_type = type
-        self.__renderer = self.__renderers[self.__render_type]
 
     def paint(self, painter, option, widget):
         self.draw_background(painter)
@@ -364,7 +382,10 @@ class PlotItem(LogItem):
         sw = QStackedWidget()
         sw.addWidget
         for i in range(3):
-            w = QgsSingleSymbolRendererWidget(self.__layer, style, self.__renderers[i])
+            if self.__renderer and i == self.__render_type:
+                w = QgsSingleSymbolRendererWidget(self.__layer, style, self.__renderer)
+            else:
+                w = QgsSingleSymbolRendererWidget(self.__layer, style, self.__default_renderers[i])
             sw.addWidget(w)
 
         combo = QComboBox()
@@ -391,7 +412,20 @@ class PlotItem(LogItem):
         dlg.resize(800, 600)
 
         r = dlg.exec_()
+
         if r == QDialog.Accepted:
-            self.set_render_type(combo.currentIndex())
-            self.set_renderer(sw.currentWidget().renderer().clone())
+            self.__render_type = combo.currentIndex()
+            self.__renderer = sw.currentWidget().renderer().clone()
             self.update()
+            print("emit style updated")
+            self.style_updated.emit()
+
+    def qgis_style(self):
+        """Returns the current style, as a QDomDocument"""
+        from PyQt5.QtXml import QDomDocument
+        from qgis.core import QgsReadWriteContext
+
+        doc = QDomDocument()
+        elt = self.__renderer.save(doc, QgsReadWriteContext())
+        doc.appendChild(elt)
+        return (doc, self.__render_type)

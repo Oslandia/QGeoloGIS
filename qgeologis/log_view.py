@@ -16,7 +16,7 @@
 #   License along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
-from qgis.PyQt.QtCore import Qt, QSizeF, QRectF
+from qgis.PyQt.QtCore import Qt, QSizeF, QRectF, pyqtSignal
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import (QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel,
                                  QVBoxLayout)
@@ -119,6 +119,9 @@ class MyScene(QGraphicsScene):
 class WellLogView(QWidget):
 
     DEFAULT_COLUMN_WIDTH = 150
+
+    # Emitted when some styles have been updated
+    styles_updated = pyqtSignal()
 
     def __init__(self, title=None,image_dir=None, parent=None):
         QWidget.__init__(self, parent)
@@ -294,10 +297,25 @@ class WellLogView(QWidget):
             self.__status_bar.showMessage(txt)
 
     def add_data_column(self, data, title, uom, station_name = None, config = None):
+        """
+        Parameters
+        ----------
+        data: ??
+        title: str
+        uom: str
+          Unit of measure
+        station_name: str
+          Station name
+        config: PlotConfig
+        """
+        symbology, symbology_type = config.get_symbology()
+        
         plot_item = PlotItem(size=QSizeF(self.DEFAULT_COLUMN_WIDTH, self.__log_scene.height()),
-                             render_type = POLYGON_RENDERER,
+                             render_type = POLYGON_RENDERER if not symbology_type else symbology_type,
+                             symbology = symbology,
                              x_orientation = ORIENTATION_DOWNWARD,
                              y_orientation = ORIENTATION_LEFT_TO_RIGHT)
+        plot_item.style_updated.connect(self.styles_updated)
 
         plot_item.set_layer(data.get_layer())
         plot_item.tooltipRequested.connect(lambda txt: self.on_plot_tooltip(txt, station_name))
@@ -324,9 +342,9 @@ class WellLogView(QWidget):
         win = plot_item.data_window()
         min_x, min_y, max_x, max_y = win.left(), win.top(), win.right(), win.bottom()
 
-        if config and 'min' in config.get_dict() and config['min'] is not None:
+        if config and config.get('min') is not None:
             min_y = float(config['min'])
-        if config and 'max' in config.get_dict() and config['max'] is not None:
+        if config and config.get('max') is not None:
             max_y = float(config['max'])
 
         # legend
@@ -464,6 +482,13 @@ class WellLogView(QWidget):
     def on_add_column(self):
         # to be overridden by subclasses
         pass
+
+    def styles(self):
+        """Return the current style of each item"""
+        return dict([(item.layer().id(), item.qgis_style())
+                     for item, legend in self.__columns
+                     if hasattr(item, "qgis_style")])
+        
 
 # QGIS_PREFIX_PATH=~/src/qgis_2_18/build/output PYTHONPATH=~/src/qgis_2_18/build/output/python/ python test_canvas.py
 if __name__=='__main__':

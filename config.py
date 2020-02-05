@@ -19,12 +19,24 @@
 import os
 import json
 from qgis.core import QgsProject, QgsVectorLayer
-
+from PyQt5.QtXml import QDomDocument
 
 class PlotConfig:
+    """Holds the configuration of a plot (log or timeseries)
 
-    def __init__(self, config):
-        self.__config = dict(config)
+    It is for now a wrapper around a dictionary object."""
+
+    def __init__(self, config, parent=None):
+        """
+        Parameters
+        ----------
+        config: dict
+          Dictionary of the plot configuration
+        parent: LayerConfig
+          The LayerConfig in which this PlotConfig is stored
+        """
+        self.__parent = parent
+        self.__config = config
         self.__filter_value = None
         self.__filter_unique_values = []
 
@@ -32,6 +44,7 @@ class PlotConfig:
         return self.__config["source"]
 
     def get_uom(self):
+        """Gets the unit of measure"""
         if self.__config["type"] == "instantaneous":
             return (self.__config["uom"] if "uom" in self.__config
                     else "@" + self.__config["uom_column"])
@@ -63,19 +76,37 @@ class PlotConfig:
     def get_filter_unique_values(self):
         return self.__filter_unique_values
 
-    def get_dict(self):
+    def _get_dict(self):
         return self.__config
 
 
 class LayerConfig:
+    """Holds the configuration of a "root" layer (the layer where stations or collars are stored).
+    It contains PlotConfigs
+    """
 
     def __init__(self, config, layer_id):
-        self.__global_config = config
+        """
+        Parameters
+        ----------
+        config: dict
+          A dict {layer_id : dict of plot configuration} that will be updated if needed
+        layer_id: str
+          The main layer id
+        """
+
+        # The "main" or "parent" configuration
+        self.__parent_config = config
+
+        # Part of the main configuration, for a given layer id
         self.__config = config.get(layer_id)
 
-        self.__stratigraphy_plots = [p for p in self.__config.get("stratigraphy_config", [])]
-        self.__log_plots = [p for p in self.__config.get("log_measures", [])]
-        self.__timeseries = [p for p in self.__config.get("timeseries", [])]
+        self._wrap()
+
+    def _wrap(self):
+        self.__stratigraphy_plots = [PlotConfig(p, self) for p in self.__config.get("stratigraphy_config", [])]
+        self.__log_plots = [PlotConfig(p, self) for p in self.__config.get("log_measures", [])]
+        self.__timeseries = [PlotConfig(p, self) for p in self.__config.get("timeseries", [])]
 
     def get(self, key, default=None):
         return self.__config.get(key, default)
@@ -96,20 +127,21 @@ class LayerConfig:
         return self.__stratigraphy_plots + self.__log_plots
 
     def add_plot_config(self, config_type, plot_config):
-        plots = (self.__stratigraphy_plots if config_type == "stratigraphy_config" else
-                 self.__log_plots if config_type == "log_measures" else
-                 self.__timeseries if config_type == "timeseries" else None)
-
-        plots.append(plot_config.get_dict())
-
+        """
+        Parameters
+        ----------
+        config_type: Literal["stratigraphy_config", "log_measures", "timeseries"]
+        plot_config: PlotConfig
+        """
         if config_type not in self.__config:
             self.__config[config_type] = []
 
-        self.__config[config_type].append(plot_config.get_dict())
+        self.__config[config_type].append(plot_config._get_dict())
+        self._wrap()
         self.config_modified()
 
     def config_modified(self):
-        json_config = json.dumps(self.__global_config)
+        json_config = json.dumps(self.__parent_config)
         QgsProject.instance().writeEntry("QGeoloGIS", "config", json_config)
 
 def export_config(config_json, filename):

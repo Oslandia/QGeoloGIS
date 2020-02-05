@@ -31,7 +31,7 @@ from .common import LogItem, POLYGON_RENDERER, qgis_render_context
 
 
 class StratigraphyItem(LogItem):
-    def __init__(self, width, height, style_file=None, parent=None):
+    def __init__(self, width, height, style_file=None, has_rock_code=True, has_formation_code=True, parent=None):
         LogItem.__init__(self, parent)
 
         self.__width = width
@@ -41,6 +41,9 @@ class StratigraphyItem(LogItem):
 
         self.__data = None
         self.__layer = None
+
+        self.__has_rock_code = has_rock_code
+        self.__has_formation_code = has_formation_code
 
         # change current directory, so that relative paths to SVG get correctly resolved
         os.chdir(os.path.dirname(__file__))
@@ -86,8 +89,10 @@ class StratigraphyItem(LogItem):
         context = qgis_render_context(painter, self.__width, self.__height)
         context.setExtent(QgsRectangle(0, 0, self.__width, self.__height))
         fields = QgsFields()
-        fields.append(QgsField("formation_code", QVariant.String))
-        fields.append(QgsField("rock_code", QVariant.String))
+        if self.__has_formation_code:
+            fields.append(QgsField("formation_code", QVariant.String))
+        if self.__has_rock_code:
+            fields.append(QgsField("rock_code", QVariant.String))
 
         # need to set fields in context so they can be evaluated in expression.
         # if not QgsExpressionNodeColumnRef prepareNode methods will fail when
@@ -98,7 +103,8 @@ class StratigraphyItem(LogItem):
         self.__renderer.startRender(context, fields)
 
         for i, d in enumerate(self.__data):
-            depth_from, depth_to, formation_code, rock_code = float(d[0]), float(d[1]), str(d[2]), str(d[3])
+            depth_from, depth_to, = float(d["depth_from_column"]), float(d["depth_to_column"])
+            formation_code, rock_code = str(d["formation_code_column"]), str(d["rock_code_column"])
 
             if abs((self.__max_z - self.__min_z) * self.__height) > 0:
                 y1 = (depth_from - self.__min_z) / (self.__max_z - self.__min_z) * self.__height
@@ -110,21 +116,26 @@ class StratigraphyItem(LogItem):
                     painter.drawLine(0, y1, self.__width-1, y1)
                 painter.drawLine(0, y2, self.__width-1, y2)
 
-                # legend text
-                if formation_code:
-                    fm = painter.fontMetrics()
-                    w = fm.width(formation_code)
-                    x = (self.__width/2 - w) / 2 + self.__width/2
-                    y = (y1+y2)/2
-                    if y - fm.ascent() > y1 and y + fm.descent() < y2:
-                        painter.drawText(x, y, formation_code)
+                if self.__has_formation_code:
+                    # legend text
+                    if formation_code:
+                        fm = painter.fontMetrics()
+                        w = fm.width(formation_code)
+                        x = (self.__width/2 - w) / 2 + self.__width/2
+                        y = (y1+y2)/2
+                        if y - fm.ascent() > y1 and y + fm.descent() < y2:
+                            painter.drawText(x, y, formation_code)
 
-                geom = QgsGeometry.fromQPolygonF(QPolygonF(QRectF(0, self.__height-y1, self.__width/2, y1-y2)))
+                    geom = QgsGeometry.fromQPolygonF(QPolygonF(QRectF(0, self.__height-y1, self.__width/2, y1-y2)))
+                else:
+                    geom = QgsGeometry.fromQPolygonF(QPolygonF(QRectF(0, self.__height-y1, self.__width, y1-y2)))
 
                 feature = QgsFeature(fields, 1)
 
-                feature["formation_code"] = formation_code
-                feature["rock_code"] = rock_code
+                if self.__has_formation_code:
+                    feature["formation_code"] = formation_code
+                if self.__has_rock_code:
+                    feature["rock_code"] = rock_code
                 feature.setGeometry(geom)
 
                 self.__renderer.renderFeature(feature, context)
@@ -134,9 +145,10 @@ class StratigraphyItem(LogItem):
     def mouseMoveEvent(self, event):
         z = (event.scenePos().y() - self.pos().y()) / self.height() * (self.__max_z - self.__min_z) + self.__min_z
         for d in self.__data:
-            depth_from, depth_to, _, _, formation_description, rock_description = d
-            if z > depth_from and z < depth_to:
-                self.tooltipRequested.emit(u"Formation: {} Rock: {}".format(formation_description, rock_description))
+            if z > float(d["depth_from_column"]) and z < float(d["depth_to_column"]):
+                self.tooltipRequested.emit(u"Formation: {} Rock: {}"
+                                           .format(str(d["formation_description_column"]),
+                                                   str(d["rock_description_column"])))
                 break
 
     def edit_style(self):

@@ -37,8 +37,7 @@ def load_plots(feature, config, add_function, config_list):
 
     min_x = []
     max_x = []
-    for c in config_list:
-        cfg = PlotConfig(c)
+    for cfg in config_list:
 
         if cfg.get("feature_filter_type") == "unique_data_from_values":
             # don't load it now, we need to filter
@@ -113,8 +112,7 @@ class WellLogViewWrapper(WellLogView):
     def __load_feature(self, feature):
 
         # load stratigraphy
-        for c in self.__config.get_stratigraphy_plots():
-            cfg = PlotConfig(c)
+        for cfg in self.__config.get_stratigraphy_plots():
 
             layer = QgsProject.instance().mapLayers()[cfg.get_layerid()]
             f = "{}='{}'".format(cfg["feature_ref_column"],

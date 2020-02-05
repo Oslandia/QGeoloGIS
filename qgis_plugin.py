@@ -196,9 +196,8 @@ class QGeoloGISPlugin:
         if r == QDialog.Accepted:
             filename = file_dialog.selectedFiles()[0]
             s.setValue("config_last_dir", os.path.dirname(filename))
-            json_config = import_config(filename, overwrite_existing=overwrite_checkbox.isChecked())
-            QgsProject.instance().writeEntry("QGeoloGIS", "config", json_config)
-            self.__config = json_config
+            self.__config = import_config(filename, overwrite_existing=overwrite_checkbox.isChecked())
+            QgsProject.instance().writeEntry("QGeoloGIS", "config", json.dumps(self.__config))
 
     def on_export_config(self):
         s = QSettings("Oslandia", "QGeoloGIS")
@@ -212,8 +211,7 @@ class QGeoloGISPlugin:
                                                   "JSON files (*.json)")
         if filename:
             s.setValue("config_last_dir", os.path.dirname(filename))
-            json_config = json.loads(self.__config)
-            export_config(json_config, filename)
+            export_config(self.__config, filename)
 
 
     def update_layer_config(self):

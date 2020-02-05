@@ -19,7 +19,7 @@ import os
 
 from qgis.PyQt.QtWidgets import QDialog, QAction, QVBoxLayout, QWidget
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtCore import QSize
+from qgis.PyQt.QtCore import QSize, pyqtSignal
 from qgis.core import QgsProject, QgsFeatureRequest
 
 from .config_create_dialog import ConfigCreateDialog
@@ -247,6 +247,7 @@ class MainDialog(QWidget):
             self.__view = TimeSeriesWrapper(self.__config)
         else:
             raise RuntimeError("Invalid plot_type {}".format(plot_type))
+        self.__view.styles_updated.connect(self.on_styles_updated)
 
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
@@ -263,3 +264,13 @@ class MainDialog(QWidget):
             return
 
         self.__view.set_features(self.__layer.selectedFeatures())
+
+    def on_styles_updated(self):
+        styles = self.__view.styles()
+
+        for cfg in self.__config.get_log_plots():
+            for layer_id, (style, renderer_type) in styles.items():
+                if cfg.get("source") == layer_id:
+                    cfg.set_symbology(style, renderer_type)
+                    break
+

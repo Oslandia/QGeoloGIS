@@ -79,6 +79,41 @@ class PlotConfig:
     def _get_dict(self):
         return self.__config
 
+    def get_symbology(self):
+        """Returns the associated QGIS symbology
+
+        Return
+        ------
+        A tuple (QDomDocument, int)
+          The QDomDocument can be loaded by QgsFeatureRenderer.load()
+          The int gives the renderer type
+        or None, None
+        """
+        symbology = self.__config.get("symbology")
+        if symbology is None:
+            return None, None
+        doc = QDomDocument()
+        doc.setContent(symbology)
+        return (doc, self.__config.get("symbology_type"))
+
+    def set_symbology(self, symbology, symbology_type):
+        """Sets the associated QGIS symbology
+
+        Parameters
+        ----------
+        symbology: QDomDocument or None
+        symbology_type: Literal[0,1,2]
+          Type of renderer
+          0: points
+          1: lines
+          2: polygons
+        """
+        if symbology is not None:
+            self.__config["symbology"] = symbology.toString()
+            self.__config["symbology_type"] = symbology_type
+            if self.__parent:
+                self.__parent.config_modified()
+
 
 class LayerConfig:
     """Holds the configuration of a "root" layer (the layer where stations or collars are stored).
@@ -144,7 +179,7 @@ class LayerConfig:
         json_config = json.dumps(self.__parent_config)
         QgsProject.instance().writeEntry("QGeoloGIS", "config", json_config)
 
-def export_config(config_json, filename):
+def export_config(main_config, filename):
     """Exports the given project configuration to a filename.
     Layer IDs stored in the configuration are converted into triple (source, url, provider)
 
@@ -152,8 +187,8 @@ def export_config(config_json, filename):
 
     Parameters
     ----------
-    config_json: dict
-      The configuration as a JSON object converted to a dict
+    main_config: dict
+      The configuration as a dict
     filename: str
       Name of the file where to export the configuration to
     """
@@ -161,7 +196,7 @@ def export_config(config_json, filename):
     new_dict = {}
 
     # root layers at the beginning of the dict
-    for root_layer_id, config in config_json.items():
+    for root_layer_id, config in main_config.items():
         root_layer = QgsProject.instance().mapLayer(root_layer_id)
         if not root_layer:
             continue
@@ -200,6 +235,10 @@ def import_config(filename, overwrite_existing=False):
     overwrite_existing: bool
       Whether to try to overwrite existing layers that have
       the same data source definition
+
+    Returns
+    -------
+    The configuration as a dict
     """
     with open(filename, "r", encoding="utf-8") as fi:
         config_json = json.load(fi)
@@ -237,7 +276,7 @@ def import_config(filename, overwrite_existing=False):
         # change the main dict key
         new_config[root_layer.id()] = dict(config)
 
-    return json.dumps(new_config)
+    return new_config
 
 def remove_layer_from_config(config, layer_id):
     """Remove a layer reference from a configuration object
@@ -255,10 +294,9 @@ def remove_layer_from_config(config, layer_id):
             del config
             return
         for subkey in ("stratigraphy_config", "log_measures", "timeseries"):
-            to_del = []
-            for idx, layer_cfg in enumerate(sub_config[subkey]):
+            copy = []
+            for layer_cfg in sub_config[subkey]:
                 sub_layer_id = layer_cfg["source"]
-                if layer_id == sub_layer_id:
-                    to_del.append(idx)
-            for idx in to_del:
-                sub_config[subkey].pop(idx)
+                if layer_id != sub_layer_id:
+                    copy.append(layer_cfg)
+            sub_config[subkey] = copy

@@ -122,24 +122,21 @@ class LayerData(DataInterface):
         req = QgsFeatureRequest()
         if self.__filter_expression is not None:
             req.setFilterExpression(self.__filter_expression)
-        # TODO It should have been way more better to use addOrderBy on
-        # QgsFeatureRequest but it doesn't work well (with memory data for
-        # instance) in QGIS 2 To be changed in QGIS 3
-
-        # Sort data on x for correct display
-        xy_values = list(zip([f[self.__x_fieldname]
-                              for f in self.__layer.getFeatures(req)],
-                             [f[self.__y_fieldname] or self.__nodata_value
-                              for f in self.__layer.getFeatures(req)]))
 
         # Get unit of the first feature if needed
         if self.__uom is not None and self.__uom.startswith("@"):
+            req2 = QgsFeatureRequest(req)
+            req2.setLimit(1)
             for f in self.__layer.getFeatures(req):
                 self.__uom = f[self.__uom[1:]]
                 break
 
-        # sort on x
-        xy_values.sort(key=lambda coord: coord[0])
+        req.setSubsetOfAttributes([self.__x_fieldname, self.__y_fieldname], self.__layer.fields())
+        # Do not forget to add an index on this field to speed up ordering
+        req.addOrderBy(self.__x_fieldname)
+
+        xy_values = [(f[self.__x_fieldname], f[self.__y_fieldname] if f[self.__y_fieldname] is not None else self.__nodata_value)
+                     for f in self.__layer.getFeatures(req)]
 
         self.__x_values = [coord[0] for coord in xy_values]
         self.__y_values = [coord[1] for coord in xy_values]

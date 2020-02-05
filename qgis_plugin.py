@@ -28,7 +28,7 @@ from qgis.gui import QgsMapTool
 
 from .configure_plot_dialog import ConfigurePlotDialog
 from .main_dialog import MainDialog
-from .config import import_config, export_config
+from .config import import_config, export_config, remove_layer_from_config
 
 class FeatureSelectionTool(QgsMapTool):
     pointClicked = pyqtSignal(QgsPoint)
@@ -113,6 +113,14 @@ class QGeoloGISPlugin:
         self.iface.addPluginToMenu(u"QGeoloGIS", self.import_config_action)
         self.iface.addPluginToMenu(u"QGeoloGIS", self.export_config_action)
 
+        QgsProject.instance().layerWillBeRemoved.connect(self.on_layer_removed)
+
+    def on_layer_removed(self, layer_id):
+        # Check if the layer is not part of the config,
+        # in which case, it must be deleted from the config
+        remove_layer_from_config(self.__config, layer_id)
+        QgsProject.instance().writeEntry("QGeoloGIS", "config", json.dumps(self.__config))
+
     def on_view_plots(self, plot_type):
 
         layer = self.iface.activeLayer()
@@ -137,6 +145,8 @@ class QGeoloGISPlugin:
         self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.__dock)
 
     def unload(self):
+
+        QgsProject.instance().layerWillBeRemoved.disconnect(self.on_layer_removed)
 
         QgsProject.instance().readProject.disconnect(self.update_layer_config)
         QgsProject.instance().cleared.disconnect(self.update_layer_config)
@@ -185,10 +195,8 @@ class QGeoloGISPlugin:
         print(r)
         if r == QDialog.Accepted:
             filename = file_dialog.selectedFiles()[0]
-            print("Accepted", filename)
             s.setValue("config_last_dir", os.path.dirname(filename))
             json_config = import_config(filename, overwrite_existing=overwrite_checkbox.isChecked())
-            print(json_config)
             QgsProject.instance().writeEntry("QGeoloGIS", "config", json_config)
             self.__config = json_config
 
@@ -204,8 +212,7 @@ class QGeoloGISPlugin:
                                                   "JSON files (*.json)")
         if filename:
             s.setValue("config_last_dir", os.path.dirname(filename))
-            raw_config, _ = QgsProject.instance().readEntry("QGeoloGIS", "config", "{}")
-            json_config = json.loads(raw_config)
+            json_config = json.loads(self.__config)
             export_config(json_config, filename)
 
 

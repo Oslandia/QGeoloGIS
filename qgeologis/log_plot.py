@@ -417,7 +417,6 @@ class PlotItem(LogItem):
             self.__render_type = combo.currentIndex()
             self.__renderer = sw.currentWidget().renderer().clone()
             self.update()
-            print("emit style updated")
             self.style_updated.emit()
 
     def qgis_style(self):

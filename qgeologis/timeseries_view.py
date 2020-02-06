@@ -18,7 +18,7 @@
 
 import os
 
-from qgis.PyQt.QtCore import Qt, QRectF, QSizeF, QSize
+from qgis.PyQt.QtCore import Qt, QRectF, QSizeF, pyqtSignal
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import (QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel,
                                  QStatusBar, QVBoxLayout)
@@ -110,6 +110,9 @@ class MyScene(QGraphicsScene):
 class TimeSeriesView(QWidget):
 
     DEFAULT_ROW_HEIGHT = 150
+
+    # Emitted when some styles have been updated
+    styles_updated = pyqtSignal()
 
     def __init__(self, title=None, image_dir=None, parent=None):
         QWidget.__init__(self, parent)
@@ -268,10 +271,25 @@ class TimeSeriesView(QWidget):
             self.__status_bar.showMessage(txt)
 
     def add_data_row(self, data, title, uom, station_name = None, config=None):
+        """
+        Parameters
+        ----------
+        data: ??
+        title: str
+        uom: str
+          Unit of measure
+        station_name: str
+          Station name
+        config: PlotConfig
+        """
+        symbology, symbology_type = config.get_symbology()
+
         plot_item = PlotItem(size=QSizeF(self.__scene.width(), self.DEFAULT_ROW_HEIGHT),
-                             render_type = POINT_RENDERER,
+                             render_type = POINT_RENDERER if not symbology_type else symbology_type,
+                             symbology = symbology,
                              x_orientation = ORIENTATION_LEFT_TO_RIGHT,
                              y_orientation = ORIENTATION_UPWARD)
+        plot_item.style_updated.connect(self.styles_updated)
 
         plot_item.set_layer(data.get_layer())
         plot_item.tooltipRequested.connect(lambda txt:self.on_plot_tooltip(station_name, txt))

@@ -353,10 +353,14 @@ class WellLogView(QWidget):
 
         self.__log_scene.update()
 
-    def add_stratigraphy(self, layer, filter_expression, column_mapping, title, style_file):
+    def add_stratigraphy(self, layer, filter_expression, column_mapping, title, style_file=None, config=None):
+        symbology = config.get_symbology()[0] if config else None
         item = StratigraphyItem(self.DEFAULT_COLUMN_WIDTH,
                                 self.__log_scene.height(),
-                                style_file=style_file)
+                                style_file=style_file if not symbology else None,
+                                symbology=symbology)
+        item.style_updated.connect(self.styles_updated)
+
         legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH, title)
 
         item.set_layer(layer)

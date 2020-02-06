@@ -126,7 +126,9 @@ class WellLogViewWrapper(WellLogView):
                            cfg.get("formation_description_column"),
                            cfg.get("rock_description_column")),
                 cfg.get("name", self.tr("Stratigraphy")),
-                cfg.get_style_file())
+                cfg.get_style_file(),
+                config=cfg
+            )
 
         # load log measures
         load_plots(feature, self.__config, self.add_data_column,
@@ -268,7 +270,7 @@ class MainDialog(QWidget):
     def on_styles_updated(self):
         styles = self.__view.styles()
 
-        for cfg in self.__config.get_log_plots():
+        for cfg in (self.__config.get_vertical_plots() + self.__config.get_timeseries()):
             for layer_id, (style, renderer_type) in styles.items():
                 if cfg.get("source") == layer_id:
                     cfg.set_symbology(style, renderer_type)

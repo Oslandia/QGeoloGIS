@@ -33,13 +33,16 @@ class ConfigCreateDialog(QDialog):
         layer = self._source.itemData(index)
 
         for column_field in [self._feature_ref_column, self._depth_from_column,
-                             self._depth_to_column, self._formation_code_column,
-                             self._rock_code_column, self._formation_description_column,
-                             self._rock_description_column, self._start_measure_column,
+                             self._depth_to_column, self._start_measure_column,
                              self._interval_column, self._value_continuous_column,
                              self._event_column, self._value_instantaneous_column]:
             column_field.clear()
             column_field.addItems(layer.fields().names())
+
+        for column_field in [self._formation_code_column, self._rock_code_column,
+                             self._formation_description_column, self._rock_description_column]:
+            column_field.clear()
+            column_field.addItems([''] + layer.fields().names())
 
     def config(self):
 
@@ -49,10 +52,10 @@ class ConfigCreateDialog(QDialog):
             config = {
                 "depth_from_column": self._depth_from_column.currentText(),
                 "depth_to_column": self._depth_to_column.currentText(),
-                "formation_code_column": self._formation_code_column.currentText(),
-                "rock_code_column": self._rock_code_column.currentText(),
-                "formation_description_column": self._formation_description_column.currentText(),
-                "rock_description_column": self._rock_description_column.currentText(),
+                "formation_code_column": self._formation_code_column.currentText() or None,
+                "rock_code_column": self._rock_code_column.currentText() or None,
+                "formation_description_column": self._formation_description_column.currentText() or None,
+                "rock_description_column": self._rock_description_column.currentText() or None,
                 "style": "formation_style.xml"
                 }
 

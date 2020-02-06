@@ -354,13 +354,30 @@ class WellLogView(QWidget):
         self.__log_scene.update()
 
     def add_stratigraphy(self, layer, filter_expression, column_mapping, title, style_file=None, config=None):
+        """Add stratigraphy data
+
+        Parameters
+        ----------
+        layer: QgsVectorLayer
+          The layer where stratigraphic data are stored
+        filter_expression: str
+          A QGIS expression to filter the vector layer
+        column_mapping: dict
+          Dictionary of column names
+        title: str
+          Title of the graph
+        style_file: str
+          Name of the style file to use
+        config: PlotConfig
+        """
         symbology = config.get_symbology()[0] if config else None
         item = StratigraphyItem(self.DEFAULT_COLUMN_WIDTH,
                                 self.__log_scene.height(),
                                 style_file=style_file if not symbology else None,
-                                symbology=symbology)
-        item.style_updated.connect(self.styles_updated)
-
+                                symbology=symbology,
+                                has_rock_code=column_mapping["rock_code_column"] is not None,
+                                has_formation_code=column_mapping["formation_code_column"] is not None,
+        )
         legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH, title)
 
         item.set_layer(layer)
@@ -368,7 +385,7 @@ class WellLogView(QWidget):
 
         req = QgsFeatureRequest()
         req.setFilterExpression(filter_expression)
-        item.set_data([[f[c] if c is not None else None for c in column_mapping]
+        item.set_data([{k:f[c] if c is not None else None for k, c in column_mapping.items()}
                        for f in layer.getFeatures(req)])
 
         self._add_column(item, legend_item)

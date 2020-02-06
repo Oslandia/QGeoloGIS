@@ -192,6 +192,9 @@ def export_config(main_config, filename):
     filename: str
       Name of the file where to export the configuration to
     """
+    # copy the input config
+    from copy import deepcopy
+    main_config = deepcopy(main_config)
 
     new_dict = {}
 

@@ -18,7 +18,7 @@
 
 import os
 
-from qgis.PyQt.QtCore import QRectF, QVariant
+from qgis.PyQt.QtCore import QRectF, QVariant, pyqtSignal
 from qgis.PyQt.QtGui import QPen, QBrush, QPolygonF
 from qgis.PyQt.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QComboBox
 from qgis.PyQt.QtWidgets import QPushButton, QStackedWidget, QDialogButtonBox, QFileDialog
@@ -31,7 +31,10 @@ from .common import LogItem, POLYGON_RENDERER, qgis_render_context
 
 
 class StratigraphyItem(LogItem):
-    def __init__(self, width, height, style_file=None, has_rock_code=True, has_formation_code=True, parent=None):
+    # emitted when the style is updated
+    style_updated = pyqtSignal()
+
+    def __init__(self, width, height, style_file=None, has_rock_code=True, has_formation_code=True, symbology=None, parent=None):
         LogItem.__init__(self, parent)
 
         self.__width = width
@@ -52,6 +55,8 @@ class StratigraphyItem(LogItem):
             doc = QDomDocument()
             doc.setContent(open(style_file, "r").read())
             self.__renderer = QgsFeatureRenderer.load(doc.documentElement(), QgsReadWriteContext())
+        elif symbology:
+            self.__renderer = QgsFeatureRenderer.load(symbology.documentElement(), QgsReadWriteContext())
         else:
             self.__renderer = QgsFeatureRenderer.defaultRenderer(POLYGON_RENDERER)
 
@@ -156,6 +161,17 @@ class StratigraphyItem(LogItem):
         if dlg.exec_() == QDialog.Accepted:
             self.__renderer = dlg.renderer().clone()
             self.update()
+            self.style_updated.emit()
+
+    def qgis_style(self):
+        """Returns the current style, as a QDomDocument"""
+        from PyQt5.QtXml import QDomDocument
+        from qgis.core import QgsReadWriteContext
+
+        doc = QDomDocument()
+        elt = self.__renderer.save(doc, QgsReadWriteContext())
+        doc.appendChild(elt)
+        return (doc, 0)
 
 class StratigraphyStyleDialog(QDialog):
     def __init__(self, layer, renderer, parent=None):
@@ -230,7 +246,7 @@ class StratigraphyStyleDialog(QDialog):
         if fn:
             doc = QDomDocument()
             doc.setContent(open(fn, "r").read())
-            self.__renderer = QgsFeatureRenderer._load(doc.documentElement())
+            self.__renderer = QgsFeatureRenderer.load(doc.documentElement(), QgsReadWriteContext())
             for i, c in enumerate(self.__classes):
                 _, cls, wcls = c
                 if self.__renderer.__class__ == cls:

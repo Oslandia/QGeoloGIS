@@ -311,7 +311,7 @@ class WellLogView(QWidget):
         symbology, symbology_type = config.get_symbology()
         
         plot_item = PlotItem(size=QSizeF(self.DEFAULT_COLUMN_WIDTH, self.__log_scene.height()),
-                             render_type = POLYGON_RENDERER if not symbology_type else symbology_type,
+                             render_type = POLYGON_RENDERER if symbology_type is None else symbology_type,
                              symbology = symbology,
                              x_orientation = ORIENTATION_DOWNWARD,
                              y_orientation = ORIENTATION_LEFT_TO_RIGHT)

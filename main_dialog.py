@@ -121,14 +121,17 @@ class WellLogViewWrapper(WellLogView):
                                  feature[self.__config["id_column"]])
 
             self.add_stratigraphy(
-                layer, f, (cfg["depth_from_column"],
-                           cfg["depth_to_column"],
-                           cfg["formation_code_column"],
-                           cfg["rock_code_column"],
-                           cfg.get("formation_description_column"),
-                           cfg.get("rock_description_column")),
+                layer, f, {
+                    "depth_from_column": cfg["depth_from_column"],
+                    "depth_to_column": cfg["depth_to_column"],
+                    "formation_code_column": cfg["formation_code_column"],
+                    "rock_code_column": cfg["rock_code_column"],
+                    "formation_description_column": cfg.get("formation_description_column"),
+                    "rock_description_column": cfg.get("rock_description_column")
+                },
                 cfg.get("name", self.tr("Stratigraphy")),
-                cfg.get_style_file())
+                cfg.get_style_file()
+            )
 
         # load log measures
         load_plots(feature, self.__config, self.add_data_column,

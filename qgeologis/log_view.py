@@ -353,7 +353,7 @@ class WellLogView(QWidget):
 
         self.__log_scene.update()
 
-    def add_stratigraphy(self, layer, filter_expression, column_mapping, title, style_file):
+    def add_stratigraphy(self, layer, filter_expression, column_mapping, title, style_file=None, config=None):
         """Add stratigraphy data
 
         Parameters
@@ -368,13 +368,17 @@ class WellLogView(QWidget):
           Title of the graph
         style_file: str
           Name of the style file to use
+        config: PlotConfig
         """
+        symbology = config.get_symbology()[0] if config else None
         item = StratigraphyItem(self.DEFAULT_COLUMN_WIDTH,
                                 self.__log_scene.height(),
-                                style_file=style_file,
+                                style_file=style_file if not symbology else None,
+                                symbology=symbology
                                 has_rock_code=column_mapping["rock_code_column"] is not None,
                                 has_formation_code=column_mapping["formation_code_column"] is not None,
         )
+        item.style_updated.connect(self.styles_updated)
         legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH, title)
 
         item.set_layer(layer)

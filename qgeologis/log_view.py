@@ -374,7 +374,7 @@ class WellLogView(QWidget):
         item = StratigraphyItem(self.DEFAULT_COLUMN_WIDTH,
                                 self.__log_scene.height(),
                                 style_file=style_file if not symbology else None,
-                                symbology=symbology
+                                symbology=symbology,
                                 has_rock_code=column_mapping["rock_code_column"] is not None,
                                 has_formation_code=column_mapping["formation_code_column"] is not None,
         )

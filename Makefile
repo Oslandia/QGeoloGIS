@@ -16,34 +16,20 @@ SOURCES=__init__.py \
 	main_dialog.py \
 	qgis_plugin.py \
 	metadata.txt \
-	qgeologis/__init__.py \
-	qgeologis/data_interface.py \
-	qgeologis/imagery_data.py \
-	qgeologis/legend_item.py \
-	qgeologis/timeseries_view.py \
-	qgeologis/common.py \
-	qgeologis/time_scale.py \
-	qgeologis/log_plot.py \
-	qgeologis/log_view.py \
-	qgeologis/z_scale.py \
-	qgeologis/stratigraphy.py \
-	qgeologis/img/*.svg \
-	qgeologis/styles/*.svg \
-	qgeologis/styles/*.xml
+	qgeologis
 
 ZIP_FILE=$(PLUGIN_NAME)-$(VERSION).zip
 
-QGIS3_PATH=~/.local/share/QGIS/QGIS3/profiles/$(QGIS3_PROFILE)/python/plugins/$(PLUGIN_NAME)
+QGIS3_PATH=~/.local/share/QGIS/QGIS3/profiles/$(QGIS3_PROFILE)/python/plugins/
+PLUGIN_PATH=$(QGIS3_PATH)$(PLUGIN_NAME)
 
-.PHONY = zip
-zip: $(ZIP_FILE)
+zip: deploy
+	cd $(QGIS3_PATH) ; zip -9r $(CURDIR)/$(ZIP_FILE) $(PLUGIN_NAME)
 
-$(ZIP_FILE): $(SOURCES)
-	zip $(ZIP_FILE) $(SOURCES)
-
-deploy: $(ZIP_FILE)
-	mkdir -p $(QGIS3_PATH)
-	unzip -o $(ZIP_FILE) -d $(QGIS3_PATH)
+deploy: 
+	rm -rf $(PLUGIN_PATH)
+	mkdir -p $(PLUGIN_PATH)
+	cp -r $(SOURCES) $(PLUGIN_PATH)
 
 
 

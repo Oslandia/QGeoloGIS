@@ -34,7 +34,28 @@ class StratigraphyItem(LogItem):
     # emitted when the style is updated
     style_updated = pyqtSignal()
 
-    def __init__(self, width, height, style_file=None, has_rock_code=True, has_formation_code=True, symbology=None, parent=None):
+    def __init__(self, width, height, column_mapping=None, style_file=None, symbology=None, parent=None):
+        """
+        Parameters
+        ----------
+        width: int
+          Width in pixels
+        height: int
+          Height in pixels
+        column_mapping: dict
+          Layer column mapping with the following keys:
+          - rock_code_column : name of the column which holds the rock code
+          - formation_code_column : name of the column which holds the formation code
+          - rock_description_column
+          - formation_description_column
+        style_file: str
+          File name of the QGIS style file to load
+        symbology: QDomDocument
+          QGIS style, as XML document
+        parent: QObject:
+          Qt parent object
+        """
+
         LogItem.__init__(self, parent)
 
         self.__width = width
@@ -45,8 +66,7 @@ class StratigraphyItem(LogItem):
         self.__data = None
         self.__layer = None
 
-        self.__has_rock_code = has_rock_code
-        self.__has_formation_code = has_formation_code
+        self.__column_mapping = column_mapping if column_mapping is not None else {}
 
         # change current directory, so that relative paths to SVG get correctly resolved
         os.chdir(os.path.dirname(__file__))
@@ -79,12 +99,23 @@ class StratigraphyItem(LogItem):
         self.__height = height
 
     def set_data(self, data):
+        """
+        Parameters
+        ----------
+        data: List[QgsFeature]
+        """
         self.__data = data
 
     def layer(self):
         return self.__layer
     def set_layer(self, layer):
         self.__layer = layer
+
+    def __field_value(self, feature, field):
+        c = self.__column_mapping[field]
+        if c is not None:
+            return feature[c]
+        return None
 
     def paint(self, painter, option, widget):
         self.draw_background(painter)
@@ -93,11 +124,10 @@ class StratigraphyItem(LogItem):
 
         context = qgis_render_context(painter, self.__width, self.__height)
         context.setExtent(QgsRectangle(0, 0, self.__width, self.__height))
-        fields = QgsFields()
-        if self.__has_formation_code:
-            fields.append(QgsField("formation_code", QVariant.String))
-        if self.__has_rock_code:
-            fields.append(QgsField("rock_code", QVariant.String))
+        fields = self.__layer.fields()
+
+        has_formation_code = "formation_code_column" in self.__column_mapping \
+            and self.__column_mapping["formation_code_column"] is not None
 
         # need to set fields in context so they can be evaluated in expression.
         # if not QgsExpressionNodeColumnRef prepareNode methods will fail when
@@ -107,53 +137,57 @@ class StratigraphyItem(LogItem):
 
         self.__renderer.startRender(context, fields)
 
-        for i, d in enumerate(self.__data):
-            depth_from, depth_to, = float(d["depth_from_column"]), float(d["depth_to_column"])
-            formation_code, rock_code = str(d["formation_code_column"]), str(d["rock_code_column"])
+        try:
 
-            if abs((self.__max_z - self.__min_z) * self.__height) > 0:
-                y1 = (depth_from - self.__min_z) / (self.__max_z - self.__min_z) * self.__height
-                y2 = (depth_to - self.__min_z) / (self.__max_z - self.__min_z) * self.__height
+            for i, f in enumerate(self.__data):
+                depth_from = float(self.__field_value(f, "depth_from_column"))
+                depth_to = float(self.__field_value(f, "depth_to_column"))
 
-                painter.setPen(QPen())
-                painter.setBrush(QBrush())
-                if i == 0:
-                    painter.drawLine(0, y1, self.__width-1, y1)
-                painter.drawLine(0, y2, self.__width-1, y2)
+                if abs((self.__max_z - self.__min_z) * self.__height) > 0:
+                    y1 = (depth_from - self.__min_z) / (self.__max_z - self.__min_z) * self.__height
+                    y2 = (depth_to - self.__min_z) / (self.__max_z - self.__min_z) * self.__height
 
-                if self.__has_formation_code:
-                    # legend text
-                    if formation_code:
-                        fm = painter.fontMetrics()
-                        w = fm.width(formation_code)
-                        x = (self.__width/2 - w) / 2 + self.__width/2
-                        y = (y1+y2)/2
-                        if y - fm.ascent() > y1 and y + fm.descent() < y2:
-                            painter.drawText(x, y, formation_code)
+                    painter.setPen(QPen())
+                    painter.setBrush(QBrush())
+                    if i == 0:
+                        painter.drawLine(0, y1, self.__width-1, y1)
+                    painter.drawLine(0, y2, self.__width-1, y2)
 
-                    geom = QgsGeometry.fromQPolygonF(QPolygonF(QRectF(0, self.__height-y1, self.__width/2, y1-y2)))
-                else:
-                    geom = QgsGeometry.fromQPolygonF(QPolygonF(QRectF(0, self.__height-y1, self.__width, y1-y2)))
+                    if has_formation_code:
+                        # legend text
+                        formation_code = str(self.__field_value(f, "formation_code_column"))
+                        if formation_code:
+                            fm = painter.fontMetrics()
+                            w = fm.width(formation_code)
+                            x = (self.__width/2 - w) / 2 + self.__width/2
+                            y = (y1+y2)/2
+                            if y - fm.ascent() > y1 and y + fm.descent() < y2:
+                                painter.drawText(x, y, formation_code)
 
-                feature = QgsFeature(fields, 1)
+                        geom = QgsGeometry.fromQPolygonF(QPolygonF(QRectF(0, self.__height-y1, self.__width/2, y1-y2)))
+                    else:
+                        geom = QgsGeometry.fromQPolygonF(QPolygonF(QRectF(0, self.__height-y1, self.__width, y1-y2)))
 
-                if self.__has_formation_code:
-                    feature["formation_code"] = formation_code
-                if self.__has_rock_code:
-                    feature["rock_code"] = rock_code
-                feature.setGeometry(geom)
+                    feature = QgsFeature(fields, 1)
+                    for field in fields:
+                        feature[field.name()] = f[field.name()]
+                    feature.setGeometry(geom)
 
-                self.__renderer.renderFeature(feature, context)
+                    self.__renderer.renderFeature(feature, context)
 
-        self.__renderer.stopRender(context)
+        finally:
+            self.__renderer.stopRender(context)
 
     def mouseMoveEvent(self, event):
         z = (event.scenePos().y() - self.pos().y()) / self.height() * (self.__max_z - self.__min_z) + self.__min_z
-        for d in self.__data:
-            if z > float(d["depth_from_column"]) and z < float(d["depth_to_column"]):
+        for f in self.__data:
+            depth_from = float(self.__field_value(f, "depth_from_column"))
+            depth_to = float(self.__field_value(f, "depth_to_column"))
+            rock_description = str(self.__field_value(f, "rock_description_column"))
+            formation_description = str(self.__field_value(f, "formation_description_column"))
+            if z > depth_from and z < depth_to:
                 self.tooltipRequested.emit(u"Formation: {} Rock: {}"
-                                           .format(str(d["formation_description_column"]),
-                                                   str(d["rock_description_column"])))
+                                           .format(formation_description, rock_description))
                 break
 
     def edit_style(self):

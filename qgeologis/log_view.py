@@ -375,8 +375,7 @@ class WellLogView(QWidget):
                                 self.__log_scene.height(),
                                 style_file=style_file if not symbology else None,
                                 symbology=symbology,
-                                has_rock_code=column_mapping["rock_code_column"] is not None,
-                                has_formation_code=column_mapping["formation_code_column"] is not None,
+                                column_mapping=column_mapping
         )
         item.style_updated.connect(self.styles_updated)
         legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH, title)
@@ -386,8 +385,7 @@ class WellLogView(QWidget):
 
         req = QgsFeatureRequest()
         req.setFilterExpression(filter_expression)
-        item.set_data([{k:f[c] if c is not None else None for k, c in column_mapping.items()}
-                       for f in layer.getFeatures(req)])
+        item.set_data(list(layer.getFeatures(req)))
 
         self._add_column(item, legend_item)
 

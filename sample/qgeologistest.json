@@ -1,0 +1,613 @@
+{
+    "service='qgeologistest' sslmode=disable key='id' srid=4326 type=Point checkPrimaryKeyUnicity='0' table=\"qgis\".\"station\" (point) sql=#Stations BDLHES#postgres": {
+        "layer_name": "Stations",
+        "id_column": "id",
+        "name_column": "name",
+        "stratigraphy_config": [
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='depth_from,depth_to,station_id' srid=4326 type=Polygon checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_stratigraphic_logvalue\" (geom) sql=",
+                    "name": "Stratigraphie",
+                    "provider": "postgres"
+                },
+                "feature_ref_column": "station_id",
+                "depth_from_column": "depth_from",
+                "depth_to_column": "depth_to",
+                "formation_code_column": "formation_code",
+                "rock_code_column": "rock_code",
+                "formation_description_column": "formation_description",
+                "rock_description_column": "rock_description"
+            }
+        ],
+        "log_measures": [
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_tool_instant_speed\" sql=",
+                    "name": "Vitesse instantanée d'avancement",
+                    "provider": "postgres"
+                },
+                "name": "Vitesse instantanée d'avancement",
+                "uom": "m/s",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_measure_altitude",
+                "interval_column": "altitude_interval",
+                "values_column": "measures"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_weight_on_tool\" sql=",
+                    "name": "Poids sur l'outil",
+                    "provider": "postgres"
+                },
+                "name": "Poids sur l'outil",
+                "uom": "kg",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_measure_altitude",
+                "interval_column": "altitude_interval",
+                "values_column": "measures"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_tool_injection_pressure\" sql=",
+                    "name": "Pression d'injection",
+                    "provider": "postgres"
+                },
+                "name": "Pression d'injection",
+                "uom": "Pa",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_measure_altitude",
+                "interval_column": "altitude_interval",
+                "values_column": "measures"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_tool_rotation_couple\" sql=",
+                    "name": "Couple de rotation",
+                    "provider": "postgres"
+                },
+                "name": "Couple de rotation",
+                "uom": "N.m",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_measure_altitude",
+                "interval_column": "altitude_interval",
+                "values_column": "measures"
+            }
+        ],
+        "timeseries": [
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKKeyUnicity='0' checkPrimaryKeyUnicity='1' table=\"qgis\".\"measure_chemical_analysis_result\" sql=",
+                    "name": "Analyse chimique",
+                    "provider": "postgres"
+                },
+                "name": "Analyse chimique",
+                "uom_column": "measure_unit",
+                "feature_ref_column": "station_id",
+                "feature_filter_type": "unique_data_from_values",
+                "feature_filter_column": "chemical_element",
+                "type": "instantaneous",
+                "event_column": "measure_epoch",
+                "value_column": "measure_value"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_atmospheric_pressure\" sql=",
+                    "name": "Pression atmosphérique",
+                    "provider": "postgres"
+                },
+                "name": "Pression atmosphérique",
+                "uom": "m",
+                "feature_ref_column": "station_id",
+                "type": "cumulative",
+                "event_column": "measure_epoch",
+                "value_column": "measure_value"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_continuous_atmospheric_pressure\" sql=",
+                    "name": "Pression atmosphérique (capteurs)",
+                    "provider": "postgres"
+                },
+                "name": "Pression atmosphérique (capteurs)",
+                "uom": "m",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_epoch",
+                "interval_column": "interval_s",
+                "values_column": "measures"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_continuous_groundwater_pressure\" sql=",
+                    "name": "Pression d'eau (capteurs)",
+                    "provider": "postgres"
+                },
+                "name": "Pression d'eau (capteurs)",
+                "uom": "m",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_epoch",
+                "interval_column": "interval_s",
+                "values_column": "measures"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_groundwater_level\" sql=",
+                    "name": "Cote de nappe",
+                    "provider": "postgres"
+                },
+                "name": "Cote de nappe",
+                "uom": "m",
+                "feature_ref_column": "station_id",
+                "type": "instantaneous",
+                "event_column": "measure_epoch",
+                "value_column": "measure_value"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_manual_groundwater_level\" sql=",
+                    "name": "Cote de nappe (mesures manuelles)",
+                    "provider": "postgres"
+                },
+                "name": "Cote de nappe (mesures manuelles)",
+                "uom": "m",
+                "feature_ref_column": "station_id",
+                "type": "instantaneous",
+                "event_column": "measure_epoch",
+                "value_column": "measure_value"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_continuous_groundwater_level\" sql=",
+                    "name": "Cote de nappe (capteurs)",
+                    "provider": "postgres"
+                },
+                "name": "Cote de nappe (capteurs)",
+                "uom": "m",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_epoch",
+                "interval_column": "interval_s",
+                "values_column": "measures"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_groundwater_temperature\" sql=",
+                    "name": "Température nappe",
+                    "provider": "postgres"
+                },
+                "name": "Température nappe",
+                "uom": "°C",
+                "feature_ref_column": "station_id",
+                "type": "instantaneous",
+                "event_column": "measure_epoch",
+                "value_column": "measure_value"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_continuous_groundwater_temperature\" sql=",
+                    "name": "Température nappe (capteurs)",
+                    "provider": "postgres"
+                },
+                "name": "Température nappe (capteurs)",
+                "uom": "°C",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_epoch",
+                "interval_column": "interval_s",
+                "values_column": "measures"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_groundwater_conductivity\" sql=",
+                    "name": "Conductivité nappe",
+                    "provider": "postgres"
+                },
+                "name": "Conductivité nappe",
+                "uom": "S/m",
+                "feature_ref_column": "station_id",
+                "type": "instantaneous",
+                "event_column": "measure_epoch",
+                "value_column": "measure_value"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_continuous_groundwater_conductivity\" sql=",
+                    "name": "Conductivité nappe (capteurs)",
+                    "provider": "postgres"
+                },
+                "name": "Conductivité nappe (capteurs)",
+                "uom": "S/m",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_epoch",
+                "interval_column": "interval_s",
+                "values_column": "measures"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_water_level\" sql=",
+                    "name": "Hauteur d'eau",
+                    "provider": "postgres"
+                },
+                "name": "Hauteur d'eau",
+                "uom": "m",
+                "feature_ref_column": "station_id",
+                "type": "instantaneous",
+                "event_column": "measure_epoch",
+                "value_column": "measure_value"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_manual_water_level\" sql=",
+                    "name": "Hauteur d'eau (mesures manuelles)",
+                    "provider": "postgres"
+                },
+                "name": "Hauteur d'eau (mesures manuelles)",
+                "uom": "m",
+                "feature_ref_column": "station_id",
+                "type": "instantaneous",
+                "event_column": "measure_epoch",
+                "value_column": "measure_value"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_continuous_water_level\" sql=",
+                    "name": "Hauteur d'eau (capteurs)",
+                    "provider": "postgres"
+                },
+                "name": "Hauteur d'eau (capteurs)",
+                "uom": "m",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_epoch",
+                "interval_column": "interval_s",
+                "values_column": "measures"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_water_discharge\" sql=",
+                    "name": "Débit",
+                    "provider": "postgres"
+                },
+                "name": "Débit",
+                "uom": "m3/s",
+                "feature_ref_column": "station_id",
+                "type": "instantaneous",
+                "event_column": "measure_epoch",
+                "value_column": "measure_value"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_continuous_water_discharge\" sql=",
+                    "name": "Débit (capteurs)",
+                    "provider": "postgres"
+                },
+                "name": "Débit (capteurs)",
+                "uom": "m3/s",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_epoch",
+                "interval_column": "interval_s",
+                "values_column": "measures"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_water_ph\" sql=",
+                    "name": "pH",
+                    "provider": "postgres"
+                },
+                "name": "pH",
+                "uom": "",
+                "feature_ref_column": "station_id",
+                "type": "instantaneous",
+                "event_column": "measure_epoch",
+                "value_column": "measure_value"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_continuous_water_ph\" sql=",
+                    "name": "pH (capteurs)",
+                    "provider": "postgres"
+                },
+                "name": "pH (capteurs)",
+                "uom": "",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_epoch",
+                "interval_column": "interval_s",
+                "values_column": "measures"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_water_temperature\" sql=",
+                    "name": "Température eau",
+                    "provider": "postgres"
+                },
+                "name": "Température eau",
+                "uom": "°C",
+                "feature_ref_column": "station_id",
+                "type": "instantaneous",
+                "event_column": "measure_epoch",
+                "value_column": "measure_value"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_continuous_water_temperature\" sql=",
+                    "name": "Température eau (capteurs)",
+                    "provider": "postgres"
+                },
+                "name": "Température eau (capteurs)",
+                "uom": "°C",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_epoch",
+                "interval_column": "interval_s",
+                "values_column": "measures"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_water_conductivity\" sql=",
+                    "name": "Conductivité eau",
+                    "provider": "postgres"
+                },
+                "name": "Conductivité eau",
+                "uom": "S/m",
+                "feature_ref_column": "station_id",
+                "type": "instantaneous",
+                "event_column": "measure_epoch",
+                "value_column": "measure_value"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_continuous_water_conductivity\" sql=",
+                    "name": "Conductivité eau (capteurs)",
+                    "provider": "postgres"
+                },
+                "name": "Conductivité eau (capteurs)",
+                "uom": "S/m",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_epoch",
+                "interval_column": "interval_s",
+                "values_column": "measures"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_rain\" sql=",
+                    "name": "Pluie",
+                    "provider": "postgres"
+                },
+                "name": "Pluie",
+                "uom": "m",
+                "feature_ref_column": "station_id",
+                "type": "cumulative",
+                "event_column": "measure_epoch",
+                "value_column": "measure_value"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_continuous_rain\" sql=",
+                    "name": "Pluie (capteurs)",
+                    "provider": "postgres"
+                },
+                "name": "Pluie (capteurs)",
+                "uom": "m",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_epoch",
+                "interval_column": "interval_s",
+                "values_column": "measures"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_potential_evapotranspiration\" sql=",
+                    "name": "ETP",
+                    "provider": "postgres"
+                },
+                "name": "ETP",
+                "uom": "m",
+                "feature_ref_column": "station_id",
+                "type": "cumulative",
+                "event_column": "measure_epoch",
+                "value_column": "measure_value"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_continuous_potential_evapotranspiration\" sql=",
+                    "name": "ETP (capteurs)",
+                    "provider": "postgres"
+                },
+                "name": "ETP (capteurs)",
+                "uom": "m",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_epoch",
+                "interval_column": "interval_s",
+                "values_column": "measures"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_temperature\" sql=",
+                    "name": "Température",
+                    "provider": "postgres"
+                },
+                "name": "Température",
+                "uom": "°C",
+                "feature_ref_column": "station_id",
+                "type": "cumulative",
+                "event_column": "measure_epoch",
+                "value_column": "measure_value"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_continuous_temperature\" sql=",
+                    "name": "Température (capteurs)",
+                    "provider": "postgres"
+                },
+                "name": "Température (capteurs)",
+                "uom": "°C",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_epoch",
+                "interval_column": "interval_s",
+                "values_column": "measures"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_wind_direction\" sql=",
+                    "name": "Direction du vent",
+                    "provider": "postgres"
+                },
+                "name": "Direction du vent",
+                "uom": "°",
+                "feature_ref_column": "station_id",
+                "type": "cumulative",
+                "event_column": "measure_epoch",
+                "value_column": "measure_value"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_continuous_wind_direction\" sql=",
+                    "name": "Direction du vent (capteurs)",
+                    "provider": "postgres"
+                },
+                "name": "Direction du vent (capteurs)",
+                "uom": "°",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_epoch",
+                "interval_column": "interval_s",
+                "values_column": "measures"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_wind_force\" sql=",
+                    "name": "Force du vent",
+                    "provider": "postgres"
+                },
+                "name": "Force du vent",
+                "uom": "noeuds",
+                "feature_ref_column": "station_id",
+                "type": "cumulative",
+                "event_column": "measure_epoch",
+                "value_column": "measure_value"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_continuous_wind_force\" sql=",
+                    "name": "Force du vent (capteurs)",
+                    "provider": "postgres"
+                },
+                "name": "Force du vent (capteurs)",
+                "uom": "noeuds",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_epoch",
+                "interval_column": "interval_s",
+                "values_column": "measures"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_pasquill_index\" sql=",
+                    "name": "Indice de stabilité de Pasquill",
+                    "provider": "postgres"
+                },
+                "name": "Indice de stabilité de Pasquill",
+                "uom": "",
+                "feature_ref_column": "station_id",
+                "type": "cumulative",
+                "event_column": "measure_epoch",
+                "value_column": "measure_value"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_continuous_pasquill_index\" sql=",
+                    "name": "Indice de stabilité de Pasquill (capteurs)",
+                    "provider": "postgres"
+                },
+                "name": "Indice de stabilité de Pasquill (capteurs)",
+                "uom": "",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_epoch",
+                "interval_column": "interval_s",
+                "values_column": "measures"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_nebulosity\" sql=",
+                    "name": "Nébulosité",
+                    "provider": "postgres"
+                },
+                "name": "Nébulosité",
+                "uom": "",
+                "feature_ref_column": "station_id",
+                "type": "cumulative",
+                "event_column": "measure_epoch",
+                "value_column": "measure_value"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_continuous_nebulosity\" sql=",
+                    "name": "Nébulosité (capteurs)",
+                    "provider": "postgres"
+                },
+                "name": "Nébulosité (capteurs)",
+                "uom": "",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_epoch",
+                "interval_column": "interval_s",
+                "values_column": "measures"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_humidity\" sql=",
+                    "name": "Humidité",
+                    "provider": "postgres"
+                },
+                "name": "Humidité",
+                "uom": "",
+                "feature_ref_column": "station_id",
+                "type": "cumulative",
+                "event_column": "measure_epoch",
+                "value_column": "measure_value"
+            },
+            {
+                "source": {
+                    "source": "service='qgeologistest' sslmode=disable key='id' checkPrimaryKeyUnicity='0' table=\"qgis\".\"measure_continuous_humidity\" sql=",
+                    "name": "Humidité (capteurs)",
+                    "provider": "postgres"
+                },
+                "name": "Humidité (capteurs)",
+                "uom": "",
+                "feature_ref_column": "station_id",
+                "type": "continuous",
+                "start_measure_column": "start_epoch",
+                "interval_column": "interval_s",
+                "values_column": "measures"
+            }
+        ],
+        "imagery_data": [
+            {
+                "name": "Imagerie optique",
+                "source": "service=bdlhes",
+                "schema": "qgis",
+                "table": "measure_optical_imagery",
+                "feature_ref_column": "station_id"
+            },
+            {
+                "name": "Imagerie acoustique",
+                "source": "service=bdlhes",
+                "schema": "qgis",
+                "table": "measure_acoustic_imagery",
+                "feature_ref_column": "station_id"
+            }
+        ]
+    }
+}

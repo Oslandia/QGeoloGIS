@@ -21,5 +21,4 @@ Install the plugin in the QGIS plugin directory and enable it. You can install i
 
 It requires a configuration that describes what is the base layer that displays measure points and how to access the different measure layers.
 
-You can find an [example project file](project.qgs). You should copy the content of the XML tag GeoloGIS` to your project edit to adapt to your environment.
-
+Some sample resources are available in the [sample folder](./sample). Apart from the small [toy dataset](./sample/qgeologistest.sql) itself, you can find an [example QGIS project file](sample/project.qgs) and the associated [configuration file](./sample/qgeologistest.json), which may be loaded from the plugin menu.

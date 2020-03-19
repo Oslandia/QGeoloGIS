@@ -21,6 +21,7 @@ import json
 from qgis.core import QgsProject, QgsVectorLayer
 from PyQt5.QtXml import QDomDocument
 
+SUBKEYS = ("stratigraphy_config", "log_measures", "timeseries")
 class PlotConfig:
     """Holds the configuration of a plot (log or timeseries)
 
@@ -205,7 +206,7 @@ def export_config(main_config, filename):
             continue
 
         # replace "source" keys
-        for subkey in ("stratigraphy_config", "log_measures", "timeseries"):
+        for subkey in SUBKEYS:
             for layer_cfg in config[subkey]:
                 source_id = layer_cfg["source"]
                 source = QgsProject.instance().mapLayer(source_id)
@@ -228,7 +229,7 @@ def export_config(main_config, filename):
 
 def import_config(filename, overwrite_existing=False):
     """Import the configuration from a given filename
-    
+
     Layers are created and added to the current project.
 
     Parameters
@@ -267,7 +268,7 @@ def import_config(filename, overwrite_existing=False):
                                                    root_layer_provider,
                                                    overwrite_existing)
 
-        for subkey in ("stratigraphy_config", "log_measures", "timeseries"):
+        for subkey in SUBKEYS:
             for layer_cfg in config[subkey]:
                 source = layer_cfg["source"]
                 layer = find_existing_layer_or_create(source["source"],
@@ -296,10 +297,11 @@ def remove_layer_from_config(config, layer_id):
             # remove the dictionary entry
             del config
             return
-        for subkey in ("stratigraphy_config", "log_measures", "timeseries"):
-            copy = []
-            for layer_cfg in sub_config[subkey]:
-                sub_layer_id = layer_cfg["source"]
-                if layer_id != sub_layer_id:
-                    copy.append(layer_cfg)
-            sub_config[subkey] = copy
+        for subkey in SUBKEYS:
+            if subkey in sub_config:
+                copy = []
+                for layer_cfg in sub_config[subkey]:
+                    sub_layer_id = layer_cfg["source"]
+                    if layer_id != sub_layer_id:
+                        copy.append(layer_cfg)
+                sub_config[subkey] = copy

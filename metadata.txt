@@ -1,7 +1,7 @@
 [general]
 name=QGeoloGIS
 description=Visualization of well logs in QGIS
-version=1.3.0
+version=1.3.1
 qgisMinimumVersion=2.18
 qgisMaximumVersion=3.99
 author=Oslandia

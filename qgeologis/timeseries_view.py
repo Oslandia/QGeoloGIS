@@ -51,9 +51,9 @@ class TimeSeriesGraphicsView(QGraphicsView):
     def wheelEvent(self, event):
         delta = -event.angleDelta().y() / 100.0
         if delta >= 0:
-            dt = delta
+            dt = 1.1
         else:
-            dt = 1.0/(-delta)
+            dt = 0.9
 
         min_x = self.parentWidget()._min_x
         max_x = self.parentWidget()._max_x

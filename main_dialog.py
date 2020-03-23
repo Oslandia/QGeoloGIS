@@ -54,8 +54,18 @@ def load_plots(feature, config, add_function, config_list):
 
             if cfg["type"] == "instantaneous":
                 uom = cfg.get_uom()
-                data = LayerData(data_l, cfg["event_column"], cfg["value_column"],
-                                 filter_expression=filter_expr, uom=uom)
+                # FIXME for next release: set default value to "remove"
+                nodata = cfg.get("nodata", 0.0)
+                if nodata == "remove":
+                    nodata = None
+                data = LayerData(
+                    data_l,
+                    cfg["event_column"],
+                    cfg["value_column"],
+                    filter_expression=filter_expr,
+                    uom=uom,
+                    nodata_value=nodata
+                )
                 uom = data.uom()
 
             if cfg["type"] == "continuous":

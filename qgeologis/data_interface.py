@@ -70,7 +70,26 @@ class LayerData(DataInterface):
     They will be sorted on X before being displayed.
     """
 
+    # BREAKING CHANGE FOR NEXT RELEASE
+    # nodata_value should be None by default (i.e. remove null values)
     def __init__(self, layer, x_fieldname, y_fieldname, filter_expression = None, nodata_value = 0.0, uom = None):
+        """
+        Parameters
+        ----------
+        layer: QgsVectorLayer
+          Vector layer that holds data
+        x_fieldname: str
+          Name of the field that holds X values
+        y_fieldname: str
+          Name of the field that holds Y values
+        filter_expression: str
+          Filter expression
+        nodata_value: Optional[float]
+          If None, null values will be removed
+          Otherwise, they will be replaced by nodata_value
+        uom: Optional[float]
+          Unit of measure
+        """
 
         DataInterface.__init__(self)
 
@@ -125,9 +144,9 @@ class LayerData(DataInterface):
 
         # Get unit of the first feature if needed
         if self.__uom is not None and self.__uom.startswith("@"):
-            req2 = QgsFeatureRequest(req)
-            req2.setLimit(1)
-            for f in self.__layer.getFeatures(req):
+            request_unit = QgsFeatureRequest(req)
+            request_unit.setLimit(1)
+            for f in self.__layer.getFeatures(request_unit):
                 self.__uom = f[self.__uom[1:]]
                 break
 
@@ -135,8 +154,25 @@ class LayerData(DataInterface):
         # Do not forget to add an index on this field to speed up ordering
         req.addOrderBy(self.__x_fieldname)
 
-        xy_values = [(f[self.__x_fieldname], f[self.__y_fieldname] if f[self.__y_fieldname] is not None else self.__nodata_value)
-                     for f in self.__layer.getFeatures(req)]
+        def is_null(v):
+            return isinstance(v, QVariant) and v.isNull()
+
+        if self.__nodata_value is not None:
+            # replace null values by a 'Nodata' value
+            xy_values = [(
+                f[self.__x_fieldname], f[self.__y_fieldname]
+                if not is_null(f[self.__y_fieldname])
+                else self.__nodata_value
+            )
+                         for f in self.__layer.getFeatures(req)
+            ]
+        else:
+            # do not include null values
+            xy_values = [
+                (f[self.__x_fieldname], f[self.__y_fieldname])
+                for f in self.__layer.getFeatures(req)
+                if not is_null(f[self.__y_fieldname])
+            ]
 
         self.__x_values = [coord[0] for coord in xy_values]
         self.__y_values = [coord[1] for coord in xy_values]

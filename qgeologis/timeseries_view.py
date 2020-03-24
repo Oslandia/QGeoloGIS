@@ -419,6 +419,12 @@ class TimeSeriesView(QWidget):
         # to be overridden by subclasses
         pass
 
+    def styles(self):
+        """Return the current style of each item"""
+        return dict([(item.layer().id(), item.qgis_style())
+                     for item, legend in self.__rows
+                     if hasattr(item, "qgis_style")])
+
 # QGIS_PREFIX_PATH=~/src/qgis_2_18/build_ninja/output PYTHONPATH=~/src/qgis_2_18/build_ninja/output/python/ python timeseries_view.py
 if __name__=='__main__':
     import sys

@@ -55,6 +55,12 @@
 <rule filter="lower(substr(formation_code,1,1))='n'" key="49413e25-34e0-4837-90cf-21f1253def48" symbol="51"/>
 <rule filter="lower(substr(formation_code,1,1))='p'" key="8140aee0-9d86-4eab-948b-86694cb3d31c" symbol="52"/>
 <rule filter="lower(substr(formation_code,1,1))='q'" key="5f78a7ac-104a-45f1-8f61-bb8384486da3" symbol="53"/>
+
+<rule filter="lower(substr(formation_code,1,2))='l1'" key="dc61e200-7ef3-4841-b2aa-827bfa4f6b79" symbol="54"/>
+<rule filter="lower(substr(formation_code,1,2))='l2'" key="97ccd9db-1513-4b1b-ba7c-37f415328925" symbol="55"/>
+<rule filter="lower(substr(formation_code,1,2))='l3'" key="65fe97d6-1b80-4bf3-bb75-13df4848e397" symbol="56"/>
+<rule filter="lower(substr(formation_code,1,2))='l4'" key="dfe44f7f-aa44-4c4b-b1c2-8ab32a49232c" symbol="57"/>
+<rule filter="lower(substr(formation_code,1,1))='l'" key="108afcd8-ba66-458a-b12f-11f745bc15f2" symbol="58"/>
 </rules>
 <symbols>
 
@@ -3026,5 +3032,274 @@
     </symbol>
    </layer>
   </symbol>
-        
+
+    <symbol alpha="1" clip_to_extent="1" type="fill" name="54">
+   <layer pass="0" class="SimpleFill" locked="0">
+    <prop k="border_width_map_unit_scale" v="0,0,0,0,0,0"/>
+        <prop k="color" v="78, 179, 211,255"/>
+    <prop k="joinstyle" v="bevel"/>
+    <prop k="offset" v="0,0"/>
+    <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
+    <prop k="offset_unit" v="MM"/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_style" v="solid"/>
+    <prop k="outline_width" v="0.26"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="style" v="solid"/>
+   </layer>
+   <layer pass="0" class="SVGFill" locked="0">
+    <prop k="angle" v="0"/>
+    <prop k="color" v="255,255,255,255"/>
+    <prop k="data" v=""/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_width" v="0.2"/>
+    <prop k="outline_width_map_unit_scale" v="0,0,0,0,0,0"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="pattern_width_map_unit_scale" v="0,0,0,0,0,0"/>
+    <prop k="pattern_width_unit" v="MM"/>
+    <prop k="svgFile" v="non_empty"/>
+    <prop k="svgFile_dd_active" v="1"/>
+    <prop k="svgFile_dd_expression" v="'styles/usgs' || rock_code || '.svg'"/>
+    <prop k="svgFile_dd_field" v=""/>
+    <prop k="svgFile_dd_useexpr" v="1"/>
+    <prop k="svg_outline_width_map_unit_scale" v="0,0,0,0,0,0"/>
+    <prop k="svg_outline_width_unit" v="MM"/>
+    <prop k="width" v="200.0"/>
+    <symbol alpha="1" clip_to_extent="1" type="line" name="@0@1">
+     <layer pass="0" class="SimpleLine" locked="0">
+      <prop k="capstyle" v="square"/>
+      <prop k="customdash" v="5;2"/>
+      <prop k="customdash_map_unit_scale" v="0,0,0,0,0,0"/>
+      <prop k="customdash_unit" v="MM"/>
+      <prop k="draw_inside_polygon" v="0"/>
+      <prop k="joinstyle" v="bevel"/>
+      <prop k="line_color" v="0,0,0,255"/>
+      <prop k="line_style" v="solid"/>
+      <prop k="line_width" v="0.26"/>
+      <prop k="line_width_unit" v="MM"/>
+      <prop k="offset" v="0"/>
+      <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
+      <prop k="offset_unit" v="MM"/>
+      <prop k="use_custom_dash" v="0"/>
+      <prop k="width_map_unit_scale" v="0,0,0,0,0,0"/>
+     </layer>
+    </symbol>
+   </layer>
+  </symbol>
+
+    <symbol alpha="1" clip_to_extent="1" type="fill" name="55">
+   <layer pass="0" class="SimpleFill" locked="0">
+    <prop k="border_width_map_unit_scale" v="0,0,0,0,0,0"/>
+        <prop k="color" v="103, 188, 216,255"/>
+    <prop k="joinstyle" v="bevel"/>
+    <prop k="offset" v="0,0"/>
+    <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
+    <prop k="offset_unit" v="MM"/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_style" v="solid"/>
+    <prop k="outline_width" v="0.26"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="style" v="solid"/>
+   </layer>
+   <layer pass="0" class="SVGFill" locked="0">
+    <prop k="angle" v="0"/>
+    <prop k="color" v="255,255,255,255"/>
+    <prop k="data" v=""/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_width" v="0.2"/>
+    <prop k="outline_width_map_unit_scale" v="0,0,0,0,0,0"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="pattern_width_map_unit_scale" v="0,0,0,0,0,0"/>
+    <prop k="pattern_width_unit" v="MM"/>
+    <prop k="svgFile" v="non_empty"/>
+    <prop k="svgFile_dd_active" v="1"/>
+    <prop k="svgFile_dd_expression" v="'styles/usgs' || rock_code || '.svg'"/>
+    <prop k="svgFile_dd_field" v=""/>
+    <prop k="svgFile_dd_useexpr" v="1"/>
+    <prop k="svg_outline_width_map_unit_scale" v="0,0,0,0,0,0"/>
+    <prop k="svg_outline_width_unit" v="MM"/>
+    <prop k="width" v="200.0"/>
+    <symbol alpha="1" clip_to_extent="1" type="line" name="@0@1">
+     <layer pass="0" class="SimpleLine" locked="0">
+      <prop k="capstyle" v="square"/>
+      <prop k="customdash" v="5;2"/>
+      <prop k="customdash_map_unit_scale" v="0,0,0,0,0,0"/>
+      <prop k="customdash_unit" v="MM"/>
+      <prop k="draw_inside_polygon" v="0"/>
+      <prop k="joinstyle" v="bevel"/>
+      <prop k="line_color" v="0,0,0,255"/>
+      <prop k="line_style" v="solid"/>
+      <prop k="line_width" v="0.26"/>
+      <prop k="line_width_unit" v="MM"/>
+      <prop k="offset" v="0"/>
+      <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
+      <prop k="offset_unit" v="MM"/>
+      <prop k="use_custom_dash" v="0"/>
+      <prop k="width_map_unit_scale" v="0,0,0,0,0,0"/>
+     </layer>
+    </symbol>
+   </layer>
+  </symbol>
+
+  <symbol alpha="1" clip_to_extent="1" type="fill" name="56">
+   <layer pass="0" class="SimpleFill" locked="0">
+    <prop k="border_width_map_unit_scale" v="0,0,0,0,0,0"/>
+        <prop k="color" v="128, 197, 221,255"/>
+    <prop k="joinstyle" v="bevel"/>
+    <prop k="offset" v="0,0"/>
+    <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
+    <prop k="offset_unit" v="MM"/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_style" v="solid"/>
+    <prop k="outline_width" v="0.26"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="style" v="solid"/>
+   </layer>
+   <layer pass="0" class="SVGFill" locked="0">
+    <prop k="angle" v="0"/>
+    <prop k="color" v="255,255,255,255"/>
+    <prop k="data" v=""/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_width" v="0.2"/>
+    <prop k="outline_width_map_unit_scale" v="0,0,0,0,0,0"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="pattern_width_map_unit_scale" v="0,0,0,0,0,0"/>
+    <prop k="pattern_width_unit" v="MM"/>
+    <prop k="svgFile" v="non_empty"/>
+    <prop k="svgFile_dd_active" v="1"/>
+    <prop k="svgFile_dd_expression" v="'styles/usgs' || rock_code || '.svg'"/>
+    <prop k="svgFile_dd_field" v=""/>
+    <prop k="svgFile_dd_useexpr" v="1"/>
+    <prop k="svg_outline_width_map_unit_scale" v="0,0,0,0,0,0"/>
+    <prop k="svg_outline_width_unit" v="MM"/>
+    <prop k="width" v="200.0"/>
+    <symbol alpha="1" clip_to_extent="1" type="line" name="@0@1">
+     <layer pass="0" class="SimpleLine" locked="0">
+      <prop k="capstyle" v="square"/>
+      <prop k="customdash" v="5;2"/>
+      <prop k="customdash_map_unit_scale" v="0,0,0,0,0,0"/>
+      <prop k="customdash_unit" v="MM"/>
+      <prop k="draw_inside_polygon" v="0"/>
+      <prop k="joinstyle" v="bevel"/>
+      <prop k="line_color" v="0,0,0,255"/>
+      <prop k="line_style" v="solid"/>
+      <prop k="line_width" v="0.26"/>
+      <prop k="line_width_unit" v="MM"/>
+      <prop k="offset" v="0"/>
+      <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
+      <prop k="offset_unit" v="MM"/>
+      <prop k="use_custom_dash" v="0"/>
+      <prop k="width_map_unit_scale" v="0,0,0,0,0,0"/>
+     </layer>
+    </symbol>
+   </layer>
+  </symbol>
+
+  <symbol alpha="1" clip_to_extent="1" type="fill" name="57">
+   <layer pass="0" class="SimpleFill" locked="0">
+    <prop k="border_width_map_unit_scale" v="0,0,0,0,0,0"/>
+        <prop k="color" v="153, 206, 227,255"/>
+    <prop k="joinstyle" v="bevel"/>
+    <prop k="offset" v="0,0"/>
+    <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
+    <prop k="offset_unit" v="MM"/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_style" v="solid"/>
+    <prop k="outline_width" v="0.26"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="style" v="solid"/>
+   </layer>
+   <layer pass="0" class="SVGFill" locked="0">
+    <prop k="angle" v="0"/>
+    <prop k="color" v="255,255,255,255"/>
+    <prop k="data" v=""/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_width" v="0.2"/>
+    <prop k="outline_width_map_unit_scale" v="0,0,0,0,0,0"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="pattern_width_map_unit_scale" v="0,0,0,0,0,0"/>
+    <prop k="pattern_width_unit" v="MM"/>
+    <prop k="svgFile" v="non_empty"/>
+    <prop k="svgFile_dd_active" v="1"/>
+    <prop k="svgFile_dd_expression" v="'styles/usgs' || rock_code || '.svg'"/>
+    <prop k="svgFile_dd_field" v=""/>
+    <prop k="svgFile_dd_useexpr" v="1"/>
+    <prop k="svg_outline_width_map_unit_scale" v="0,0,0,0,0,0"/>
+    <prop k="svg_outline_width_unit" v="MM"/>
+    <prop k="width" v="200.0"/>
+    <symbol alpha="1" clip_to_extent="1" type="line" name="@0@1">
+     <layer pass="0" class="SimpleLine" locked="0">
+      <prop k="capstyle" v="square"/>
+      <prop k="customdash" v="5;2"/>
+      <prop k="customdash_map_unit_scale" v="0,0,0,0,0,0"/>
+      <prop k="customdash_unit" v="MM"/>
+      <prop k="draw_inside_polygon" v="0"/>
+      <prop k="joinstyle" v="bevel"/>
+      <prop k="line_color" v="0,0,0,255"/>
+      <prop k="line_style" v="solid"/>
+      <prop k="line_width" v="0.26"/>
+      <prop k="line_width_unit" v="MM"/>
+      <prop k="offset" v="0"/>
+      <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
+      <prop k="offset_unit" v="MM"/>
+      <prop k="use_custom_dash" v="0"/>
+      <prop k="width_map_unit_scale" v="0,0,0,0,0,0"/>
+     </layer>
+    </symbol>
+   </layer>
+  </symbol>
+
+  <symbol alpha="1" clip_to_extent="1" type="fill" name="58">
+   <layer pass="0" class="SimpleFill" locked="0">
+    <prop k="border_width_map_unit_scale" v="0,0,0,0,0,0"/>
+        <prop k="color" v="66, 174, 208,255"/>
+    <prop k="joinstyle" v="bevel"/>
+    <prop k="offset" v="0,0"/>
+    <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
+    <prop k="offset_unit" v="MM"/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_style" v="solid"/>
+    <prop k="outline_width" v="0.26"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="style" v="solid"/>
+   </layer>
+   <layer pass="0" class="SVGFill" locked="0">
+    <prop k="angle" v="0"/>
+    <prop k="color" v="255,255,255,255"/>
+    <prop k="data" v=""/>
+    <prop k="outline_color" v="0,0,0,255"/>
+    <prop k="outline_width" v="0.2"/>
+    <prop k="outline_width_map_unit_scale" v="0,0,0,0,0,0"/>
+    <prop k="outline_width_unit" v="MM"/>
+    <prop k="pattern_width_map_unit_scale" v="0,0,0,0,0,0"/>
+    <prop k="pattern_width_unit" v="MM"/>
+    <prop k="svgFile" v="non_empty"/>
+    <prop k="svgFile_dd_active" v="1"/>
+    <prop k="svgFile_dd_expression" v="'styles/usgs' || rock_code || '.svg'"/>
+    <prop k="svgFile_dd_field" v=""/>
+    <prop k="svgFile_dd_useexpr" v="1"/>
+    <prop k="svg_outline_width_map_unit_scale" v="0,0,0,0,0,0"/>
+    <prop k="svg_outline_width_unit" v="MM"/>
+    <prop k="width" v="200.0"/>
+    <symbol alpha="1" clip_to_extent="1" type="line" name="@0@1">
+     <layer pass="0" class="SimpleLine" locked="0">
+      <prop k="capstyle" v="square"/>
+      <prop k="customdash" v="5;2"/>
+      <prop k="customdash_map_unit_scale" v="0,0,0,0,0,0"/>
+      <prop k="customdash_unit" v="MM"/>
+      <prop k="draw_inside_polygon" v="0"/>
+      <prop k="joinstyle" v="bevel"/>
+      <prop k="line_color" v="0,0,0,255"/>
+      <prop k="line_style" v="solid"/>
+      <prop k="line_width" v="0.26"/>
+      <prop k="line_width_unit" v="MM"/>
+      <prop k="offset" v="0"/>
+      <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
+      <prop k="offset_unit" v="MM"/>
+      <prop k="use_custom_dash" v="0"/>
+      <prop k="width_map_unit_scale" v="0,0,0,0,0,0"/>
+     </layer>
+    </symbol>
+   </layer>
+  </symbol>
 </symbol></renderer-v2>

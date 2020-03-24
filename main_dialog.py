@@ -17,7 +17,11 @@
 
 import os
 
-from qgis.PyQt.QtWidgets import QDialog, QAction, QVBoxLayout, QWidget
+from PyQt5.QtCore import Qt
+from qgis.PyQt.QtWidgets import (
+    QDialog, QAction, QVBoxLayout, QWidget,
+    QApplication
+)
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtCore import QSize, pyqtSignal
 from qgis.core import QgsProject, QgsFeatureRequest
@@ -277,7 +281,9 @@ class MainDialog(QWidget):
         if not self.__layer.selectedFeatureCount():
             return
 
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         self.__view.set_features(self.__layer.selectedFeatures())
+        QApplication.restoreOverrideCursor()
 
     def on_styles_updated(self):
         styles = self.__view.styles()

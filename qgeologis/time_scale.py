@@ -36,7 +36,7 @@ class UTC(tzinfo):
         return timedelta(0)
 
 # min: year 0, max: year 10000
-MIN_TIMESTAMP = 0
+MIN_TIMESTAMP = 3600*24*365*(0-1970)
 MAX_TIMESTAMP = 3600*24*365*(10000-1970)
 
 class TimeScaleItem(LogItem):

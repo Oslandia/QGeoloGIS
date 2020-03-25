@@ -230,6 +230,14 @@ class IntervalPlotItem(LogItem):
             self.__max_x_field, self.__data_rect.right()
         )
         req.setFilterExpression(filter)
+        req.setSubsetOfAttributes(
+            [
+                self.__min_x_field,
+                self.__max_x_field,
+                self.__y_field
+            ],
+            fields
+        )
         req.addOrderBy(self.__min_x_field)
 
         # reset cache for picking
@@ -268,6 +276,8 @@ class IntervalPlotItem(LogItem):
 
         if self.__point_to_label is not None:
             i = self.__point_to_label
+            if i >= len(self.__min_x_values):
+                return
             x1, x2, y = self.__min_x_values[i], self.__max_x_values[i], self.__y_values[i]
             if self.__x_orientation == ORIENTATION_LEFT_TO_RIGHT and self.__y_orientation == ORIENTATION_UPWARD:
                 px1 = (x1 - self.__data_rect.x()) * rw

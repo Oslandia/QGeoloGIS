@@ -23,10 +23,11 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import (QGraphicsView, QGraphicsScene, QWidget, QToolBar, QAction, QLabel,
                                  QStatusBar, QVBoxLayout)
 
-from .common import POINT_RENDERER, ORIENTATION_UPWARD, ORIENTATION_LEFT_TO_RIGHT
+from .common import POINT_RENDERER, POLYGON_RENDERER, ORIENTATION_UPWARD, ORIENTATION_LEFT_TO_RIGHT
 from .log_plot import PlotItem
 from .time_scale import TimeScaleItem
 from .legend_item import LegendItem
+from .interval_plot import IntervalPlotItem
 
 
 class TimeSeriesGraphicsView(QGraphicsView):
@@ -338,6 +339,50 @@ class TimeSeriesView(QWidget):
         plot_item.set_data_window(QRectF(min_x, min_y, max_x-min_x, max_y-min_y))
 
         self.__scene.update()
+
+    def add_histogram(self, layer, filter_expression, column_mapping, title, config=None, station_name=""):
+        """Add stratigraphy data
+
+        Parameters
+        ----------
+        layer: QgsVectorLayer
+          The layer where stratigraphic data are stored
+        filter_expression: str
+          A QGIS expression to filter the vector layer
+        column_mapping: dict
+          Dictionary of column names
+        title: str
+          Title of the graph
+        config: PlotConfig
+        station_name: str
+          Name of the station
+        """
+        symbology, symbology_type = config.get_symbology()
+
+        item = IntervalPlotItem(
+            layer,
+            column_mapping=column_mapping,
+            filter_expression=filter_expression,
+            size=QSizeF(self.__scene.width(), self.DEFAULT_ROW_HEIGHT),
+            render_type=POLYGON_RENDERER if symbology_type is None else symbology_type,
+            x_orientation=ORIENTATION_LEFT_TO_RIGHT,
+            y_orientation=ORIENTATION_UPWARD,
+            symbology=symbology
+        )
+        self.set_x_range(item.min_depth(), item.max_depth())
+        item.style_updated.connect(self.styles_updated)
+        legend_item = LegendItem(
+            self.DEFAULT_ROW_HEIGHT,
+            title,
+            unit_of_measure=config["uom"],
+            is_vertical=True
+        )
+        min_y, max_y = item.data_window().top(), item.data_window().bottom()
+        legend_item.set_scale(min_y, max_y)
+
+        item.tooltipRequested.connect(lambda txt:self.on_plot_tooltip(station_name, txt))
+
+        self._add_row(item, legend_item)
 
     def select_row_at(self, pos):
         y = pos.y()

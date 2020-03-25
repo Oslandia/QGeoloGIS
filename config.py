@@ -115,6 +115,9 @@ class PlotConfig:
             if self.__parent:
                 self.__parent.config_modified()
 
+    def __repr__(self):
+        return repr(self.__config)
+
 
 class LayerConfig:
     """Holds the configuration of a "root" layer (the layer where stations or collars are stored).

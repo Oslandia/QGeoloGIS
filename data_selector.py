@@ -23,7 +23,7 @@ from qgis.PyQt.QtWidgets import (QListWidget, QListWidgetItem, QHBoxLayout, QLab
 from qgis.core import QgsProject, QgsFeatureRequest
 
 from .config import PlotConfig
-from .qgeologis.data_interface import FeatureData, LayerData
+from .qgeologis.data_interface import IntervalData, LayerData
 
 
 class DataSelector(QDialog):
@@ -110,6 +110,7 @@ class DataSelector(QDialog):
 
         feature_id = feature[self.__config["id_column"]]
         feature_name = feature[self.__config["name_column"]]
+
         for item in self.__list.selectedItems():
             # now add the selected configuration
             cfg = item.data(Qt.UserRole)
@@ -122,40 +123,56 @@ class DataSelector(QDialog):
 
                 title = cfg["name"]
 
+                if cfg.get_filter_value():
+                    filter_expr += " and {}='{}'".format(cfg["feature_filter_column"],
+                                                         cfg.get_filter_value())
+
+                    title = cfg.get_filter_value()
+                else:
+                    title = cfg["name"]
+
+                f = None
+                # test if the layer actually contains data
+                for f in data_l.getFeatures(req):
+                    break
+                if f is None:
+                    return
+                uom = cfg.get_uom()
                 if cfg["type"] == "instantaneous":
-                    if cfg.get_filter_value():
-                        filter_expr += " and {}='{}'".format(cfg["feature_filter_column"],
-                                                             cfg.get_filter_value())
-
-                        title = cfg.get_filter_value()
-                    else:
-                        title = cfg["name"]
-
-                    f = None
-                    for f in data_l.getFeatures(req):
-                        pass
-                    if f is None:
-                        return
-                    uom = cfg.get_uom()
-                    data = LayerData(data_l, cfg["event_column"], cfg["value_column"],
-                                     filter_expression=filter_expr, uom=uom)
-                    uom = data.uom()
-
-                if cfg["type"] == "continuous":
-                    uom = cfg["uom"]
-                    fids = [f.id() for f in data_l.getFeatures(req)]
-                    data = FeatureData(data_l, cfg["values_column"], feature_ids=fids,
-                                       x_start_fieldname=cfg["start_measure_column"],
-                                       x_delta_fieldname=cfg["interval_column"])
+                    data = LayerData(
+                        data_l,
+                        cfg["event_column"],
+                        cfg["value_column"],
+                        filter_expression=filter_expr,
+                        uom=uom
+                    )
+                elif cfg["type"] == "continuous":
+                    data = IntervalData(
+                        data_l,
+                        cfg["min_event_column"],
+                        cfg["max_event_column"],
+                        cfg["value_column"],
+                        filter_expression=filter_expr,
+                        uom=uom
+                    )
+                uom = data.uom()
 
                 if hasattr(self.__viewer, "add_data_column"):
-                    self.__viewer.add_data_column(data, title, uom,
-                                                  station_name=feature_name,
-                                                  config=cfg)
+                    self.__viewer.add_data_column(
+                        data,
+                        title,
+                        uom,
+                        station_name=feature_name,
+                        config=cfg
+                    )
                 if hasattr(self.__viewer, "add_data_row"):
-                    self.__viewer.add_data_row(data, title, uom,
-                                               station_name=feature_name,
-                                               config=cfg)
+                    self.__viewer.add_data_row(
+                        data,
+                        title,
+                        uom,
+                        station_name=feature_name,
+                        config=cfg
+                    )
             elif cfg["type"] == "image":
                 self.__viewer.add_imagery_from_db(cfg, feature_id)
 

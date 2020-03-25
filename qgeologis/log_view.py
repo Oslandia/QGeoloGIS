@@ -300,7 +300,7 @@ class WellLogView(QWidget):
         """
         Parameters
         ----------
-        data: ??
+        data: DataInterface
         title: str
         uom: str
           Unit of measure
@@ -309,12 +309,14 @@ class WellLogView(QWidget):
         config: PlotConfig
         """
         symbology, symbology_type = config.get_symbology()
-        
-        plot_item = PlotItem(size=QSizeF(self.DEFAULT_COLUMN_WIDTH, self.__log_scene.height()),
-                             render_type = POLYGON_RENDERER if symbology_type is None else symbology_type,
-                             symbology = symbology,
-                             x_orientation = ORIENTATION_DOWNWARD,
-                             y_orientation = ORIENTATION_LEFT_TO_RIGHT)
+
+        plot_item = PlotItem(
+            size=QSizeF(self.DEFAULT_COLUMN_WIDTH, self.__log_scene.height()),
+            render_type = POLYGON_RENDERER if symbology_type is None else symbology_type,
+            symbology = symbology,
+            x_orientation = ORIENTATION_DOWNWARD,
+            y_orientation = ORIENTATION_LEFT_TO_RIGHT
+        )
         plot_item.style_updated.connect(self.styles_updated)
 
         plot_item.set_layer(data.get_layer())

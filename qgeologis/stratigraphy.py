@@ -34,7 +34,7 @@ class StratigraphyItem(LogItem):
     # emitted when the style is updated
     style_updated = pyqtSignal()
 
-    def __init__(self, width, height, column_mapping=None, style_file=None, symbology=None, parent=None):
+    def __init__(self, width, height, column_mapping=None, style_file=None, symbology=None, parent_item=None):
         """
         Parameters
         ----------
@@ -52,11 +52,11 @@ class StratigraphyItem(LogItem):
           File name of the QGIS style file to load
         symbology: QDomDocument
           QGIS style, as XML document
-        parent: QObject:
-          Qt parent object
+        parent: QGraphicsItem
+          Parent item
         """
 
-        LogItem.__init__(self, parent)
+        LogItem.__init__(self, parent_item)
 
         self.__width = width
         self.__height = height

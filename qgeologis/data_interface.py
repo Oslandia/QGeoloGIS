@@ -87,8 +87,10 @@ class LayerData(DataInterface):
         nodata_value: Optional[float]
           If None, null values will be removed
           Otherwise, they will be replaced by nodata_value
-        uom: Optional[float]
+        uom: Optional[str]
           Unit of measure
+          If uom starts with "@" it means the unit of measure is carried by a field name
+          e.g. @unit means the field "unit" carries the unit of measure
         """
 
         DataInterface.__init__(self)
@@ -183,137 +185,111 @@ class LayerData(DataInterface):
         self.data_modified.emit()
 
 
-class FeatureData(DataInterface):
-    """FeatureData model data that are stored on one feature (resp. row) in a layer (resp. table).
-    
-    This usually means data are the result of a sampling with a regular sampling interval for X.
-    The feature has one array attribute that stores all values and the X values are given during
-    construction.
+class IntervalData(DataInterface):
+    """IntervalData models data that have one Y value for a range of X values.
+
+    They are usually used to represent "continuous" data (as opposed to "discrete" data).
+    The Y value may represent an average on the range, or a sum.
+    X ranges may be of different sizes and not necessarily adjacent.
     """
 
-    def __init__(self, layer, y_fieldname, x_values=None, feature_ids=None, x_start=None, x_delta=None, x_start_fieldname=None, x_delta_fieldname=None):
+    def __init__(self, layer, x_min_fieldname, x_max_fieldname, y_fieldname, filter_expression = None, uom = None):
         """
-        layer: input QgsVectorLayer
-        y_fieldname: name of the field in the input layer that carries data
-        x_values: sequence of X values, that should be of the same length as data values.
-                  If None, X values are built based on x_start and x_delta
-        x_start: starting X value. Should be used with x_delta
-        x_delta: interval between two X values.
-        feature_ids: IDs of the features read. If set to None, the input data are assumed to represent one feature with ID=0
-                     If more than one feature id is passed, their data will be merged.
-                     In case of overlap between features, one will be arbitrarily chosen, and a warning will be raised.
-        x_start_fieldname: name of the field in the input layer that carries the starting X value
-        x_delta_fieldname: name of the field in the input layer that carries the interval between two X values
+        layer: QgsVectorLayer
+          Input vector layer
+        x_min_fieldname: str
+          Name of the field that carries the minimum value of each X interval
+        x_max_fieldname: str
+          Name of the field that carries the maximum value of each X interval
+        y_fieldname: str
+          Name of the field in the input layer that carries data
+        filter_expression: Optional[str]
+          Filter expression to apply to the input vector layer
+        uom: Optional[str]
+          Unit of measure
+          If uom starts with "@" it means the unit of measure is carried by a field name
+          e.g. @unit means the field "unit" carries the unit of measure
         """
-        x_start_defined = x_start is not None or x_start_fieldname is not None
-        x_delta_defined = x_delta is not None or x_delta_fieldname is not None
+        super().__init__()
 
-        if x_values is None:
-            if not x_start_defined and not x_delta_defined:
-                raise ValueError("Define either x_values or x_start / x_delta")
-            if (not x_start_defined and x_delta_defined) or (x_start_defined and not x_delta_defined):
-                raise ValueError("Both x_start and x_delta must be defined")
-
-        if feature_ids is None:
-            feature_ids = [0]
-
-        if x_start_fieldname is None and len(feature_ids) > 1:
-            raise ValueError("More than one feature, but only one starting value, define x_start_fieldname")
-        if x_delta_fieldname is None and len(feature_ids) > 1:
-            raise ValueError("More than one feature, but only one delta value, define x_delta_fieldname")
-
-        DataInterface.__init__(self)
-
-        self.__y_fieldname = y_fieldname
         self.__layer = layer
-        self.__x_values = x_values
-        self.__x_start = x_start
-        self.__x_start_fieldname = x_start_fieldname
-        self.__x_delta = x_delta
-        self.__x_delta_fieldname = x_delta_fieldname
-        self.__feature_ids = feature_ids
+        self.__x_min_fieldname = x_min_fieldname
+        self.__x_max_fieldname = x_max_fieldname
+        self.__y_fieldname = y_fieldname
+        self.__uom = uom
 
-        # TODO connect on feature modification
-
-        self.__build_data()
+    def get_x_values(self):
+        """Returns a sequence of (x_min, x_max) intervals"""
+        return None
 
     def get_y_values(self):
-        return self.__y_values
+        """Returns a sequence of y values (floats)"""
+        return None
+
+    def get_x_min(self):
+        """Returns the minimum X of all the intervals"""
+        return None
+
+    def get_x_max(self):
+        """Returns the maximum X of all the intervals"""
+        return None
+
+    def get_y_min(self):
+        """Returns the minimum Y value"""
+        return None
+
+    def get_y_max(self):
+        """Returns the maximum Y value"""
+        return None
 
     def get_layer(self):
         return self.__layer
 
-    def get_x_values(self):
-        return self.__x_values
-
-    def get_x_min(self):
-        return self.__x_min
-
-    def get_x_max(self):
-        return self.__x_max
-
-    def get_y_min(self):
-        return self.__y_min
-
-    def get_y_max(self):
-        return self.__y_max
-
+    """
     def __build_data(self):
 
         req = QgsFeatureRequest()
-        req.setFilterFids(self.__feature_ids)
+        if self.__filter_expression is not None:
+            req.setFilterExpression(self.__filter_expression)
 
-        self.__x_values = []
-        self.__y_values = []
-        current_data_range = None
-        for f in self.__layer.getFeatures(req):
-            raw_data = f[self.__y_fieldname]
-            if self.__x_start_fieldname is not None:
-                x_start = f[self.__x_start_fieldname]
-                x_delta = f[self.__x_delta_fieldname]
-            else:
-                x_start = self.__x_start
-                x_delta = self.__x_delta
+        # Get unit of the first feature if needed
+        if self.__uom is not None and self.__uom.startswith("@"):
+            request_unit = QgsFeatureRequest(req)
+            request_unit.setLimit(1)
+            for f in self.__layer.getFeatures(request_unit):
+                self.__uom = f[self.__uom[1:]]
+                break
 
-            if isinstance(raw_data, list):
-                # QGIS 3 natively reads array values
-                # Null values still have to be filtered out
-                # WARNING: extracting list from PostgreSQL's arrays seem very sloowww
-                y_values = [None if isinstance(x, QVariant) else x for x in raw_data]
-            elif isinstance(raw_data, str):
-                # We assume values are separated by a ','
-                y_values = [None if value == 'NULL' else float(value)
-                                   for value in raw_data.split(",")]
-            else:
-                print("Unsupported data format: {}".format(raw_data.__class__))
+        req.setSubsetOfAttributes(
+            [
+                self.__x_min_fieldname,
+                self._x_max_fieldname,
+                self.__y_fieldname
+            ],
+            self.__layer.fields()
+        )
+        # Do not forget to add an index on this field to speed up ordering
+        req.addOrderBy(self.__x_min_fieldname)
 
-            x_values = np.linspace(x_start, x_start + x_delta * (len(y_values) - 1), len(y_values)).tolist()
-            
-            data_range = (x_start, x_start + x_delta * (len(y_values) - 1))
-            if current_data_range is None:
-                current_data_range = data_range
-                self.__x_values = x_values
-                self.__y_values = y_values
-            else:
-                # look for overlap
-                if (current_data_range[0] < data_range[0] < current_data_range[1]) or \
-                   (current_data_range[0] < data_range[1] < current_data_range[1]):
-                    print("Overlap in data around feature #{}".format(f.id()))
-                    continue
-                if current_data_range[0] > data_range[1]:
-                    # new data are "on the left"
-                    self.__x_values = x_values + self.__x_values
-                    self.__y_values = y_values + self.__y_values
-                else:
-                    # new data are "on the right"
-                    self.__x_values = self.__x_values + x_values
-                    self.__y_values = self.__y_values + y_values
-                current_data_range = (self.__x_values[0], self.__x_values[-1])
+        def is_null(v):
+            return isinstance(v, QVariant) and v.isNull()
 
-        self.__x_min, self.__x_max = ((min(self.__x_values), max(self.__x_values))
-                                      if self.__x_values else (None, None))
-        self.__y_min, self.__y_max = ((min(y for y in self.__y_values if y is not None),
-                                       max(y for y in self.__y_values if y is not None))
-                                      if self.__y_values else (None, None))
+        # do not include null values
+        xy_values = [
+            (f[self.__x_min_fieldname], f[self.__x_max_fieldname], f[self.__y_fieldname])
+            for f in self.__layer.getFeatures(req)
+            if not is_null(f[self.__y_fieldname])
+        ]
+
+        self.__x_values = [(coord[0], coord[1]) for coord in xy_values]
+        self.__y_values = [coord[2] for coord in xy_values]
+
+        self.__x_min = min((x[0] for x in self.__x_values)) \
+            if self.__x_values else None
+        self.__x_max = max((x[1] for x in self.__x_values)) \
+            if self.__x_values else None
+        self.__y_min, self.__y_max = (min(self.__y_values), max(self.__y_values)) \
+            if self.__y_values else (None, None)
 
         self.data_modified.emit()
+    """

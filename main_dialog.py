@@ -29,12 +29,12 @@ from qgis.core import QgsProject, QgsFeatureRequest
 from .config_create_dialog import ConfigCreateDialog
 from .qgeologis.log_view import WellLogView
 from .qgeologis.timeseries_view import TimeSeriesView
-from .qgeologis.data_interface import LayerData, FeatureData
+from .qgeologis.data_interface import LayerData, IntervalData
 from .data_selector import DataSelector
 from .config import LayerConfig, PlotConfig
 
 
-def load_plots(feature, config, add_function, config_list):
+def load_plots(obj, feature, config, config_list):
 
     feature_id = feature[config["id_column"]]
     feature_name = feature[config["name_column"]]
@@ -42,6 +42,8 @@ def load_plots(feature, config, add_function, config_list):
     min_x = []
     max_x = []
     for cfg in config_list:
+
+        print(cfg)
 
         if cfg.get("feature_filter_type") == "unique_data_from_values":
             # don't load it now, we need to filter
@@ -72,19 +74,31 @@ def load_plots(feature, config, add_function, config_list):
                 )
                 uom = data.uom()
 
-            if cfg["type"] == "continuous":
-                req = QgsFeatureRequest()
-                req.setFilterExpression(filter_expr)
-                uom = cfg.get_uom()
-                fids = [f.id() for f in data_l.getFeatures(req)]
-                data = FeatureData(data_l, cfg["values_column"], feature_ids=fids,
-                                   x_start_fieldname=cfg["start_measure_column"],
-                                   x_delta_fieldname=cfg["interval_column"])
+                if data.get_x_min() is not None:
+                    min_x.append(data.get_x_min())
+                    max_x.append(data.get_x_max())
+                    # FIXME
+                    if hasattr(obj, "add_data_row"):
+                        obj.add_data_row(data, title, uom, station_name=feature_name, config=cfg)
+                    elif hasattr(obj, "add_data_column"):
+                        obj.add_data_column(data, title, uom, station_name=feature_name, config=cfg)
 
-            if data.get_x_min() is not None:
-                min_x.append(data.get_x_min())
-                max_x.append(data.get_x_max())
-                add_function(data, title, uom, station_name=feature_name, config=cfg)
+            elif cfg["type"] == "continuous":
+                obj.add_histogram(
+                    data_l,
+                    filter_expr,
+                    {
+                        f : cfg[f] for f in (
+                            "min_event_column",
+                            "max_event_column",
+                            "value_column"
+                        )
+                    },
+                    title,
+                    config=cfg,
+                    station_name=feature_name
+                )
+
     if not min_x:
         return None, None
     else:
@@ -147,7 +161,7 @@ class WellLogViewWrapper(WellLogView):
             )
 
         # load log measures
-        load_plots(feature, self.__config, self.add_data_column,
+        load_plots(self, feature, self.__config,
                    self.__config.get_log_plots())
 
         # load imagery
@@ -218,7 +232,7 @@ class TimeSeriesWrapper(TimeSeriesView):
         min_x = []
         max_x = []
         for feature in self.__features:
-            fmin_x, fmax_x = load_plots(feature, self.__config, self.add_data_row,
+            fmin_x, fmax_x = load_plots(self, feature, self.__config,
                                         self.__config.get_timeseries())
             if fmin_x:
                 min_x.append(fmin_x)

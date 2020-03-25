@@ -49,7 +49,7 @@ class PlotItem(LogItem):
                  allow_mouse_translation=False,
                  allow_wheel_zoom=False,
                  symbology=None,
-                 parent=None):
+                 parent_item=None):
 
         """
         Parameters
@@ -66,9 +66,9 @@ class PlotItem(LogItem):
           Allow the user to zoom with the mouse wheel
         symbology: QDomDocument
           QGIS symbology to use for the renderer
-        parent: QObject
+        parent_item: QGraphicsItem
         """
-        LogItem.__init__(self, parent)
+        LogItem.__init__(self, parent_item)
 
         self.__item_size = size
         self.__data_rect = None

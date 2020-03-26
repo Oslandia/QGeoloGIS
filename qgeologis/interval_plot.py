@@ -278,8 +278,6 @@ class IntervalPlotItem(LogItem):
         rw = self.width() / self.__data_rect.width()
         rh = self.height() / self.__data_rect.height()
 
-        print("render_type", self.__render_type)
-
         for i in range(len(self.__y_values)):
             f = QgsFeature(self.__layer.fields())
             min_x, max_x = self.__min_x_values[i], self.__max_x_values[i]

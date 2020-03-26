@@ -369,20 +369,21 @@ class TimeSeriesView(QWidget):
             y_orientation=ORIENTATION_UPWARD,
             symbology=symbology
         )
-        self.set_x_range(item.min_depth(), item.max_depth())
-        item.style_updated.connect(self.styles_updated)
-        legend_item = LegendItem(
-            self.DEFAULT_ROW_HEIGHT,
-            title,
-            unit_of_measure=config["uom"],
-            is_vertical=True
-        )
-        min_y, max_y = item.data_window().top(), item.data_window().bottom()
-        legend_item.set_scale(min_y, max_y)
+        if item.data_window():
+            self.set_x_range(item.min_depth(), item.max_depth())
+            item.style_updated.connect(self.styles_updated)
+            legend_item = LegendItem(
+                self.DEFAULT_ROW_HEIGHT,
+                title,
+                unit_of_measure=config["uom"],
+                is_vertical=True
+            )
+            min_y, max_y = item.data_window().top(), item.data_window().bottom()
+            legend_item.set_scale(min_y, max_y)
 
-        item.tooltipRequested.connect(lambda txt:self.on_plot_tooltip(station_name, txt))
+            item.tooltipRequested.connect(lambda txt:self.on_plot_tooltip(station_name, txt))
 
-        self._add_row(item, legend_item)
+            self._add_row(item, legend_item)
 
     def select_row_at(self, pos):
         y = pos.y()

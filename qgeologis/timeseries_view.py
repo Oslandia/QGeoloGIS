@@ -341,12 +341,12 @@ class TimeSeriesView(QWidget):
         self.__scene.update()
 
     def add_histogram(self, layer, filter_expression, column_mapping, title, config=None, station_name=""):
-        """Add stratigraphy data
+        """Add histogram data
 
         Parameters
         ----------
         layer: QgsVectorLayer
-          The layer where stratigraphic data are stored
+          The input layer
         filter_expression: str
           A QGIS expression to filter the vector layer
         column_mapping: dict
@@ -375,7 +375,7 @@ class TimeSeriesView(QWidget):
             legend_item = LegendItem(
                 self.DEFAULT_ROW_HEIGHT,
                 title,
-                unit_of_measure=config["uom"],
+                unit_of_measure=config.get("uom"),
                 is_vertical=True
             )
             min_y, max_y = item.data_window().top(), item.data_window().bottom()

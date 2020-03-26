@@ -24,13 +24,22 @@ from PyQt5.QtCore import (
 from PyQt5.QtGui import (
     QPolygonF
 )
+from PyQt5.QtWidgets import (
+    QStackedWidget,
+    QComboBox,
+    QDialog,
+    QVBoxLayout,
+    QDialogButtonBox
+)
 
 from qgis.core import (
     QgsFeatureRenderer,
     QgsReadWriteContext,
     QgsFeatureRequest,
     QgsRectangle,
-    QgsGeometry
+    QgsGeometry,
+    QgsPointXY,
+    QgsFeature
 )
 
 from .common import LINE_RENDERER, POLYGON_RENDERER, qgis_render_context
@@ -158,10 +167,13 @@ class IntervalPlotItem(LogItem):
             max_y = min_y + 1.0
             h = 1.0
         max_y += h * 0.1
-        self.__data_rect = QRectF(
-            min_x, min_y,
-            max_x-min_x, max_y-min_y
-        )            
+
+        self.set_data_window(
+            QRectF(
+                min_x, min_y,
+                max_x-min_x, max_y-min_y
+            )
+        )
 
     def boundingRect(self):
         return QRectF(0, 0, self.__item_size.width(), self.__item_size.height())
@@ -179,6 +191,13 @@ class IntervalPlotItem(LogItem):
     def set_data_window(self, window):
         """window: QRectF"""
         self.__data_rect = window
+        self._invalidate_cache()
+
+    def _invalidate_cache(self):
+        # invalidate cache
+        self.__min_x_values = []
+        self.__max_x_values = []
+        self.__y_values = []
 
     def min_depth(self):
         if self.__data_rect is None:
@@ -192,10 +211,12 @@ class IntervalPlotItem(LogItem):
     def set_min_depth(self, min_depth):
         if self.__data_rect is not None:
             self.__data_rect.setX(min_depth)
+            self._invalidate_cache()
     def set_max_depth(self, max_depth):
         if self.__data_rect is not None:
             w = max_depth - self.__data_rect.x()
             self.__data_rect.setWidth(w)
+            self._invalidate_cache()
 
     def layer(self):
         return self.__layer
@@ -208,19 +229,7 @@ class IntervalPlotItem(LogItem):
     def renderer(self):
         return self.__renderer
 
-    def paint(self, painter, option, widget):
-        self.draw_background(painter)
-        if self.__data_rect is None:
-            return
-
-        context = qgis_render_context(painter, self.width(), self.height())
-        context.setExtent(QgsRectangle(0, 0, self.width(), self.height()))
-        fields = self.__layer.fields()
-
-        context.expressionContext().setFields(fields)
-
-        self.__renderer.startRender(context, fields)
-
+    def _populate_cache(self):
         req = QgsFeatureRequest()
         filter = self.__filter_expression or ""
         if filter:
@@ -236,7 +245,7 @@ class IntervalPlotItem(LogItem):
                 self.__max_x_field,
                 self.__y_field
             ],
-            fields
+            self.__layer.fields()
         )
         req.addOrderBy(self.__min_x_field)
 
@@ -245,34 +254,61 @@ class IntervalPlotItem(LogItem):
         self.__max_x_values = []
         self.__y_values = []
 
+        for f in self.__layer.getFeatures(req):
+            self.__min_x_values.append(f[self.__min_x_field])
+            self.__max_x_values.append(f[self.__max_x_field])
+            self.__y_values.append(f[self.__y_field])
+
+    def paint(self, painter, option, widget):
+        self.draw_background(painter)
+        if self.__data_rect is None:
+            return
+
+        context = qgis_render_context(painter, self.width(), self.height())
+        context.setExtent(QgsRectangle(0, 0, self.width(), self.height()))
+        fields = self.__layer.fields()
+
+        context.expressionContext().setFields(fields)
+
+        self.__renderer.startRender(context, fields)
+
+        if not self.__y_values:
+            self._populate_cache()
+
         rw = self.width() / self.__data_rect.width()
         rh = self.height() / self.__data_rect.height()
 
-        for f in self.__layer.getFeatures(req):
-            min_x, max_x = f[self.__min_x_field], f[self.__max_x_field]
-            value = f[self.__y_field]
+        print("render_type", self.__render_type)
+
+        for i in range(len(self.__y_values)):
+            f = QgsFeature(self.__layer.fields())
+            min_x, max_x = self.__min_x_values[i], self.__max_x_values[i]
+            value = self.__y_values[i]
             min_xx = (min_x - self.__data_rect.x()) * rw
             max_xx = (max_x - self.__data_rect.x()) * rw
             yy = (value - self.__data_rect.y()) * rh
 
-            geom = QgsGeometry.fromQPolygonF(
-                QPolygonF(
-                    QRectF(
-                        min_xx,
-                        0,
-                        max_xx - min_xx,
-                        yy
+            if self.__render_type == POLYGON_RENDERER:
+                geom = QgsGeometry.fromQPolygonF(
+                    QPolygonF(
+                        QRectF(
+                            min_xx,
+                            0,
+                            max_xx - min_xx,
+                            yy
+                        )
                     )
                 )
-            )
+            elif self.__render_type == LINE_RENDERER:
+                geom = QgsGeometry.fromPolylineXY(
+                    [
+                        QgsPointXY(min_xx, yy),
+                        QgsPointXY(max_xx, yy)
+                    ]
+                )
             f.setGeometry(geom)
 
             self.__renderer.renderFeature(f, context)
-
-            # populate picking cache
-            self.__min_x_values.append(f[self.__min_x_field])
-            self.__max_x_values.append(f[self.__max_x_field])
-            self.__y_values.append(f[self.__y_field])
 
         if self.__point_to_label is not None:
             i = self.__point_to_label
@@ -320,28 +356,29 @@ class IntervalPlotItem(LogItem):
         self.__old_point_to_label = self.__point_to_label
 
     def edit_style(self):
-        pass
-        """
         from qgis.gui import QgsSingleSymbolRendererWidget
         from qgis.core import QgsStyle
 
         style = QgsStyle()
         sw = QStackedWidget()
-        sw.addWidget
-        for i in range(3):
-            if self.__renderer and i == self.__render_type:
-                w = QgsSingleSymbolRendererWidget(self.__layer, style, self.__renderer)
-            else:
-                w = QgsSingleSymbolRendererWidget(self.__layer, style, self.__default_renderers[i])
-            sw.addWidget(w)
+
+        if self.__renderer and self.__render_type == LINE_RENDERER:
+            w = QgsSingleSymbolRendererWidget(self.__layer, style, self.__renderer)
+        else:
+            w = QgsSingleSymbolRendererWidget(self.__layer, style, self.__default_renderers[LINE_RENDERER])
+        sw.addWidget(w)
+        if self.__renderer and self.__render_type == POLYGON_RENDERER:
+            w = QgsSingleSymbolRendererWidget(self.__layer, style, self.__renderer)
+        else:
+            w = QgsSingleSymbolRendererWidget(self.__layer, style, self.__default_renderers[POLYGON_RENDERER])
+        sw.addWidget(w)
 
         combo = QComboBox()
-        combo.addItem("Points")
         combo.addItem("Line")
         combo.addItem("Polygon")
 
         combo.currentIndexChanged[int].connect(sw.setCurrentIndex)
-        combo.setCurrentIndex(self.__render_type)
+        combo.setCurrentIndex(self.__render_type - 1)
 
         dlg = QDialog()
 
@@ -361,11 +398,10 @@ class IntervalPlotItem(LogItem):
         r = dlg.exec_()
 
         if r == QDialog.Accepted:
-            self.__render_type = combo.currentIndex()
+            self.__render_type = combo.currentIndex() + 1
             self.__renderer = sw.currentWidget().renderer().clone()
             self.update()
             self.style_updated.emit()
-        """
 
     def qgis_style(self):
         """Returns the current style, as a QDomDocument"""

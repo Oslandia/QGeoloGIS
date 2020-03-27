@@ -31,6 +31,7 @@ from .z_scale import ZScaleItem
 from .stratigraphy import StratigraphyItem
 from .legend_item import LegendItem
 from .imagery_data import ImageryDataItem
+from .interval_plot import IntervalPlotItem
 
 import os
 
@@ -401,6 +402,51 @@ class WellLogView(QWidget):
         legend_item = LegendItem(self.DEFAULT_COLUMN_WIDTH, title)
 
         self._add_column(item, legend_item)
+
+    def add_histogram(self, layer, filter_expression, column_mapping, title, config=None, station_name=""):
+        """Add histogram data
+
+        Parameters
+        ----------
+        layer: QgsVectorLayer
+          The input layer
+        filter_expression: str
+          A QGIS expression to filter the vector layer
+        column_mapping: dict
+          Dictionary of column names
+        title: str
+          Title of the graph
+        config: PlotConfig
+        station_name: str
+          Name of the station
+        """
+        symbology, symbology_type = config.get_symbology()
+
+        item = IntervalPlotItem(
+            layer,
+            column_mapping=column_mapping,
+            filter_expression=filter_expression,
+            size=QSizeF(self.DEFAULT_COLUMN_WIDTH, self.__log_scene.height()),
+            render_type=POLYGON_RENDERER if symbology_type is None else symbology_type,
+            x_orientation=ORIENTATION_DOWNWARD,
+            y_orientation=ORIENTATION_LEFT_TO_RIGHT,
+            symbology=symbology
+        )
+        if item.data_window():
+            #self.set_x_range(item.min_depth(), item.max_depth())
+            item.style_updated.connect(self.styles_updated)
+            legend_item = LegendItem(
+                self.DEFAULT_COLUMN_WIDTH,
+                title,
+                unit_of_measure=config.get("uom"),
+                is_vertical=False
+            )
+            min_y, max_y = item.data_window().top(), item.data_window().bottom()
+            legend_item.set_scale(min_y, max_y)
+
+            item.tooltipRequested.connect(lambda txt:self.on_plot_tooltip(txt, station_name))
+
+            self._add_column(item, legend_item)
 
     def select_column_at(self, pos):
         x = pos.x()

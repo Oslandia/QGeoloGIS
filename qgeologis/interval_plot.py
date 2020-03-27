@@ -275,35 +275,60 @@ class IntervalPlotItem(LogItem):
         if not self.__y_values:
             self._populate_cache()
 
-        rw = self.width() / self.__data_rect.width()
-        rh = self.height() / self.__data_rect.height()
+        if self.__x_orientation == ORIENTATION_LEFT_TO_RIGHT and self.__y_orientation == ORIENTATION_UPWARD:
+            rw = self.width() / self.__data_rect.width()
+            rh = self.height() / self.__data_rect.height()
+        elif self.__x_orientation == ORIENTATION_DOWNWARD and self.__y_orientation == ORIENTATION_LEFT_TO_RIGHT:
+            rw = self.height() / self.__data_rect.width()
+            rh = self.width() / self.__data_rect.height()
 
         for i in range(len(self.__y_values)):
             f = QgsFeature(self.__layer.fields())
             min_x, max_x = self.__min_x_values[i], self.__max_x_values[i]
             value = self.__y_values[i]
-            min_xx = (min_x - self.__data_rect.x()) * rw
-            max_xx = (max_x - self.__data_rect.x()) * rw
-            yy = (value - self.__data_rect.y()) * rh
+            min_xx = (min_x - self.__data_rect.left()) * rw
+            max_xx = (max_x - self.__data_rect.left()) * rw
+            yy = (value - self.__data_rect.top()) * rh
 
             if self.__render_type == POLYGON_RENDERER:
-                geom = QgsGeometry.fromQPolygonF(
-                    QPolygonF(
-                        QRectF(
-                            min_xx,
-                            0,
-                            max_xx - min_xx,
-                            yy
+                if self.__x_orientation == ORIENTATION_LEFT_TO_RIGHT and self.__y_orientation == ORIENTATION_UPWARD:
+                    geom = QgsGeometry.fromQPolygonF(
+                        QPolygonF(
+                            QRectF(
+                                min_xx,
+                                0,
+                                max_xx - min_xx,
+                                yy
+                            )
                         )
                     )
-                )
+                elif self.__x_orientation == ORIENTATION_DOWNWARD and self.__y_orientation == ORIENTATION_LEFT_TO_RIGHT:
+                    geom = QgsGeometry.fromQPolygonF(
+                        QPolygonF(
+                            QRectF(
+                                0,
+                                self.height() - max_xx,
+                                yy,
+                                max_xx - min_xx
+                            )
+                        )
+                    )
+                    
             elif self.__render_type == LINE_RENDERER:
-                geom = QgsGeometry.fromPolylineXY(
-                    [
-                        QgsPointXY(min_xx, yy),
-                        QgsPointXY(max_xx, yy)
-                    ]
-                )
+                if self.__x_orientation == ORIENTATION_LEFT_TO_RIGHT and self.__y_orientation == ORIENTATION_UPWARD:
+                    geom = QgsGeometry.fromPolylineXY(
+                        [
+                            QgsPointXY(min_xx, yy),
+                            QgsPointXY(max_xx, yy)
+                        ]
+                    )
+                elif self.__x_orientation == ORIENTATION_DOWNWARD and self.__y_orientation == ORIENTATION_LEFT_TO_RIGHT:
+                    geom = QgsGeometry.fromPolylineXY(
+                        [
+                            QgsPointXY(yy, min_xx),
+                            QgsPointXY(yy, max_xx)
+                        ]
+                    )
             f.setGeometry(geom)
 
             self.__renderer.renderFeature(f, context)
@@ -318,6 +343,11 @@ class IntervalPlotItem(LogItem):
                 px2 = (x2 - self.__data_rect.x()) * rw
                 px = (px1 + px2) / 2.0
                 py = self.height() - (y - self.__data_rect.y()) * rh
+            elif self.__x_orientation == ORIENTATION_DOWNWARD and self.__y_orientation == ORIENTATION_LEFT_TO_RIGHT:
+                py1 = (x1 - self.__data_rect.x()) * rw
+                py2 = (x2 - self.__data_rect.x()) * rw
+                py = (py1 + py2) / 2.0
+                px = (y - self.__data_rect.y()) * rh
             painter.drawLine(px-5, py-5, px+5, py+5)
             painter.drawLine(px-5, py+5, px+5, py-5)
 

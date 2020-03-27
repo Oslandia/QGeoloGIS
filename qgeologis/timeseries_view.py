@@ -256,7 +256,7 @@ class TimeSeriesView(QWidget):
 
         # remove from internal lists
         self.__rows = []
-        self.__rows_widths = []
+        self.__rows_widths = [] # rows_heights ?
         self.__data2logitems = {}
 
         self.select_row(-1)
@@ -381,7 +381,7 @@ class TimeSeriesView(QWidget):
             min_y, max_y = item.data_window().top(), item.data_window().bottom()
             legend_item.set_scale(min_y, max_y)
 
-            item.tooltipRequested.connect(lambda txt:self.on_plot_tooltip(station_name, txt))
+            item.tooltipRequested.connect(lambda txt:self.on_plot_tooltip(txt, station_name))
 
             self._add_row(item, legend_item)
 

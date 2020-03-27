@@ -78,7 +78,7 @@ class DataSelector(QDialog):
     def _populate_list(self):
         self.__list.clear()
         for cfg in self.__config_list:
-            if cfg["type"] in ("continuous", "instantaneous"):
+            if cfg["type"] in ("cumulative", "instantaneous"):
                 # check number of features for this station
 
                 if cfg.get("feature_filter_type") == "unique_data_from_values":
@@ -114,7 +114,7 @@ class DataSelector(QDialog):
         for item in self.__list.selectedItems():
             # now add the selected configuration
             cfg = item.data(Qt.UserRole)
-            if cfg["type"] in ("continuous", "instantaneous"):
+            if cfg["type"] in ("cumulative", "instantaneous"):
                 layerid = cfg["source"]
                 data_l = QgsProject.instance().mapLayers()[layerid]
                 req = QgsFeatureRequest()
@@ -146,7 +146,7 @@ class DataSelector(QDialog):
                         filter_expression=filter_expr,
                         uom=uom
                     )
-                elif cfg["type"] == "continuous":
+                elif cfg["type"] == "cumulative":
                     data = IntervalData(
                         data_l,
                         cfg["min_event_column"],

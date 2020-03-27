@@ -50,7 +50,7 @@ def load_plots(obj, feature, config, config_list):
             # we will load it from data selector
             continue
 
-        if cfg["type"] in ("continuous", "instantaneous"):
+        if cfg["type"] in ("cumulative", "instantaneous"):
             layerid = cfg.get_layerid()
             data_l = QgsProject.instance().mapLayers()[layerid]
             filter_expr = "{}='{}'".format(cfg["feature_ref_column"],
@@ -83,7 +83,7 @@ def load_plots(obj, feature, config, config_list):
                     elif hasattr(obj, "add_data_column"):
                         obj.add_data_column(data, title, uom, station_name=feature_name, config=cfg)
 
-            elif cfg["type"] == "continuous":
+            elif cfg["type"] == "cumulative":
                 obj.add_histogram(
                     data_l,
                     filter_expr,

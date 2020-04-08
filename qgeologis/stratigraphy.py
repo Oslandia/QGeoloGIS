@@ -155,14 +155,14 @@ class StratigraphyItem(LogItem):
 
                     if has_formation_code:
                         # legend text
-                        formation_code = str(self.__field_value(f, "formation_code_column"))
+                        formation_code = self.__field_value(f, "formation_code_column")
                         if formation_code:
                             fm = painter.fontMetrics()
-                            w = fm.width(formation_code)
+                            w = fm.width(str(formation_code))
                             x = (self.__width/2 - w) / 2 + self.__width/2
                             y = (y1+y2)/2
                             if y - fm.ascent() > y1 and y + fm.descent() < y2:
-                                painter.drawText(x, y, formation_code)
+                                painter.drawText(x, y, str(formation_code))
 
                         geom = QgsGeometry.fromQPolygonF(QPolygonF(QRectF(0, self.__height-y1, self.__width/2, y1-y2)))
                     else:

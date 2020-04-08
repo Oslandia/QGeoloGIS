@@ -331,7 +331,6 @@ class PlotView(QWidget):
         self._place_items()
 
     def set_x_range(self, min_x, max_x):
-        print("set_x_range", min_x, max_x)
         self._min_x, self._max_x = min_x, max_x
         # Add a scale if none yet
         self.add_scale()
@@ -454,7 +453,6 @@ class PlotView(QWidget):
         plot_item.set_data(data.get_x_values(), data.get_y_values())
         win = plot_item.data_window()
         min_x, min_y, max_x, max_y = win.left(), win.top(), win.right(), win.bottom()
-        print(min_x, min_y, max_x, max_y)
 
         if config and config.get("min") is not None:
             min_y = float(config['min'])
@@ -462,7 +460,6 @@ class PlotView(QWidget):
             max_y = float(config['max'])
 
         # legend
-        print("min_y", min_y, "max_y", max_y)
         legend_item.set_scale(min_y, max_y)
         plot_item.set_data_window(QRectF(min_x, min_y, max_x-min_x, max_y-min_y))
 

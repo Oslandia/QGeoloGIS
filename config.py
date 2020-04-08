@@ -146,6 +146,7 @@ class LayerConfig:
         self.__stratigraphy_plots = [PlotConfig(p, self) for p in self.__config.get("stratigraphy_config", [])]
         self.__log_plots = [PlotConfig(p, self) for p in self.__config.get("log_measures", [])]
         self.__timeseries = [PlotConfig(p, self) for p in self.__config.get("timeseries", [])]
+        self.__imageries = [PlotConfig(p, self) for p in self.__config.get("imagery_data", [])]
 
     def get(self, key, default=None):
         return self.__config.get(key, default)
@@ -158,6 +159,9 @@ class LayerConfig:
 
     def get_log_plots(self):
         return self.__log_plots
+
+    def get_imageries(self):
+        return self.__imageries
 
     def get_timeseries(self):
         return self.__timeseries

@@ -270,8 +270,6 @@ class IntervalPlotItem(LogItem):
 
         context.expressionContext().setFields(fields)
 
-        self.__renderer.startRender(context, fields)
-
         if not self.__y_values:
             self._populate_cache()
 
@@ -281,6 +279,8 @@ class IntervalPlotItem(LogItem):
         elif self.__x_orientation == ORIENTATION_DOWNWARD and self.__y_orientation == ORIENTATION_LEFT_TO_RIGHT:
             rw = self.height() / self.__data_rect.width()
             rh = self.width() / self.__data_rect.height()
+
+        self.__renderer.startRender(context, fields)
 
         for i in range(len(self.__y_values)):
             f = QgsFeature(self.__layer.fields())
@@ -330,8 +330,9 @@ class IntervalPlotItem(LogItem):
                         ]
                     )
             f.setGeometry(geom)
-
             self.__renderer.renderFeature(f, context)
+
+        self.__renderer.stopRender(context)
 
         if self.__point_to_label is not None:
             i = self.__point_to_label
@@ -350,9 +351,6 @@ class IntervalPlotItem(LogItem):
                 px = (y - self.__data_rect.y()) * rh
             painter.drawLine(px-5, py-5, px+5, py+5)
             painter.drawLine(px-5, py+5, px+5, py-5)
-
-                    
-        self.__renderer.stopRender(context)
 
     def mouseMoveEvent(self, event):
         if self.__x_orientation == ORIENTATION_LEFT_TO_RIGHT and self.__y_orientation == ORIENTATION_UPWARD:

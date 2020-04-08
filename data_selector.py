@@ -23,7 +23,7 @@ from qgis.PyQt.QtWidgets import (QListWidget, QListWidgetItem, QHBoxLayout, QLab
 from qgis.core import QgsProject, QgsFeatureRequest
 
 from .config import PlotConfig
-from .qgeologis.data_interface import IntervalData, LayerData
+from .qgeologis.data_interface import IntervalData, LayerData, FeatureData
 
 
 class DataSelector(QDialog):
@@ -107,6 +107,8 @@ class DataSelector(QDialog):
             self.__load_feature(feature)
 
     def __load_feature(self, feature):
+        # FIXME this code too similar to main_dialog.load_plots
+        # FIXME find a way to factor
 
         feature_id = feature[self.__config["id_column"]]
         feature_name = feature[self.__config["name_column"]]
@@ -114,7 +116,7 @@ class DataSelector(QDialog):
         for item in self.__list.selectedItems():
             # now add the selected configuration
             cfg = item.data(Qt.UserRole)
-            if cfg["type"] in ("cumulative", "instantaneous"):
+            if cfg["type"] in ("cumulative", "instantaneous", "continuous"):
                 layerid = cfg["source"]
                 data_l = QgsProject.instance().mapLayers()[layerid]
                 req = QgsFeatureRequest()
@@ -155,8 +157,22 @@ class DataSelector(QDialog):
                         config=cfg
                     )
                     self.__viewer.add_scale()
-                # FIXME continuous
-                    
+                if cfg["type"] == "continuous":
+                    fids = [f.id() for f in data_l.getFeatures(req)]
+                    data = FeatureData(
+                        data_l,
+                        cfg["values_column"],
+                        feature_ids=fids,
+                        x_start_fieldname=cfg["start_measure_column"],
+                        x_delta_fieldname=cfg["interval_column"]
+                    )
+                    self.__viewer.add_data_cell(
+                        data,
+                        title,
+                        uom,
+                        station_name=feature_name,
+                        config=cfg
+                    )
                 elif cfg["type"] == "cumulative":
                     data = IntervalData(
                         data_l,

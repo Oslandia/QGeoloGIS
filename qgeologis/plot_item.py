@@ -35,7 +35,6 @@ import bisect
 import math
 from datetime import datetime
 
-
 class PlotItem(LogItem):
 
     # emitted when the style is updated
@@ -174,9 +173,9 @@ class PlotItem(LogItem):
         max_x = max(self.__x_values)
         min_y = min(self.__y_values)
         max_y = max(self.__y_values)
-        if max_y == 0.0:
-            max_y = 1.0
         h = max_y - min_y
+        if h == 0.0:
+            h = 1.0
         min_y -= h * 0.1
         max_y += h * 0.1
         self.__data_rect = QRectF(

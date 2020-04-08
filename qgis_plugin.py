@@ -139,7 +139,11 @@ class QGeoloGISPlugin:
             else:
                 return
 
-        self.__dock = QDockWidget("Well Log")
+        if plot_type == "logs":
+            self.__dock = QDockWidget("Well Logs")
+        else:
+            self.__dock = QDockWidget("Timeseries")
+        self.__dock.setObjectName("QGeoloGIS_plot_view_dock")
         dialog = MainDialog(self.__dock, plot_type, self.__config, layer, self.iface)
         self.__dock.setWidget(dialog)
         self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.__dock)
@@ -192,7 +196,6 @@ class QGeoloGISPlugin:
         dlg.setLayout(vbox)
 
         r = dlg.exec_()
-        print(r)
         if r == QDialog.Accepted:
             filename = file_dialog.selectedFiles()[0]
             s.setValue("config_last_dir", os.path.dirname(filename))

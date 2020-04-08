@@ -293,3 +293,138 @@ class IntervalData(DataInterface):
 
         self.data_modified.emit()
     """
+
+class FeatureData(DataInterface):
+    """FeatureData model data that are stored on one feature (resp. row) in a layer (resp. table).
+
+    This usually means data are the result of a sampling with a regular sampling interval for X.
+    The feature has one array attribute that stores all values and the X values are given during
+    construction.
+    """
+
+    def __init__(self, layer, y_fieldname, x_values=None, feature_ids=None, x_start=None, x_delta=None, x_start_fieldname=None, x_delta_fieldname=None):
+        """
+        layer: input QgsVectorLayer
+        y_fieldname: name of the field in the input layer that carries data
+        x_values: sequence of X values, that should be of the same length as data values.
+                  If None, X values are built based on x_start and x_delta
+        x_start: starting X value. Should be used with x_delta
+        x_delta: interval between two X values.
+        feature_ids: IDs of the features read. If set to None, the input data are assumed to represent one feature with ID=0
+                     If more than one feature id is passed, their data will be merged.
+                     In case of overlap between features, one will be arbitrarily chosen, and a warning will be raised.
+        x_start_fieldname: name of the field in the input layer that carries the starting X value
+        x_delta_fieldname: name of the field in the input layer that carries the interval between two X values
+        """
+        x_start_defined = x_start is not None or x_start_fieldname is not None
+        x_delta_defined = x_delta is not None or x_delta_fieldname is not None
+
+        if x_values is None:
+            if not x_start_defined and not x_delta_defined:
+                raise ValueError("Define either x_values or x_start / x_delta")
+            if (not x_start_defined and x_delta_defined) or (x_start_defined and not x_delta_defined):
+                raise ValueError("Both x_start and x_delta must be defined")
+
+        if feature_ids is None:
+            feature_ids = [0]
+
+        if x_start_fieldname is None and len(feature_ids) > 1:
+            raise ValueError("More than one feature, but only one starting value, define x_start_fieldname")
+        if x_delta_fieldname is None and len(feature_ids) > 1:
+            raise ValueError("More than one feature, but only one delta value, define x_delta_fieldname")
+
+        DataInterface.__init__(self)
+
+        self.__y_fieldname = y_fieldname
+        self.__layer = layer
+        self.__x_values = x_values
+        self.__x_start = x_start
+        self.__x_start_fieldname = x_start_fieldname
+        self.__x_delta = x_delta
+        self.__x_delta_fieldname = x_delta_fieldname
+        self.__feature_ids = feature_ids
+
+        # TODO connect on feature modification
+
+        self.__build_data()
+
+    def get_y_values(self):
+        return self.__y_values
+
+    def get_layer(self):
+        return self.__layer
+
+    def get_x_values(self):
+        return self.__x_values
+
+    def get_x_min(self):
+        return self.__x_min
+
+    def get_x_max(self):
+        return self.__x_max
+
+    def get_y_min(self):
+        return self.__y_min
+
+    def get_y_max(self):
+        return self.__y_max
+
+    def __build_data(self):
+
+        req = QgsFeatureRequest()
+        req.setFilterFids(self.__feature_ids)
+
+        self.__x_values = []
+        self.__y_values = []
+        current_data_range = None
+        for f in self.__layer.getFeatures(req):
+            raw_data = f[self.__y_fieldname]
+            if self.__x_start_fieldname is not None:
+                x_start = f[self.__x_start_fieldname]
+                x_delta = f[self.__x_delta_fieldname]
+            else:
+                x_start = self.__x_start
+                x_delta = self.__x_delta
+
+            if isinstance(raw_data, list):
+                # QGIS 3 natively reads array values
+                # Null values still have to be filtered out
+                # WARNING: extracting list from PostgreSQL's arrays seem very sloowww
+                y_values = [None if isinstance(x, QVariant) else x for x in raw_data]
+            elif isinstance(raw_data, str):
+                # We assume values are separated by a ','
+                y_values = [None if value == 'NULL' else float(value)
+                                   for value in raw_data.split(",")]
+            else:
+                print("Unsupported data format: {}".format(raw_data.__class__))
+
+            x_values = np.linspace(x_start, x_start + x_delta * (len(y_values) - 1), len(y_values)).tolist()
+            
+            data_range = (x_start, x_start + x_delta * (len(y_values) - 1))
+            if current_data_range is None:
+                current_data_range = data_range
+                self.__x_values = x_values
+                self.__y_values = y_values
+            else:
+                # look for overlap
+                if (current_data_range[0] < data_range[0] < current_data_range[1]) or \
+                   (current_data_range[0] < data_range[1] < current_data_range[1]):
+                    print("Overlap in data around feature #{}".format(f.id()))
+                    continue
+                if current_data_range[0] > data_range[1]:
+                    # new data are "on the left"
+                    self.__x_values = x_values + self.__x_values
+                    self.__y_values = y_values + self.__y_values
+                else:
+                    # new data are "on the right"
+                    self.__x_values = self.__x_values + x_values
+                    self.__y_values = self.__y_values + y_values
+                current_data_range = (self.__x_values[0], self.__x_values[-1])
+
+        self.__x_min, self.__x_max = ((min(self.__x_values), max(self.__x_values))
+                                      if self.__x_values else (None, None))
+        self.__y_min, self.__y_max = ((min(y for y in self.__y_values if y is not None),
+                                       max(y for y in self.__y_values if y is not None))
+                                      if self.__y_values else (None, None))
+
+        self.data_modified.emit()

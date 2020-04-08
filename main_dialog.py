@@ -232,10 +232,12 @@ class WellLogViewWrapper(DepthPlotView):
                 u"Impossible to add plot without selecting a feature")
             return
 
-        sources = list(self.__config["log_measures"])
-        sources += [dict(list(d.items()) + [("type", "image")])
-                    for d in self.__config["imagery_data"]]
-        s = DataSelector(self, self.__features, sources, self.__config)
+        s = DataSelector(
+            self,
+            self.__features,
+            self.__config.get_log_plots() + self.__config.get_imageries(),
+            self.__config
+        )
         s.exec_()
 
     def add_imagery_from_db(self, cfg, feature_id):

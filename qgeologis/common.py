@@ -32,6 +32,9 @@ ORIENTATION_RIGHT_TO_LEFT = 1 # unused
 ORIENTATION_UPWARD = 2
 ORIENTATION_DOWNWARD = 3
 
+ORIENTATION_HORIZONTAL = 0
+ORIENTATION_VERTICAL = 1
+
 def qgis_render_context(painter, width, height):
     mtp = QgsMapToPixel()
     # the default viewport if centered on 0, 0

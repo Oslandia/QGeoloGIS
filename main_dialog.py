@@ -27,11 +27,15 @@ from qgis.PyQt.QtCore import QSize, pyqtSignal
 from qgis.core import QgsProject, QgsFeatureRequest
 
 from .config_create_dialog import ConfigCreateDialog
-from .qgeologis.log_view import WellLogView
-from .qgeologis.timeseries_view import TimeSeriesView
-from .qgeologis.data_interface import LayerData, IntervalData
+from .qgeologis.plot_view import PlotView
+from .qgeologis.depth_plot_view import DepthPlotView
+from .qgeologis.data_interface import LayerData, FeatureData
 from .data_selector import DataSelector
 from .config import LayerConfig, PlotConfig
+from .qgeologis.common import (
+    ORIENTATION_HORIZONTAL,
+    ORIENTATION_VERTICAL
+)
 
 
 def load_plots(obj, feature, config, config_list):
@@ -43,80 +47,102 @@ def load_plots(obj, feature, config, config_list):
     max_x = []
     for cfg in config_list:
 
-        print(cfg)
-
         if cfg.get("feature_filter_type") == "unique_data_from_values":
             # don't load it now, we need to filter
             # we will load it from data selector
             continue
 
-        if cfg["type"] in ("cumulative", "instantaneous"):
-            layerid = cfg.get_layerid()
-            data_l = QgsProject.instance().mapLayers()[layerid]
-            filter_expr = "{}='{}'".format(cfg["feature_ref_column"],
-                                           feature_id)
+        layerid = cfg.get_layerid()
+        data_l = QgsProject.instance().mapLayers()[layerid]
+        filter_expr = "{}='{}'".format(cfg["feature_ref_column"],
+                                       feature_id)
 
-            title = cfg["name"]
+        title = cfg["name"]
 
-            if cfg["type"] == "instantaneous":
-                uom = cfg.get_uom()
-                # FIXME for next release: set default value to "remove"
-                nodata = cfg.get("nodata", 0.0)
-                if nodata == "remove":
-                    nodata = None
-                data = LayerData(
-                    data_l,
-                    cfg["event_column"],
-                    cfg["value_column"],
-                    filter_expression=filter_expr,
-                    uom=uom,
-                    nodata_value=nodata
-                )
-                uom = data.uom()
+        if cfg["type"] == "instantaneous":
+            uom = cfg.get_uom()
+            # FIXME for next release: set default value to "remove"
+            nodata = cfg.get("nodata", 0.0)
+            if nodata == "remove":
+                nodata = None
+            data = LayerData(
+                data_l,
+                cfg["event_column"],
+                cfg["value_column"],
+                filter_expression=filter_expr,
+                uom=uom,
+                nodata_value=nodata
+            )
+            uom = data.uom()
 
-                if data.get_x_min() is not None:
-                    min_x.append(data.get_x_min())
-                    max_x.append(data.get_x_max())
-                    # FIXME
-                    if hasattr(obj, "add_data_row"):
-                        obj.add_data_row(data, title, uom, station_name=feature_name, config=cfg)
-                    elif hasattr(obj, "add_data_column"):
-                        obj.add_data_column(data, title, uom, station_name=feature_name, config=cfg)
-
-            elif cfg["type"] == "cumulative":
-                obj.add_histogram(
-                    data_l,
-                    filter_expr,
-                    {
-                        f : cfg[f] for f in (
-                            "min_event_column",
-                            "max_event_column",
-                            "value_column"
-                        )
-                    },
+            if data.get_x_min() is not None:
+                min_x.append(data.get_x_min())
+                max_x.append(data.get_x_max())
+                obj.add_data_cell(
+                    data,
                     title,
-                    config=cfg,
-                    station_name=feature_name
+                    uom,
+                    station_name=feature_name,
+                    config=cfg
                 )
+
+        elif cfg["type"] == "continuous":
+            req = QgsFeatureRequest()
+            req.setFilterExpression(filter_expr)
+            uom = cfg.get_uom()
+            fids = [f.id() for f in data_l.getFeatures(req)]
+            data = FeatureData(
+                data_l,
+                cfg["values_column"],
+                feature_ids=fids,
+                x_start_fieldname=cfg["start_measure_column"],
+                x_delta_fieldname=cfg["interval_column"]
+            )
+
+            if data.get_x_min() is not None:
+                min_x.append(data.get_x_min())
+                max_x.append(data.get_x_max())
+                obj.add_data_cell(
+                    data,
+                    title,
+                    uom,
+                    station_name=feature_name,
+                    config=cfg
+                )
+
+        elif cfg["type"] == "cumulative":
+            obj.add_histogram(
+                data_l,
+                filter_expr,
+                {
+                    f : cfg[f] for f in (
+                        "min_event_column",
+                        "max_event_column",
+                        "value_column"
+                    )
+                },
+                title,
+                config=cfg,
+                station_name=feature_name
+            )
 
     if not min_x:
         return None, None
-    else:
-        return (min(min_x), max(max_x))
+    return (min(min_x), max(max_x))
 
 
-class WellLogViewWrapper(WellLogView):
+class WellLogViewWrapper(DepthPlotView):
     def __init__(self, config, iface):
-        WellLogView.__init__(self)
+        DepthPlotView.__init__(self)
         self.__iface = iface
         self.__features = []
         self.__config = config
 
         image_dir = os.path.join(os.path.dirname(__file__), "qgeologis", "img")
         self.__action_add_configuration = QAction(QIcon(os.path.join(image_dir, "new_plot.svg")),
-                                                  "Add a new column configuration", self.toolbar)
+                                                  "Add a new column configuration", self._toolbar)
         self.__action_add_configuration.triggered.connect(self.on_add_configuration)
-        self.toolbar.addAction(self.__action_add_configuration)
+        self._toolbar.addAction(self.__action_add_configuration)
 
     def on_add_configuration(self):
         dialog = ConfigCreateDialog(self)
@@ -132,21 +158,32 @@ class WellLogViewWrapper(WellLogView):
 
     def update_view(self):
 
-        self.clear_data_columns()
+        self.clear_data_cells()
 
+        min_x = []
+        max_x = []
         for feature in self.__features:
-            self.__load_feature(feature)
+            fmin_x, fmax_x = self.__load_feature(feature)
+            if fmin_x is not None:
+                min_x.append(fmin_x)
+                max_x.append(fmax_x)
+
+        if min_x:
+            self.set_x_range(min(min_x), max(max_x))
 
     def __load_feature(self, feature):
 
+        feature_name = feature[self.__config["name_column"]]
+
+        min_x = []
+        max_x = []
         # load stratigraphy
         for cfg in self.__config.get_stratigraphy_plots():
-
             layer = QgsProject.instance().mapLayers()[cfg.get_layerid()]
             f = "{}='{}'".format(cfg["feature_ref_column"],
                                  feature[self.__config["id_column"]])
 
-            self.add_stratigraphy(
+            xmin, xmax = self.add_stratigraphy(
                 layer, f, {
                     "depth_from_column": cfg["depth_from_column"],
                     "depth_to_column": cfg["depth_to_column"],
@@ -157,19 +194,37 @@ class WellLogViewWrapper(WellLogView):
                 },
                 cfg.get("name", self.tr("Stratigraphy")),
                 cfg.get_style_file(),
-                config=cfg
+                config=cfg,
+                station_name=feature_name
             )
+            if xmin is not None:
+                min_x.append(xmin)
+                max_x.append(xmax)
 
         # load log measures
-        load_plots(self, feature, self.__config,
-                   self.__config.get_log_plots())
+        xmin, xmax = load_plots(
+            self,
+            feature,
+            self.__config,
+            self.__config.get_log_plots()
+        )
+        if xmin is not None:
+            min_x.append(xmin)
+            max_x.append(xmax)
 
         # load imagery
         feature_id = feature[self.__config["id_column"]]
         for cfg in self.__config["imagery_data"]:
-            self.add_imagery_from_db(cfg, feature_id)
+            xmin, xmax = self.add_imagery_from_db(cfg, feature_id)
+            if xmin is not None:
+                min_x.append(xmin)
+                max_x.append(xmax)
 
-    def on_add_column(self):
+        if not min_x:
+            return None, None
+        return min(min_x), max(max_x)
+
+    def on_add_cell(self):
 
         if not self.__features and self.__iface:
             self.__iface.messageBar().pushWarning(
@@ -202,7 +257,7 @@ class WellLogViewWrapper(WellLogView):
                     (feature_id,))
         r = cur.fetchone()
         if r is None:
-            return
+            return None, None
 
         depth_from, depth_to = float(r[0]), float(r[1])
         image_data = r[2]
@@ -212,12 +267,12 @@ class WellLogViewWrapper(WellLogView):
         f.close()
         with open(image_filename, "wb") as fo:
             fo.write(image_data)
-        self.add_imagery(image_filename, cfg["name"], depth_from, depth_to)
+        return self.add_imagery(image_filename, cfg["name"], depth_from, depth_to)
 
 
-class TimeSeriesWrapper(TimeSeriesView):
+class TimeSeriesWrapper(PlotView):
     def __init__(self, config):
-        TimeSeriesView.__init__(self)
+        PlotView.__init__(self, orientation=ORIENTATION_HORIZONTAL)
         self.__config = config
         self.__features = []
 
@@ -227,22 +282,22 @@ class TimeSeriesWrapper(TimeSeriesView):
 
     def update_view(self):
 
-        self.clear_data_rows()
+        self.clear_data_cells()
 
         min_x = []
         max_x = []
         for feature in self.__features:
             fmin_x, fmax_x = load_plots(self, feature, self.__config,
                                         self.__config.get_timeseries())
-            if fmin_x:
+            if fmin_x is not None:
                 min_x.append(fmin_x)
                 max_x.append(fmax_x)
 
         if min_x:
             self.set_x_range(min(min_x), max(max_x))
 
-    def on_add_row(self):
-        s = DataSelector(self, self.__features,  self.__config.get_timeseries(),  self.__config)
+    def on_add_cell(self):
+        s = DataSelector(self, self.__features, self.__config.get_timeseries(), self.__config)
         s.exec_()
 
 
@@ -255,7 +310,7 @@ class MainDialog(QWidget):
         ----------
         parent: QObject
           Qt parent object
-        plot_type: str
+        plot_type: Literal["logs", "timeseries"]
           Type of plot, either "logs" or "timeseries"
         config: dict
           Layer configuration
@@ -302,9 +357,8 @@ class MainDialog(QWidget):
     def on_styles_updated(self):
         styles = self.__view.styles()
 
-        for cfg in (self.__config.get_vertical_plots() + self.__config.get_timeseries()):
+        for cfg in self.__config.get_vertical_plots() + self.__config.get_timeseries():
             for layer_id, (style, renderer_type) in styles.items():
                 if cfg.get("source") == layer_id:
                     cfg.set_symbology(style, renderer_type)
                     break
-

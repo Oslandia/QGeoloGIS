@@ -121,6 +121,10 @@ class QGeoloGISPlugin:
         remove_layer_from_config(self.__config, layer_id)
         QgsProject.instance().writeEntry("QGeoloGIS", "config", json.dumps(self.__config))
 
+        if self.__dock:
+            self.iface.removeDockWidget(self.__dock)
+            self.__dock.setParent(None)
+
     def on_view_plots(self, plot_type):
 
         layer = self.iface.activeLayer()

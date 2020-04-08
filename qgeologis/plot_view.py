@@ -411,15 +411,17 @@ class PlotView(QWidget):
         )
         data.data_modified.connect(lambda data=data: self._update_data_cell(data, config))
 
-        # FIXME ?
-        """
         # center on new data
         self._min_x, self._max_x = data.get_x_min(), data.get_x_max()
-        # if we have only one value, center it on a 2 minutes range
         if self._min_x and self._min_x == self._max_x:
-            self._min_x -= 60
-            self._max_x += 60
-        """
+            if self.__orientation == ORIENTATION_HORIZONTAL:
+                # if we have only one value, center it on a 4 days range
+                self._min_x -= 3600*24*2
+                self._max_x += 3600*24*2
+            else:
+                # -/+ 1 meter in depth
+                self._min_x -= 1
+                self._max_x += 1
 
         self.__data2items[data] = (plot_item, legend_item)
         self._add_cell(plot_item, legend_item)
@@ -465,7 +467,6 @@ class PlotView(QWidget):
 
         self._scene.update()
 
-    # FIXME to update
     def add_histogram(self, layer, filter_expression, column_mapping, title, config=None, station_name=""):
         """Add histogram data
 

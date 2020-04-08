@@ -146,6 +146,17 @@ class DataSelector(QDialog):
                         filter_expression=filter_expr,
                         uom=uom
                     )
+                    uom = data.uom()
+                    self.__viewer.add_data_cell(
+                        data,
+                        title,
+                        uom,
+                        station_name=feature_name,
+                        config=cfg
+                    )
+                    self.__viewer.add_scale()
+                # FIXME continuous
+                    
                 elif cfg["type"] == "cumulative":
                     data = IntervalData(
                         data_l,
@@ -155,24 +166,21 @@ class DataSelector(QDialog):
                         filter_expression=filter_expr,
                         uom=uom
                     )
-                uom = data.uom()
+                    self.__viewer.add_histogram(
+                        data_l,
+                        filter_expression=filter_expr,
+                        column_mapping={
+                            f : cfg[f] for f in (
+                                "min_event_column",
+                                "max_event_column",
+                                "value_column"
+                            )
+                        },
+                        title=title,
+                        config=cfg,
+                        station_name=feature_name
+                    )
 
-                if hasattr(self.__viewer, "add_data_column"):
-                    self.__viewer.add_data_column(
-                        data,
-                        title,
-                        uom,
-                        station_name=feature_name,
-                        config=cfg
-                    )
-                if hasattr(self.__viewer, "add_data_row"):
-                    self.__viewer.add_data_row(
-                        data,
-                        title,
-                        uom,
-                        station_name=feature_name,
-                        config=cfg
-                    )
             elif cfg["type"] == "image":
                 self.__viewer.add_imagery_from_db(cfg, feature_id)
 

@@ -119,8 +119,4 @@ class LegendItem(LogItem):
         painter.restore()
 
 def format_number(f, num_decimals = 1):
-    if f < 10000:
-        fmt = "{:." + "{}".format(num_decimals) + "f}"
-        return fmt.format(f)
-    else:
-        return "{:.1e}".format(f)
+    return ("{:." + str(num_decimals) + "g}").format(f)

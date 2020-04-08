@@ -163,7 +163,7 @@ class IntervalPlotItem(LogItem):
 
         # Add a 10% buffer above max
         h = max_y - min_y
-        if h < 0.1:
+        if h == 0.0:
             max_y = min_y + 1.0
             h = 1.0
         max_y += h * 0.1
@@ -372,13 +372,13 @@ class IntervalPlotItem(LogItem):
             if self.__x_orientation == ORIENTATION_LEFT_TO_RIGHT and self.__y_orientation == ORIENTATION_UPWARD:
                 dt1 = datetime.fromtimestamp(x1, UTC())
                 dt2 = datetime.fromtimestamp(x2, UTC())
-                txt = "Time: {} - {} Value: {:.2f}".format(
+                txt = "Time: {} - {} Value: {:.2g}".format(
                     dt1.strftime("%x %X"),
                     dt2.strftime("%x %X"),
                     y
                 )
             elif self.__x_orientation == ORIENTATION_DOWNWARD and self.__y_orientation == ORIENTATION_LEFT_TO_RIGHT:
-                txt = "Depth: {} - {} Value: {:.2f}".format(x1, x2, y)
+                txt = "Depth: {} - {} Value: {:.2g}".format(x1, x2, y)
             self.tooltipRequested.emit(txt)
 
         self.__old_point_to_label = self.__point_to_label

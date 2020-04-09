@@ -51,7 +51,7 @@ import bisect
 from datetime import datetime
 
 class IntervalPlotItem(LogItem):
-    """Plot data that have a value on an interval (x_min, x_max). See IntervalData"""
+    """Plot data that have a value on an interval (x_min, x_max)."""
 
     # emitted when the style is updated
     style_updated = pyqtSignal()

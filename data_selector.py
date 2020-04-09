@@ -23,7 +23,7 @@ from qgis.PyQt.QtWidgets import (QListWidget, QListWidgetItem, QHBoxLayout, QLab
 from qgis.core import QgsProject, QgsFeatureRequest
 
 from .config import PlotConfig
-from .qgeologis.data_interface import IntervalData, LayerData, FeatureData
+from .qgeologis.data_interface import LayerData, FeatureData
 
 
 class DataSelector(QDialog):
@@ -139,8 +139,8 @@ class DataSelector(QDialog):
                     break
                 if f is None:
                     return
-                uom = cfg.get_uom()
                 if cfg["type"] == "instantaneous":
+                    uom = cfg.get_uom()
                     data = LayerData(
                         data_l,
                         cfg["event_column"],
@@ -158,6 +158,7 @@ class DataSelector(QDialog):
                     )
                     self.__viewer.add_scale()
                 if cfg["type"] == "continuous":
+                    uom = cfg.get_uom()
                     fids = [f.id() for f in data_l.getFeatures(req)]
                     data = FeatureData(
                         data_l,
@@ -174,14 +175,6 @@ class DataSelector(QDialog):
                         config=cfg
                     )
                 elif cfg["type"] == "cumulative":
-                    data = IntervalData(
-                        data_l,
-                        cfg["min_event_column"],
-                        cfg["max_event_column"],
-                        cfg["value_column"],
-                        filter_expression=filter_expr,
-                        uom=uom
-                    )
                     self.__viewer.add_histogram(
                         data_l,
                         filter_expression=filter_expr,
